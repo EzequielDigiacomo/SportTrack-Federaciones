@@ -26,6 +26,9 @@
 
   <ItemGroup>
     <Compile Remove="Federaciones\**" />
+    <Compile Include="Federaciones\FederacionServices.cs" />
+    <Compile Include="Federaciones\IFederacionServices.cs" />
+    <Compile Include="Federaciones\DTOs\Federacion\**" />
   </ItemGroup>
 
 </Project>

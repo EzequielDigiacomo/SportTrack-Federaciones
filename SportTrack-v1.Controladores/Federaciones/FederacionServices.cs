@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using SportTrack_v1.Controladores.Federaciones;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SIGDEF.API.Services
+namespace SportTrack_v1.Controladores.Federaciones
 {
     public class FederacionServices : IFederacionServices
     {
@@ -26,7 +26,7 @@ namespace SIGDEF.API.Services
                 var federaciones = await _context.Federaciones
                     .Select(f => new FederacionDto
                     {
-                        IdFederacion = f.IdFederacion,
+                        IdFederacion = f.Id,
                         Nombre = f.Nombre,
                         Cuit = f.Cuit,
                         Email = f.Email,
@@ -53,10 +53,10 @@ namespace SIGDEF.API.Services
             try
             {
                 var federacion = await _context.Federaciones
-                    .Where(f => f.IdFederacion == id)
+                    .Where(f => f.Id == id)
                     .Select(f => new FederacionDto
                     {
-                        IdFederacion = f.IdFederacion,
+                        IdFederacion = f.Id,
                         Nombre = f.Nombre,
                         Cuit = f.Cuit,
                         Email = f.Email,
@@ -112,7 +112,7 @@ namespace SIGDEF.API.Services
 
                 var federacionDto = new FederacionDto
                 {
-                    IdFederacion = federacion.IdFederacion,
+                    IdFederacion = federacion.Id,
                     Nombre = federacion.Nombre,
                     Cuit = federacion.Cuit,
                     Email = federacion.Email,
@@ -215,7 +215,7 @@ namespace SIGDEF.API.Services
 
         private async Task<bool> FederacionExistsAsync(int id)
         {
-            return await _context.Federaciones.AnyAsync(e => e.IdFederacion == id);
+            return await _context.Federaciones.AnyAsync(e => e.Id == id);
         }
     }
 }

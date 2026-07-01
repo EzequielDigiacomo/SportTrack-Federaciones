@@ -21,7 +21,4 @@
     <ProjectReference Include="..\SportTrack-v1.AccesoDatos\SportTrack-v1.AccesoDatos.csproj" />
     <ProjectReference Include="..\SportTrack-v1.Controladores\SportTrack-v1.Controladores.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Controllers\FederacionesController.cs" />
-  </ItemGroup>
 </Project>

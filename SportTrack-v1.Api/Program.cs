@@ -118,7 +118,7 @@ builder.Services.AddScoped<SportTrack_v1.Api.Services.INotificadorResultados, Sp
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 // Federaciones
-// builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IFederacionServices, SportTrack_v1.Controladores.Federaciones.FederacionServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IFederacionServices, SportTrack_v1.Controladores.Federaciones.FederacionServices>();
 // Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
