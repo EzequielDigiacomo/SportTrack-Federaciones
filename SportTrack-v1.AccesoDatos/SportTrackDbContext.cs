@@ -74,6 +74,7 @@ namespace SportTrack.AccessDatos
             modelBuilder.Entity<Federacion>(entity => { 
                 entity.ToTable("Federaciones", "federacion"); 
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("IdFederacion");
                 
                 entity.HasOne(e => e.PlanSaaS)
                     .WithMany(p => p.Federaciones)
