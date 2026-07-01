@@ -8,19 +8,20 @@ class Program
 {
     static void Main()
     {
-        string token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBlcmFkbWluIiwidW5pcXVlX25hbWUiOiJzdXBlcmFkbWluIiwicm9sZSI6IlN1cGVyQWRtaW4iLCJDbHViSWQiOiIwIiwibmJmIjoxNzgyOTI0NjI1LCJleHAiOjE3ODI5NDI2MjUsImlhdCI6MTc4MjkyNDYyNX0.rqC6oQ3UdNzrDXMgg7txTcsdWPtxBau2LujqqiCtGbZfiZIZ0sxmSptO2ijng5IoigKLHeGBzShh93CiW4Ln7Q";
+        string token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBlcmFkbWluIiwidW5pcXVlX25hbWUiOlsic3VwZXJhZG1pbiIsInN1cGVyYWRtaW4iXSwibmFtZSI6InN1cGVyYWRtaW4iLCJyb2xlIjpbIlN1cGVyQWRtaW4iLCJTdXBlckFkbWluIl0sIkNsdWJJZCI6IjAiLCJuYmYiOjE3ODI5MjU1NzUsImV4cCI6MTc4Mjk0MzU3NSwiaWF0IjoxNzgyOTI1NTc1fQ._V2sxLjrraWD2Ru_8eSHQmD-TSYb0kM289UPM8nPSwFPdztbItPnCrsQDZyIUoj5DP1Z1UPrv3WNUiBEXIpiXQ";
         
-        var handler1 = new JwtSecurityTokenHandler();
-        var principal1 = handler1.ValidateToken(token, new TokenValidationParameters { ValidateSignatureLast = true, SignatureValidator = (t,p) => new JwtSecurityToken(t) }, out _);
-        Console.WriteLine("JwtSecurityTokenHandler claims:");
-        foreach(var c in principal1.Claims) Console.WriteLine(c.Type + " = " + c.Value);
-        Console.WriteLine("Name: " + principal1.Identity.Name);
-        Console.WriteLine("HasRole: " + principal1.IsInRole("SuperAdmin"));
-
         var handler2 = new JsonWebTokenHandler();
-        var result = handler2.ValidateToken(token, new TokenValidationParameters { ValidateSignatureLast = true, SignatureValidator = (t,p) => new JsonWebToken(t) });
-        Console.WriteLine("\nJsonWebTokenHandler claims:");
-        foreach(var c in result.ClaimsIdentity.Claims) Console.WriteLine(c.Type + " = " + c.Value);
+        var validationParameters = new TokenValidationParameters 
+        { 
+            ValidateSignatureLast = true, 
+            SignatureValidator = (t,p) => new JsonWebToken(t),
+            RoleClaimType = "role",
+            NameClaimType = "unique_name",
+            ValidateAudience = false,
+            ValidateIssuer = false
+        };
+        var result = handler2.ValidateToken(token, validationParameters);
+        Console.WriteLine("IsValid: " + result.IsValid);
         Console.WriteLine("Name: " + result.ClaimsIdentity.Name);
         Console.WriteLine("HasRole: " + result.ClaimsIdentity.HasClaim(result.ClaimsIdentity.RoleClaimType, "SuperAdmin"));
     }

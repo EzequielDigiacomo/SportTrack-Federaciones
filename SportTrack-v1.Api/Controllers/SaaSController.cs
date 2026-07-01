@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.SaaS;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SportTrack_v1.Api.Controllers
 {
@@ -15,6 +16,20 @@ namespace SportTrack_v1.Api.Controllers
         public SaaSController(ISaaSService saasService)
         {
             _saasService = saasService;
+        }
+
+        [HttpGet("debug-me")]
+        [AllowAnonymous]
+        public ActionResult DebugMe()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            var identity = User.Identity;
+            return Ok(new {
+                IdentityName = identity?.Name,
+                IsAuthenticated = identity?.IsAuthenticated,
+                AuthenticationType = identity?.AuthenticationType,
+                Claims = claims
+            });
         }
 
         [HttpGet("planes")]
