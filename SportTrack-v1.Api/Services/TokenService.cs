@@ -26,7 +26,10 @@ namespace SportTrack_v1.Api.Services
             {
                 new Claim(JwtRegisteredClaimNames.NameId, usuario.Username),
                 new Claim(ClaimTypes.Name, usuario.Username),
+                new Claim("name", usuario.Username),
+                new Claim("unique_name", usuario.Username),
                 new Claim(ClaimTypes.Role, usuario.Rol),
+                new Claim("role", usuario.Rol),
                 new Claim("ClubId", usuario.ClubId?.ToString() ?? "0")
             };
 
