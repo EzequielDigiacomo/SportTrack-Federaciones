@@ -47,14 +47,13 @@ namespace SportTrack_v1.Controladores.Pago
 
             if (role == "Admin" && fedId.HasValue)
             {
-                // Un admin federativo solo ve pagos de:
-                // 1. Su propio club/federación o clubes hijos (ParentClubId == fedId)
-                // 3. Atletas cuyos clubes son hijos de la federación o su propio club
-                // 4. Inscripciones en eventos de su federación (Evento.ClubId == fedId)
+                // 1. Pagos de clubes hijos de la federación (FederacionId == fedId)
+                // 2. Pagos de atletas cuyos clubes pertenecen a la federación
+                // 3. Inscripciones en eventos organizados por la federación (Evento.FederacionId == fedId)
                 query = query.Where(p =>
-                    (p.ClubId == fedId.Value || (p.Club != null && p.Club.ParentClubId == fedId.Value)) ||
-                    (p.Participante != null && (p.Participante.ClubId == fedId.Value || (p.Participante.Club != null && p.Participante.Club.ParentClubId == fedId.Value))) ||
-                    (p.Inscripcion != null && p.Inscripcion.EventoPrueba != null && p.Inscripcion.EventoPrueba.Evento != null && p.Inscripcion.EventoPrueba.Evento.ClubId == fedId.Value)
+                    (p.Club != null && p.Club.FederacionId == fedId.Value) ||
+                    (p.Participante != null && p.Participante.Club != null && p.Participante.Club.FederacionId == fedId.Value) ||
+                    (p.Inscripcion != null && p.Inscripcion.EventoPrueba != null && p.Inscripcion.EventoPrueba.Evento != null && p.Inscripcion.EventoPrueba.Evento.FederacionId == fedId.Value)
                 );
             }
             else if (role != "SuperAdmin" && role != "soporte_tecnico")

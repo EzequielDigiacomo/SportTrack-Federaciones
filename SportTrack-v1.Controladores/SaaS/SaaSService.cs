@@ -55,13 +55,13 @@ namespace SportTrack_v1.Controladores.SaaS
             };
         }
 
-        public async Task AsignarPlanAClubAsync(int clubId, int planId)
+        public async Task AsignarPlanAClubAsync(int federacionId, int planId)
         {
-            var club = await _context.Clubes.FindAsync(clubId);
-            if (club != null)
+            var fed = await _context.Federaciones.FindAsync(federacionId);
+            if (fed != null)
             {
-                var oldPlanId = club.PlanSaaSId;
-                club.PlanSaaSId = planId;
+                var oldPlanId = fed.PlanSaaSId;
+                fed.PlanSaaSId = planId;
                 await _context.SaveChangesAsync();
 
                 if (oldPlanId != planId)
@@ -70,7 +70,7 @@ namespace SportTrack_v1.Controladores.SaaS
                     string planNombre = plan?.Nombre ?? $"Plan ID {planId}";
                     await _auditService.RegistrarAccionAsync(
                         "ASSIGN_PLAN",
-                        $"Asignado Plan '{planNombre}' a la federación '{club.Nombre}'.",
+                        $"Asignado Plan '{planNombre}' a la federación '{fed.Nombre}'.",
                         modulo: "SaaS"
                     );
                 }
@@ -82,21 +82,19 @@ namespace SportTrack_v1.Controladores.SaaS
             // Plan basico por defecto si no tiene plan (ID 1)
             var planBasico = await _context.PlanesSaaS.FirstOrDefaultAsync(p => p.Id == 1);
 
-            var federaciones = await _context.Clubes
-                .Where(c => c.ParentClubId == null) // Solo las federaciones "madre"
-                .Include(c => c.PlanSaaS)
-                .Include(c => c.Participantes)
-                .Include(c => c.Usuarios)
-                .Include(c => c.Afiliados)
-                    .ThenInclude(a => a.Participantes)
-                .Include(c => c.Afiliados)
-                    .ThenInclude(a => a.Usuarios)
+            var federaciones = await _context.Federaciones
+                .Include(f => f.PlanSaaS)
+                .Include(f => f.Usuarios)
+                .Include(f => f.Clubes)
+                    .ThenInclude(c => c.Participantes)
+                .Include(f => f.Clubes)
+                    .ThenInclude(c => c.Usuarios)
                 .ToListAsync();
 
             // Buscamos todos los torneos activos para agruparlos por federación madre
             var eventosActivos = await _context.Eventos
-                .Where(e => (e.Estado == Entidades.Enums.EstadoEventoEnum.Programada || e.Estado == Entidades.Enums.EstadoEventoEnum.EnCurso) && e.ClubId.HasValue)
-                .Select(e => new { e.ClubId, e.Id, e.Nombre, e.Fecha, Estado = e.Estado.ToString() })
+                .Where(e => (e.Estado == Entidades.Enums.EstadoEventoEnum.Programada || e.Estado == Entidades.Enums.EstadoEventoEnum.EnCurso) && e.FederacionId.HasValue)
+                .Select(e => new { e.FederacionId, e.Id, e.Nombre, e.Fecha, Estado = e.Estado.ToString() })
                 .ToListAsync();
 
             return federaciones.Select(c => 
@@ -105,16 +103,11 @@ namespace SportTrack_v1.Controladores.SaaS
                 var maxAtletas = planActivo?.MaxAtletas ?? 500;
                 var maxTorneos = planActivo?.MaxTorneosActivos ?? 1;
 
-                // Identificamos todos los IDs que pertenecen a esta federación (ella misma + sus afiliados)
-                var idsPertenecientes = new HashSet<int> { c.Id };
-                foreach (var af in c.Afiliados) idsPertenecientes.Add(af.Id);
-
-                // Agregamos métricas de afiliados
-                var atletasRegistrados = c.Participantes.Count + c.Afiliados.Sum(a => a.Participantes.Count);
-                var usuariosCount = c.Usuarios.Count + c.Afiliados.Sum(a => a.Usuarios.Count);
+                var atletasRegistrados = c.Clubes.Sum(a => a.Participantes.Count);
+                var usuariosCount = c.Usuarios.Count + c.Clubes.Sum(a => a.Usuarios.Count);
                 
                 var torneosDetalle = eventosActivos
-                    .Where(e => idsPertenecientes.Contains(e.ClubId.Value))
+                    .Where(e => e.FederacionId == c.Id)
                     .Select(e => new TorneoSaaSDetailDto { Id = e.Id, Nombre = e.Nombre, Fecha = e.Fecha, Estado = e.Estado })
                     .ToList();
                 
@@ -124,7 +117,7 @@ namespace SportTrack_v1.Controladores.SaaS
                 if (maxAtletas != -1 && atletasRegistrados > maxAtletas) alDia = false;
                 if (maxTorneos != -1 && torneosActivosCount > maxTorneos) alDia = false;
                 if (c.FechaVencimientoPlan.HasValue && c.FechaVencimientoPlan.Value.Date < DateTime.UtcNow.Date) alDia = false;
-                if (c.BloqueadoPorFaltaDePago) alDia = false;
+                if (c.BloqueadaPorFaltaDePago) alDia = false;
 
                 return new ClubSaaSStatusDto
                 {
@@ -134,39 +127,39 @@ namespace SportTrack_v1.Controladores.SaaS
                     Email = c.Email,
                     Telefono = c.Telefono,
                     Direccion = c.Direccion,
-                    Ubicacion = c.Ubicacion,
+                    Ubicacion = "",
                     PlanSaaSId = planActivo?.Id,
                     PlanNombre = planActivo?.Nombre ?? "Desconocido",
                     MaxAtletas = maxAtletas,
                     AtletasRegistrados = atletasRegistrados,
-                    ClubesAfiliadosCount = c.Afiliados.Count,
+                    ClubesAfiliadosCount = c.Clubes.Count,
                     UsuariosCount = usuariosCount,
                     MaxTorneos = maxTorneos,
                     TorneosActivosCount = torneosActivosCount,
                     TorneosActivos = torneosDetalle,
                     PlanAlDia = alDia,
                     Activo = c.Activo,
-                    FrecuenciaPago = c.FrecuenciaPago,
+                    FrecuenciaPago = "",
                     FechaAltaPlan = c.FechaAltaPlan,
                     FechaVencimientoPlan = c.FechaVencimientoPlan,
-                    BloqueadoPorFaltaDePago = c.BloqueadoPorFaltaDePago
+                    BloqueadoPorFaltaDePago = c.BloqueadaPorFaltaDePago
                 };
             });
         }
 
-        public async Task ToggleClubActivoAsync(int clubId)
+        public async Task ToggleClubActivoAsync(int federacionId)
         {
-            var club = await _context.Clubes.FindAsync(clubId);
-            if (club != null)
+            var fed = await _context.Federaciones.FindAsync(federacionId);
+            if (fed != null)
             {
-                club.Activo = !club.Activo;
+                fed.Activo = !fed.Activo;
                 await _context.SaveChangesAsync();
 
-                string status = club.Activo ? "habilitado" : "suspendido";
-                string accion = club.Activo ? "ACTIVATE_FEDERATION" : "SUSPEND_FEDERATION";
+                string status = fed.Activo ? "habilitado" : "suspendido";
+                string accion = fed.Activo ? "ACTIVATE_FEDERATION" : "SUSPEND_FEDERATION";
                 await _auditService.RegistrarAccionAsync(
                     accion,
-                    $"Acceso a la federación '{club.Nombre}' {status} manualmente.",
+                    $"Acceso a la federación '{fed.Nombre}' {status} manualmente.",
                     modulo: "SaaS"
                 );
             }
@@ -177,7 +170,7 @@ namespace SportTrack_v1.Controladores.SaaS
             using var transaction = await _context.Database.BeginTransactionAsync();
             try 
             {
-                var club = new Entidades.Entidades.Club
+                var fed = new Entidades.Entidades.Federacion
                 {
                     Nombre = dto.Nombre,
                     Sigla = dto.Sigla,
@@ -185,20 +178,19 @@ namespace SportTrack_v1.Controladores.SaaS
                     Telefono = dto.Telefono,
                     Direccion = dto.Direccion,
                     Activo = true,
-                    PlanSaaSId = 1, 
-                    ParentClubId = null 
+                    PlanSaaSId = 1
                 };
                 
-                _context.Clubes.Add(club);
+                _context.Federaciones.Add(fed);
                 await _context.SaveChangesAsync();
 
                 var user = new Entidades.Entidades.Usuario
                 {
                     Username = dto.AdminUsername.Trim().ToLower(),
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.AdminPassword),
-                    Email = dto.AdminEmail, // Ahora usamos el email específico del admin
+                    Email = dto.AdminEmail, 
                     Rol = "Admin",
-                    ClubId = club.Id,
+                    FederacionId = fed.Id,
                     Activo = true
                 };
 
@@ -206,7 +198,7 @@ namespace SportTrack_v1.Controladores.SaaS
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
-                return club.Id;
+                return fed.Id;
             }
             catch (Exception ex)
             {
@@ -221,7 +213,7 @@ namespace SportTrack_v1.Controladores.SaaS
                         userFriendlyMessage = "El nombre de usuario administrador ya está en uso. Por favor, elige otro.";
                     else if (innerMsg.Contains("IX_Usuarios_Email"))
                         userFriendlyMessage = "El email del administrador ya está registrado en otra cuenta. Debe ser único.";
-                    else if (innerMsg.Contains("IX_Clubes_Nombre"))
+                    else if (innerMsg.Contains("IX_Federaciones_Nombre") || innerMsg.Contains("IX_Clubes_Nombre"))
                         userFriendlyMessage = "Ya existe una federación o club con ese nombre.";
                     else
                         userFriendlyMessage = "Un dato ingresado ya existe en el sistema y no puede duplicarse.";
@@ -235,15 +227,11 @@ namespace SportTrack_v1.Controladores.SaaS
 
         public async Task<GlobalMetricsDto> GetGlobalMetricsAsync()
         {
-            var federaciones = await _context.Clubes
-                .Where(c => c.ParentClubId == null)
-                .ToListAsync();
-
+            var federaciones = await _context.Federaciones.ToListAsync();
             var totalAtletas = await _context.Participantes.CountAsync();
             var totalClubes = await _context.Clubes.CountAsync();
             var torneosActivos = await _context.Eventos.CountAsync(e => e.Estado != EstadoEventoEnum.Finalizado);
 
-            // Mock de crecimiento mensual (podríamos calcularlo por FechaAlta si existiera)
             var crecimiento = new List<MonthlyGrowthDto>
             {
                 new MonthlyGrowthDto { Mes = "Ene", Cantidad = 5 },
@@ -256,14 +244,14 @@ namespace SportTrack_v1.Controladores.SaaS
             return new GlobalMetricsDto
             {
                 TotalFederaciones = federaciones.Count,
-                TotalClubesAfiliados = totalClubes - federaciones.Count,
+                TotalClubesAfiliados = totalClubes,
                 TotalAtletasGlobales = totalAtletas,
                 TorneosActivosGlobales = torneosActivos,
                 CrecimientoMensual = crecimiento,
                 TopFederaciones = federaciones
                     .Select(f => new FederacionMetricDto { 
                         Nombre = f.Nombre,
-                        ClubesCount = _context.Clubes.Count(c => c.ParentClubId == f.Id)
+                        ClubesCount = _context.Clubes.Count(c => c.FederacionId == f.Id)
                     })
                     .OrderByDescending(f => f.ClubesCount)
                     .Take(5)

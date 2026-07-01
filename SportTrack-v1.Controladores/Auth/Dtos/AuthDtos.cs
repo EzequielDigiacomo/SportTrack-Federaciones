@@ -12,6 +12,7 @@ namespace SportTrack_v1.Controladores.Auth.Dtos
         public string Username { get; set; } = string.Empty;
         public string Rol { get; set; } = string.Empty;
         public int? ClubId { get; set; }
+        public int? FederacionId { get; set; }
         public string? ClubNombre { get; set; }
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
@@ -27,6 +28,7 @@ namespace SportTrack_v1.Controladores.Auth.Dtos
         public string Email { get; set; } = string.Empty;
         public string Rol { get; set; } = "Club";
         public int? ClubId { get; set; }
+        public int? FederacionId { get; set; }
 
         // Datos personales para roles de juez (Largador, Cronometrista, JuezControl)
         public string? Nombre { get; set; }
@@ -42,6 +44,7 @@ namespace SportTrack_v1.Controladores.Auth.Dtos
         public string Email { get; set; } = string.Empty;
         public string Rol { get; set; } = string.Empty;
         public int? ClubId { get; set; }
+        public int? FederacionId { get; set; }
         public string? ClubNombre { get; set; }
         public bool Activo { get; set; } = true;
 

@@ -117,6 +117,8 @@ builder.Services.AddScoped<SportTrack_v1.Api.Services.INotificadorResultados, Sp
 // Clubes
 builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
+// Federaciones
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IFederacionServices, SportTrack_v1.Controladores.Federaciones.FederacionServices>();
 // Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -306,7 +308,7 @@ app.MapGet("/api/debug-events", async (SportTrack.AccessDatos.SportTrackDbContex
     var user = await db.Usuarios.Include(u => u.Club).FirstOrDefaultAsync(u => u.Username == "largador1");
     var events = await db.Eventos.Select(e => new { e.Id, e.Nombre, e.ClubId }).ToListAsync();
     return Results.Ok(new { 
-        User = new { user?.Username, user?.ClubId, ParentClubId = user?.Club?.ParentClubId, user?.Rol },
+        User = new { user?.Username, user?.ClubId, FederacionId = user?.Club?.FederacionId, user?.Rol },
         Events = events
     });
 });

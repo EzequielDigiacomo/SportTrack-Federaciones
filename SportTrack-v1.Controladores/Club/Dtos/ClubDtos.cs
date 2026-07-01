@@ -13,8 +13,8 @@ namespace SportTrack_v1.Controladores.Club.Dtos
         public string? Ubicacion { get; set; }
         public bool Activo { get; set; }
         public int CantidadAtletas { get; set; }
-        public int? ParentClubId { get; set; } // ID de la federación madre (null si es federación raíz)
-        public string? ParentClubNombre { get; set; }
+        public int? FederacionId { get; set; }
+        public string? FederacionNombre { get; set; }
         public int? PlanSaaSId { get; set; }
         public string? PlanNombre { get; set; }
         public string? FrecuenciaPago { get; set; }
@@ -40,7 +40,7 @@ namespace SportTrack_v1.Controladores.Club.Dtos
         public string? Direccion { get; set; }
         public string? Ubicacion { get; set; }
         public bool Activo { get; set; } = true;
-        public int? ParentClubId { get; set; } // Federación madre al crear un sub-club
+        public int? FederacionId { get; set; } // Federación a la que pertenece el club
         public string? FrecuenciaPago { get; set; }
         public DateTime? FechaAltaPlan { get; set; }
         public DateTime? FechaVencimientoPlan { get; set; }

@@ -27,7 +27,8 @@ namespace SportTrack_v1.Api.Services
                 new Claim("nameid", usuario.Username),
                 new Claim("name", usuario.Username),
                 new Claim("role", usuario.Rol),
-                new Claim("ClubId", usuario.ClubId?.ToString() ?? "0")
+                new Claim("ClubId", usuario.ClubId?.ToString() ?? "0"),
+                new Claim("FederacionId", usuario.FederacionId?.ToString() ?? "0")
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

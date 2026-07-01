@@ -22,6 +22,9 @@ namespace SportTrack_v1.Entidades.Entidades
         public int? ClubId { get; set; }
         public Club? Club { get; set; }
 
+        public int? FederacionId { get; set; }
+        public Federacion? Federacion { get; set; }
+
         public bool InscripcionesHabilitadas { get; set; } = true;
 
         // Reglas de Competencia

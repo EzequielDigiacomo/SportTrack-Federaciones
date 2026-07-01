@@ -26,22 +26,22 @@ namespace SportTrack_v1.Controladores.Evento
                 var clubActual = await _context.Clubes.FirstOrDefaultAsync(c => c.Id == clubId.Value);
                 if (clubActual != null)
                 {
-                    int federationId = clubActual.ParentClubId ?? clubActual.Id;
+                    int federationId = clubActual.FederacionId ?? clubActual.Id;
 
                     // Si el rol es uno de administración de competencias, ve toda la federación
                     var rolesAdministrativos = new[] { "Admin", "Largador", "Cronometrista", "JuezControl", "Control" };
                     if (rolesAdministrativos.Any(r => r.Equals(rol?.Trim(), StringComparison.OrdinalIgnoreCase)))
                     {
                         var clubIds = await _context.Clubes
-                            .Where(c => c.Id == federationId || c.ParentClubId == federationId)
+                            .Where(c => c.Id == federationId || c.FederacionId == federationId)
                             .Select(c => c.Id)
                             .ToListAsync();
                         
-                        query = query.Where(e => e.ClubId.HasValue && clubIds.Contains(e.ClubId.Value));
+                        query = query.Where(e => (e.ClubId.HasValue && clubIds.Contains(e.ClubId.Value)) || e.FederacionId == federationId);
                     }
                     else
                     {
-                        query = query.Where(e => e.ClubId == clubId.Value || e.ClubId == federationId);
+                        query = query.Where(e => e.ClubId == clubId.Value || e.FederacionId == federationId);
                     }
                 }
                 else
@@ -105,21 +105,21 @@ namespace SportTrack_v1.Controladores.Evento
                 var clubActual = await _context.Clubes.FirstOrDefaultAsync(c => c.Id == clubId.Value);
                 if (clubActual != null)
                 {
-                    int federationId = clubActual.ParentClubId ?? clubActual.Id;
+                    int federationId = clubActual.FederacionId ?? clubActual.Id;
 
                     var rolesAdministrativos = new[] { "Admin", "Largador", "Cronometrista", "JuezControl", "Control" };
                     if (rolesAdministrativos.Any(r => r.Equals(rol?.Trim(), StringComparison.OrdinalIgnoreCase)))
                     {
                         var clubIds = await _context.Clubes
-                            .Where(c => c.Id == federationId || c.ParentClubId == federationId)
+                            .Where(c => c.Id == federationId || c.FederacionId == federationId)
                             .Select(c => c.Id)
                             .ToListAsync();
                         
-                        query = query.Where(e => e.ClubId.HasValue && clubIds.Contains(e.ClubId.Value));
+                        query = query.Where(e => (e.ClubId.HasValue && clubIds.Contains(e.ClubId.Value)) || e.FederacionId == federationId);
                     }
                     else // Club normal
                     {
-                        query = query.Where(e => e.ClubId == clubId.Value || e.ClubId == federationId);
+                        query = query.Where(e => e.ClubId == clubId.Value || e.FederacionId == federationId);
                     }
                 }
                 else

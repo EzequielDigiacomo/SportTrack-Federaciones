@@ -31,8 +31,10 @@ namespace SportTrack_v1.Controladores.Auth
             Console.WriteLine($"--- INTENTO DE LOGIN: {cleanUsername} ---");
 
             var user = await _context.Usuarios
+                .Include(u => u.Federacion)
+                    .ThenInclude(f => f.PlanSaaS)
                 .Include(u => u.Club)
-                    .ThenInclude(c => c.ParentClub)
+                    .ThenInclude(c => c.Federacion)
                 .Include(u => u.Club)
                     .ThenInclude(c => c.PlanSaaS)
                 .FirstOrDefaultAsync(u => u.Username == cleanUsername);
@@ -86,29 +88,33 @@ namespace SportTrack_v1.Controladores.Auth
                 throw new UnauthorizedException("Tu cuenta está temporalmente deshabilitada. Contactá al administrador.");
             }
 
-            // SaaS Enforcement: Verificar si la federación madre está activa y pagos
-            if (user.Rol != "SuperAdmin" && user.Club != null)
+            // SaaS Enforcement: Verificar si la entidad está activa y pagos
+            if (user.Rol != "SuperAdmin" && (user.Club != null || user.Federacion != null))
             {
-                var federacionMadre = user.Club.ParentClub ?? user.Club;
-                if (!federacionMadre.Activo)
+                bool activo = user.Federacion?.Activo ?? user.Club?.Activo ?? true;
+                bool bloqueado = user.Federacion?.BloqueadaPorFaltaDePago ?? user.Club?.BloqueadoPorFaltaDePago ?? false;
+                DateTime? vencimiento = user.Federacion?.FechaVencimientoPlan ?? user.Club?.FechaVencimientoPlan;
+                string nombreInst = user.Federacion?.Nombre ?? user.Club?.Nombre ?? "";
+
+                if (!activo)
                 {
-                    Console.WriteLine($"FEDERACIÓN SUSPENDIDA: {federacionMadre.Nombre} para usuario {cleanUsername}");
-                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: la federación '{federacionMadre.Nombre}' está suspendida.", cleanUsername, "Auth");
-                    throw new UnauthorizedException("El acceso de tu federación ha sido suspendido temporalmente por el administrador del sistema.");
+                    Console.WriteLine($"ENTIDAD SUSPENDIDA: {nombreInst} para usuario {cleanUsername}");
+                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: '{nombreInst}' está suspendida.", cleanUsername, "Auth");
+                    throw new UnauthorizedException("El acceso de tu institución ha sido suspendido temporalmente por el administrador del sistema.");
                 }
 
-                if (federacionMadre.BloqueadoPorFaltaDePago)
+                if (bloqueado)
                 {
-                    Console.WriteLine($"FEDERACIÓN BLOQUEADA POR PAGO: {federacionMadre.Nombre} para usuario {cleanUsername}");
-                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: la federación '{federacionMadre.Nombre}' está bloqueada por falta de pago.", cleanUsername, "Auth");
-                    throw new UnauthorizedException("El acceso de tu federación se encuentra bloqueado por falta de pago. Por favor, regularice su situación.");
+                    Console.WriteLine($"ENTIDAD BLOQUEADA POR PAGO: {nombreInst} para usuario {cleanUsername}");
+                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: '{nombreInst}' está bloqueada por falta de pago.", cleanUsername, "Auth");
+                    throw new UnauthorizedException("El acceso de tu institución se encuentra bloqueado por falta de pago. Por favor, regularice su situación.");
                 }
 
-                if (federacionMadre.FechaVencimientoPlan.HasValue && federacionMadre.FechaVencimientoPlan.Value.Date < DateTime.UtcNow.Date)
+                if (vencimiento.HasValue && vencimiento.Value.Date < DateTime.UtcNow.Date)
                 {
-                    Console.WriteLine($"FEDERACIÓN VENCIDA: {federacionMadre.Nombre} para usuario {cleanUsername}");
-                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: la suscripción de '{federacionMadre.Nombre}' se encuentra vencida.", cleanUsername, "Auth");
-                    throw new UnauthorizedException("La suscripción de tu federación ha vencido. Por favor, regularice el pago para reactivar el acceso.");
+                    Console.WriteLine($"ENTIDAD VENCIDA: {nombreInst} para usuario {cleanUsername}");
+                    await _auditService.RegistrarAccionAsync("LOGIN_BLOCKED", $"Acceso bloqueado: la suscripción de '{nombreInst}' se encuentra vencida.", cleanUsername, "Auth");
+                    throw new UnauthorizedException("La suscripción de tu institución ha vencido. Por favor, regularice el pago para reactivar el acceso.");
                 }
             }
 
@@ -116,25 +122,31 @@ namespace SportTrack_v1.Controladores.Auth
 
             var response = _mapper.Map<AuthResponseDto>(user);
             
-            // Lógica de jerarquía de planes: si el club es hijo, hereda el plan de la federación madre
-            var clubConPlan = user.Club;
-            if (clubConPlan != null && clubConPlan.PlanSaaS == null && clubConPlan.ParentClubId.HasValue)
+            PlanSaaS? planSaaSAsignado = user.Federacion?.PlanSaaS ?? user.Club?.PlanSaaS;
+            
+            // Si el club no tiene plan, hereda de la federación
+            if (planSaaSAsignado == null && user.Club?.FederacionId != null)
             {
-                // Si el club no tiene plan, buscamos el de su padre (la federación)
-                var parent = await _context.Clubes
-                    .Include(c => c.PlanSaaS)
-                    .FirstOrDefaultAsync(c => c.Id == clubConPlan.ParentClubId);
-                if (parent != null) clubConPlan = parent;
+                var parentFed = await _context.Federaciones
+                    .Include(f => f.PlanSaaS)
+                    .FirstOrDefaultAsync(f => f.Id == user.Club.FederacionId);
+                planSaaSAsignado = parentFed?.PlanSaaS;
             }
 
-            if (clubConPlan?.PlanSaaS != null)
+            if (planSaaSAsignado != null)
             {
-                response.Plan = _mapper.Map<SportTrack_v1.Controladores.SaaS.Dtos.PlanSaaSDto>(clubConPlan.PlanSaaS);
+                response.Plan = _mapper.Map<SportTrack_v1.Controladores.SaaS.Dtos.PlanSaaSDto>(planSaaSAsignado);
             }
-            if (clubConPlan != null)
+            
+            // Usamos las variables unificadas si el plan existe
+            if (user.Federacion != null)
             {
-                response.FrecuenciaPago = clubConPlan.FrecuenciaPago;
-                response.FechaVencimientoPlan = clubConPlan.FechaVencimientoPlan;
+                response.FechaVencimientoPlan = user.Federacion.FechaVencimientoPlan;
+            }
+            else if (user.Club != null)
+            {
+                response.FrecuenciaPago = user.Club.FrecuenciaPago;
+                response.FechaVencimientoPlan = user.Club.FechaVencimientoPlan;
             }
             response.Token = _tokenService.CreateToken(user);
             
@@ -172,26 +184,29 @@ namespace SportTrack_v1.Controladores.Auth
         public async Task<System.Collections.Generic.IEnumerable<UsuarioDto>> GetUsuariosAsync(string? requesterUsername = null)
         {
             var query = _context.Usuarios
+                .Include(u => u.Federacion)
                 .Include(u => u.Club)
-                    .ThenInclude(c => c.ParentClub)
+                    .ThenInclude(c => c.Federacion)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(requesterUsername))
             {
                 var requester = await _context.Usuarios.FirstOrDefaultAsync(u => u.Username == requesterUsername.ToLower());
-                if (requester != null && requester.Rol == "Admin" && requester.ClubId.HasValue)
+                if (requester != null && requester.Rol == "Admin" && requester.FederacionId.HasValue)
                 {
                     // Un Admin de Federación solo ve:
-                    // 1. Usuarios de su propia Federación (su ClubId)
-                    // 2. Usuarios de sus Clubes Afiliados (Clubes cuyo ParentId sea su ClubId)
-                    var fedId = requester.ClubId.Value;
-                    query = query.Where(u => u.ClubId == fedId || (u.Club != null && u.Club.ParentClubId == fedId));
+                    // 1. Usuarios de su propia Federación
+                    // 2. Usuarios de sus Clubes Afiliados
+                    var fedId = requester.FederacionId.Value;
+                    query = query.Where(u => u.FederacionId == fedId || (u.Club != null && u.Club.FederacionId == fedId));
                 }
                 else if (requester != null && requester.Rol != "SuperAdmin" && requester.Rol != "soporte_tecnico")
                 {
-                    // Otros roles menores solo ven sus propios datos o los de su club
+                    // Otros roles menores solo ven sus propios datos o los de su club/federacion
                     if (requester.ClubId.HasValue)
                         query = query.Where(u => u.ClubId == requester.ClubId);
+                    else if (requester.FederacionId.HasValue)
+                        query = query.Where(u => u.FederacionId == requester.FederacionId);
                     else
                         query = query.Where(u => u.Id == requester.Id);
                 }
@@ -217,41 +232,41 @@ namespace SportTrack_v1.Controladores.Auth
         public async Task<UsuarioDto> GetMeAsync(string username)
         {
             var user = await _context.Usuarios
+                .Include(u => u.Federacion)
                 .Include(u => u.Club)
-                    .ThenInclude(c => c.ParentClub)
+                    .ThenInclude(c => c.Federacion)
                 .FirstOrDefaultAsync(u => u.Username == username.ToLower());
 
             if (user == null) throw new NotFoundException("Usuario no encontrado");
 
             // SaaS Enforcement en tiempo real
-            if (user.Rol != "SuperAdmin" && user.Club != null)
+            if (user.Rol != "SuperAdmin" && (user.Club != null || user.Federacion != null))
             {
-                var federacionMadre = user.Club.ParentClub ?? user.Club;
-                if (!federacionMadre.Activo)
+                bool activo = user.Federacion?.Activo ?? user.Club?.Activo ?? true;
+                bool bloqueado = user.Federacion?.BloqueadaPorFaltaDePago ?? user.Club?.BloqueadoPorFaltaDePago ?? false;
+                DateTime? vencimiento = user.Federacion?.FechaVencimientoPlan ?? user.Club?.FechaVencimientoPlan;
+
+                if (!activo)
                 {
-                    throw new UnauthorizedException("El acceso de tu federación ha sido suspendido.");
+                    throw new UnauthorizedException("El acceso de tu institución ha sido suspendido.");
                 }
 
-                if (federacionMadre.BloqueadoPorFaltaDePago || (federacionMadre.FechaVencimientoPlan.HasValue && federacionMadre.FechaVencimientoPlan.Value.Date < DateTime.UtcNow.Date))
+                if (bloqueado || (vencimiento.HasValue && vencimiento.Value.Date < DateTime.UtcNow.Date))
                 {
-                    throw new UnauthorizedException("La suscripción de tu federación ha vencido o está bloqueada por falta de pago.");
+                    throw new UnauthorizedException("La suscripción de tu institución ha vencido o está bloqueada por falta de pago.");
                 }
             }
 
             var response = _mapper.Map<UsuarioDto>(user);
 
-            var clubConPlan = user.Club;
-            if (clubConPlan != null && clubConPlan.ParentClubId.HasValue)
+            if (user.Federacion != null)
             {
-                var parent = await _context.Clubes
-                    .FirstOrDefaultAsync(c => c.Id == clubConPlan.ParentClubId);
-                if (parent != null) clubConPlan = parent;
+                response.FechaVencimientoPlan = user.Federacion.FechaVencimientoPlan;
             }
-
-            if (clubConPlan != null)
+            else if (user.Club != null)
             {
-                response.FrecuenciaPago = clubConPlan.FrecuenciaPago;
-                response.FechaVencimientoPlan = clubConPlan.FechaVencimientoPlan;
+                response.FrecuenciaPago = user.Club.FrecuenciaPago;
+                response.FechaVencimientoPlan = user.Club.FechaVencimientoPlan;
             }
 
             return response;

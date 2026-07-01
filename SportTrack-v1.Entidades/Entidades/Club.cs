@@ -14,11 +14,9 @@ namespace SportTrack_v1.Entidades.Entidades
         public string? Ubicacion { get; set; }
         public bool Activo { get; set; } = true;
         
-        // Jerarquía SaaS: Un club puede ser una Federación (Parent == null) 
-        // o un Club Afiliado (Parent != null)
-        public int? ParentClubId { get; set; }
-        public Club? ParentClub { get; set; }
-        public ICollection<Club> Afiliados { get; set; } = new List<Club>();
+        // Relación con la Federación a la que pertenece
+        public int? FederacionId { get; set; }
+        public Federacion? Federacion { get; set; }
         
         // SaaS Plan
         public int? PlanSaaSId { get; set; }

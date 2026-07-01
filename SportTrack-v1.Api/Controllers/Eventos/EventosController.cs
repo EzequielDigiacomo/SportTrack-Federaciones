@@ -39,6 +39,9 @@ namespace SportTrack_v1.Api.Controllers.Eventos
             
             string role = string.Empty;
 
+            int? targetId = clubId; // Variable unificada que puede ser club o federación
+            bool isFederacion = false;
+
             if (!string.IsNullOrEmpty(username))
             {
                 try
@@ -46,27 +49,39 @@ namespace SportTrack_v1.Api.Controllers.Eventos
                     var userDb = await _authService.GetMeAsync(username);
                     role = userDb.Rol;
                     
-                    if (role != "SuperAdmin" || !clubId.HasValue)
+                    if (role != "SuperAdmin" || !targetId.HasValue)
                     {
-                        clubId = userDb.ClubId ?? clubId;
+                        if (userDb.FederacionId.HasValue) {
+                            targetId = userDb.FederacionId;
+                            isFederacion = true;
+                        } else {
+                            targetId = userDb.ClubId ?? targetId;
+                        }
                     }
                 }
                 catch
                 {
-                    // Fallback to token
                     role = User.FindFirst(ClaimTypes.Role)?.Value 
                            ?? User.FindFirst("role")?.Value 
                            ?? User.FindFirst("Rol")?.Value ?? "";
                     
-                    if (role != "SuperAdmin" || !clubId.HasValue)
+                    if (role != "SuperAdmin" || !targetId.HasValue)
                     {
-                        var clubIdClaim = User.FindFirst("ClubId")?.Value;
-                        if (int.TryParse(clubIdClaim, out int id)) clubId = id;
+                        var fedIdClaim = User.FindFirst("FederacionId")?.Value;
+                        if (int.TryParse(fedIdClaim, out int fid) && fid > 0) {
+                            targetId = fid;
+                            isFederacion = true;
+                        } else {
+                            var clubIdClaim = User.FindFirst("ClubId")?.Value;
+                            if (int.TryParse(clubIdClaim, out int cid)) targetId = cid;
+                        }
                     }
                 }
             }
 
-            var result = await _eventoService.GetAllEventosAsync(clubId, role);
+            // Nota: Se podría actualizar el IEventoService para aceptar separadamente clubId y federacionId.
+            // Por retrocompatibilidad pasamos targetId como "clubId" (para que no se rompan las interfaces).
+            var result = await _eventoService.GetAllEventosAsync(targetId, role);
             return Ok(result);
         }
 
@@ -118,7 +133,11 @@ namespace SportTrack_v1.Api.Controllers.Eventos
                         
                         if (role != "SuperAdmin" || !clubId.HasValue)
                         {
-                            clubId = userDb.ClubId ?? clubId;
+                            if (userDb.FederacionId.HasValue) {
+                                clubId = userDb.FederacionId;
+                            } else {
+                                clubId = userDb.ClubId ?? clubId;
+                            }
                         }
                     }
                     catch
@@ -127,11 +146,15 @@ namespace SportTrack_v1.Api.Controllers.Eventos
                                ?? User.FindFirst("role")?.Value 
                                ?? User.FindFirst("Rol")?.Value;
                         
-                        // Si no es SuperAdmin o no hay override, usamos el del Token
                         if (role != "SuperAdmin" || !clubId.HasValue)
                         {
-                            var clubIdClaim = User.FindFirst("ClubId")?.Value;
-                            if (int.TryParse(clubIdClaim, out int id)) clubId = id;
+                            var fedIdClaim = User.FindFirst("FederacionId")?.Value;
+                            if (int.TryParse(fedIdClaim, out int fid) && fid > 0) {
+                                clubId = fid;
+                            } else {
+                                var clubIdClaim = User.FindFirst("ClubId")?.Value;
+                                if (int.TryParse(clubIdClaim, out int cid)) clubId = cid;
+                            }
                         }
                     }
                 }

@@ -19,5 +19,6 @@ namespace SportTrack_v1.Entidades.Entidades
 
         // Navegación
         public ICollection<Club> Clubes { get; set; } = new List<Club>();
+        public ICollection<Federacion> Federaciones { get; set; } = new List<Federacion>();
     }
 }

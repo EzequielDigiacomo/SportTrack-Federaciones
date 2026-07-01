@@ -19,7 +19,7 @@ namespace SportTrack_v1.Controladores.Mappings
             // Mapeos de Club
             CreateMap<Entidades.Entidades.Club, ClubDto>()
                 .ForMember(dest => dest.CantidadAtletas, opt => opt.MapFrom(src => src.Participantes != null ? src.Participantes.Count : 0))
-                .ForMember(dest => dest.ParentClubNombre, opt => opt.MapFrom(src => src.ParentClub != null ? src.ParentClub.Nombre : null))
+                .ForMember(dest => dest.FederacionNombre, opt => opt.MapFrom(src => src.Federacion != null ? src.Federacion.Nombre : null))
                 .ForMember(dest => dest.PlanNombre, opt => opt.MapFrom(src => src.PlanSaaS != null ? src.PlanSaaS.Nombre : null))
                 .ReverseMap();
             CreateMap<ClubCreateDto, Entidades.Entidades.Club>();

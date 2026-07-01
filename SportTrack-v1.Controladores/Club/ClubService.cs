@@ -61,39 +61,36 @@ namespace SportTrack_v1.Controladores.Club
             _mapper.Map(clubDto, existing);
             var result = await _clubRepository.UpdateAsync(existing);
 
-            // Registrar auditoría si es una federación raíz (ParentClubId == null)
-            if (existing.ParentClubId == null)
+            // Registrar auditoría
+            if (existing.FechaVencimientoPlan != oldVencimiento && existing.FechaVencimientoPlan > oldVencimiento)
             {
-                if (existing.FechaVencimientoPlan != oldVencimiento && existing.FechaVencimientoPlan > oldVencimiento)
-                {
-                    string freq = existing.FrecuenciaPago ?? "Mensual";
-                    string vencimientoStr = existing.FechaVencimientoPlan.HasValue ? existing.FechaVencimientoPlan.Value.ToShortDateString() : "Sin fecha";
-                    await _auditService.RegistrarAccionAsync(
-                        "RENEW_PLAN", 
-                        $"Plan de federación '{existing.Nombre}' renovado ({freq}). Nuevo vencimiento: {vencimientoStr}.", 
-                        modulo: "SaaS"
-                    );
-                }
-                
-                if (existing.BloqueadoPorFaltaDePago != oldBloqueado)
-                {
-                    string accion = existing.BloqueadoPorFaltaDePago ? "BLOCK_FEDERATION" : "UNBLOCK_FEDERATION";
-                    string detalle = existing.BloqueadoPorFaltaDePago 
-                        ? $"Federación '{existing.Nombre}' bloqueada por falta de pago." 
-                        : $"Federación '{existing.Nombre}' desbloqueada por pago al día.";
-                    await _auditService.RegistrarAccionAsync(accion, detalle, modulo: "SaaS");
-                }
-                
-                if (existing.Activo != oldActivo)
-                {
-                    string status = existing.Activo ? "habilitado" : "suspendido";
-                    string accion = existing.Activo ? "ACTIVATE_FEDERATION" : "SUSPEND_FEDERATION";
-                    await _auditService.RegistrarAccionAsync(
-                        accion, 
-                        $"Acceso a la federación '{existing.Nombre}' {status} manualmente.", 
-                        modulo: "SaaS"
-                    );
-                }
+                string freq = existing.FrecuenciaPago ?? "Mensual";
+                string vencimientoStr = existing.FechaVencimientoPlan.HasValue ? existing.FechaVencimientoPlan.Value.ToShortDateString() : "Sin fecha";
+                await _auditService.RegistrarAccionAsync(
+                    "RENEW_PLAN", 
+                    $"Plan de club '{existing.Nombre}' renovado ({freq}). Nuevo vencimiento: {vencimientoStr}.", 
+                    modulo: "SaaS"
+                );
+            }
+            
+            if (existing.BloqueadoPorFaltaDePago != oldBloqueado)
+            {
+                string accion = existing.BloqueadoPorFaltaDePago ? "BLOCK_CLUB" : "UNBLOCK_CLUB";
+                string detalle = existing.BloqueadoPorFaltaDePago 
+                    ? $"Club '{existing.Nombre}' bloqueado por falta de pago." 
+                    : $"Club '{existing.Nombre}' desbloqueado por pago al día.";
+                await _auditService.RegistrarAccionAsync(accion, detalle, modulo: "SaaS");
+            }
+            
+            if (existing.Activo != oldActivo)
+            {
+                string status = existing.Activo ? "habilitado" : "suspendido";
+                string accion = existing.Activo ? "ACTIVATE_CLUB" : "SUSPEND_CLUB";
+                await _auditService.RegistrarAccionAsync(
+                    accion, 
+                    $"Acceso al club '{existing.Nombre}' {status} manualmente.", 
+                    modulo: "SaaS"
+                );
             }
 
             return _mapper.Map<ClubDto>(result);

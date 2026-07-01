@@ -32,11 +32,12 @@ namespace SportTrack_v1.Api.Controllers.Clubes
             if (role == "SuperAdmin")
                 return Ok(result);
 
-            // Si es Admin, solo ve los clubes de su federación (ParentClubId == su ClubId)
-            // También incluimos su propio club raíz
-            if (role == "Admin" && int.TryParse(clubIdClaim, out int fedId))
+            // Si es Admin, solo ve los clubes de su federación (FederacionId == su FederacionId)
+            // Ojo, en el nuevo modelo el rol Admin (federación) tiene su propio FederacionId en el claim
+            var fedIdClaim = User.FindFirst("FederacionId")?.Value;
+            if (role == "Admin" && int.TryParse(fedIdClaim, out int fedId))
             {
-                var filtered = result.Where(c => c.ParentClubId == fedId || c.Id == fedId);
+                var filtered = result.Where(c => c.FederacionId == fedId);
                 return Ok(filtered);
             }
 
@@ -57,10 +58,10 @@ namespace SportTrack_v1.Api.Controllers.Clubes
             var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                var clubIdClaim = User.FindFirst("ClubId")?.Value;
-                if (int.TryParse(clubIdClaim, out int fedId) && fedId > 0)
+                var fedIdClaim = User.FindFirst("FederacionId")?.Value;
+                if (int.TryParse(fedIdClaim, out int fedId) && fedId > 0)
                 {
-                    clubDto.ParentClubId = fedId;
+                    clubDto.FederacionId = fedId;
                 }
             }
             var result = await _clubService.CreateClubAsync(clubDto);

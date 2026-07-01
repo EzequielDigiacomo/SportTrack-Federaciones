@@ -71,7 +71,15 @@ namespace SportTrack.AccessDatos
             // CONFIGURACIÓN DE TABLAS MAESTRAS
             // ============================================
 
-            modelBuilder.Entity<Federacion>(entity => { entity.ToTable("Federaciones", "federacion"); });
+            modelBuilder.Entity<Federacion>(entity => { 
+                entity.ToTable("Federaciones", "federacion"); 
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(e => e.PlanSaaS)
+                    .WithMany(p => p.Federaciones)
+                    .HasForeignKey(e => e.PlanSaaSId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
             modelBuilder.Entity<DelegadoClub>(entity => { entity.ToTable("DelegadosClub", "federacion"); });
             modelBuilder.Entity<Entrenador>(entity => { entity.ToTable("Entrenadores", "federacion"); });
             modelBuilder.Entity<Tutor>(entity => { entity.ToTable("Tutores", "federacion"); });
@@ -186,10 +194,9 @@ namespace SportTrack.AccessDatos
                     .HasForeignKey(e => e.PlanSaaSId)
                     .OnDelete(DeleteBehavior.SetNull);
 
-                // Configuración de Jerarquía SaaS
-                entity.HasOne(e => e.ParentClub)
-                    .WithMany(e => e.Afiliados)
-                    .HasForeignKey(e => e.ParentClubId)
+                entity.HasOne(e => e.Federacion)
+                    .WithMany(f => f.Clubes)
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -215,6 +222,11 @@ namespace SportTrack.AccessDatos
                 entity.HasOne(e => e.Club)
                     .WithMany(c => c.Usuarios)
                     .HasForeignKey(e => e.ClubId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.Federacion)
+                    .WithMany(f => f.Usuarios)
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasIndex(e => e.Username).IsUnique();
@@ -271,6 +283,11 @@ namespace SportTrack.AccessDatos
                 entity.HasOne(e => e.Club)
                     .WithMany()
                     .HasForeignKey(e => e.ClubId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.Federacion)
+                    .WithMany()
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
 

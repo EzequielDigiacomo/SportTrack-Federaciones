@@ -74,9 +74,9 @@ namespace SportTrack_v1.Controladores.Participante
 
         public async Task<IEnumerable<Entidades.Entidades.Participante>> GetByFederationIdAsync(int federationId)
         {
-            // Obtener IDs de todos los clubes que tienen a esta federación como padre + el ID de la propia federación
+            // Obtener IDs de todos los clubes que pertenecen a esta federación
             var clubIds = await _context.Clubes
-                .Where(c => c.Id == federationId || c.ParentClubId == federationId)
+                .Where(c => c.FederacionId == federationId)
                 .Select(c => c.Id)
                 .ToListAsync();
 

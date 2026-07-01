@@ -10,7 +10,10 @@ namespace SportTrack_v1.Entidades.Entidades
     public class Federacion
     {
         [Key]
-        public int IdFederacion { get; set; }
+        public int Id { get; set; }
+        
+        public string? Sigla { get; set; }
+        public bool Activo { get; set; } = true;
 
         [Required, MaxLength(100)]
         public string Nombre { get; set; } = string.Empty;
@@ -43,5 +46,15 @@ namespace SportTrack_v1.Entidades.Entidades
         public string EmailCobro { get; set; } = string.Empty;
 
         public virtual ICollection<DelegadoClub> DelegadosClub { get; set; } = new List<DelegadoClub>();
+        public virtual ICollection<Club> Clubes { get; set; } = new List<Club>();
+        public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+
+        // SaaS Plan
+        public int? PlanSaaSId { get; set; }
+        public PlanSaaS? PlanSaaS { get; set; }
+
+        public DateTime? FechaAltaPlan { get; set; }
+        public DateTime? FechaVencimientoPlan { get; set; }
+        public bool BloqueadaPorFaltaDePago { get; set; } = false;
     }
 }
