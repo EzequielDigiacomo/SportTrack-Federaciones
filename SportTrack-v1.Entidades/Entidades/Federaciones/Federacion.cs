@@ -48,6 +48,9 @@ namespace SportTrack_v1.Entidades.Entidades
         public virtual ICollection<DelegadoClub> DelegadosClub { get; set; } = new List<DelegadoClub>();
         public virtual ICollection<Club> Clubes { get; set; } = new List<Club>();
         public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+        public virtual ICollection<Evento> Eventos { get; set; } = new List<Evento>();
+        public virtual ICollection<AtletaFederado> AtletasFederados { get; set; } = new List<AtletaFederado>();
+        public virtual ICollection<Entrenador> Entrenadores { get; set; } = new List<Entrenador>();
 
         // SaaS Plan
         public int? PlanSaaSId { get; set; }

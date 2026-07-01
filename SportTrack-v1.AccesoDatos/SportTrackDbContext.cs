@@ -80,10 +80,28 @@ namespace SportTrack.AccessDatos
                     .HasForeignKey(e => e.PlanSaaSId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
-            modelBuilder.Entity<DelegadoClub>(entity => { entity.ToTable("DelegadosClub", "federacion"); });
-            modelBuilder.Entity<Entrenador>(entity => { entity.ToTable("Entrenadores", "federacion"); });
+            modelBuilder.Entity<DelegadoClub>(entity => {
+                entity.ToTable("DelegadosClub", "federacion");
+                entity.HasOne(e => e.Federacion)
+                    .WithMany(f => f.DelegadosClub)
+                    .HasForeignKey(e => e.IdFederacion)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+            modelBuilder.Entity<Entrenador>(entity => {
+                entity.ToTable("Entrenadores", "federacion");
+                entity.HasOne(e => e.Federacion)
+                    .WithMany(f => f.Entrenadores)
+                    .HasForeignKey(e => e.IdFederacion)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
             modelBuilder.Entity<Tutor>(entity => { entity.ToTable("Tutores", "federacion"); });
-            modelBuilder.Entity<AtletaFederado>(entity => { entity.ToTable("AtletasFederados", "federacion"); });
+            modelBuilder.Entity<AtletaFederado>(entity => {
+                entity.ToTable("AtletasFederados", "federacion");
+                entity.HasOne(e => e.Federacion)
+                    .WithMany(f => f.AtletasFederados)
+                    .HasForeignKey(e => e.IdFederacion)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
             modelBuilder.Entity<AtletaTutor>(entity => { 
                 entity.ToTable("AtletasTutores", "federacion"); 
                 entity.HasKey(at => new { at.IdAtleta, at.IdTutor });
@@ -286,7 +304,7 @@ namespace SportTrack.AccessDatos
                     .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(e => e.Federacion)
-                    .WithMany()
+                    .WithMany(f => f.Eventos)
                     .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
             });

@@ -24,8 +24,8 @@
     <ProjectReference Include="..\SportTrack-v1.Entidades\SportTrack-v1.Entidades.csproj" />
   </ItemGroup>
 
-
   <ItemGroup>
     <Compile Remove="Federaciones\**" />
   </ItemGroup>
+
 </Project>
