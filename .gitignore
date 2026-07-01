@@ -366,4 +366,7 @@ FodyWeavers.xsd
 auditoria/
 
 # Scratch development scripts
-scratch/
+scratch/
+
+# DB Credentials (Render)
+render_db_credentials.md
