@@ -24,9 +24,9 @@ namespace SportTrack_v1.Api.Services
         {
             var claims = new List<Claim>
             {
-                new Claim("nameid", usuario.Username),
-                new Claim("name", usuario.Username),
-                new Claim("role", usuario.Rol),
+                new Claim(ClaimTypes.NameIdentifier, usuario.Username),
+                new Claim(ClaimTypes.Name, usuario.Username),
+                new Claim(ClaimTypes.Role, usuario.Rol),
                 new Claim("ClubId", usuario.ClubId?.ToString() ?? "0"),
                 new Claim("FederacionId", usuario.FederacionId?.ToString() ?? "0")
             };
