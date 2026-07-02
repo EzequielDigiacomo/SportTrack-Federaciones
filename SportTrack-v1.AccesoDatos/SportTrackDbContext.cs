@@ -74,7 +74,6 @@ namespace SportTrack.AccessDatos
             modelBuilder.Entity<Federacion>(entity => { 
                 entity.ToTable("Federaciones", "federacion"); 
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).HasColumnName("IdFederacion");
                 
                 entity.HasOne(e => e.PlanSaaS)
                     .WithMany(p => p.Federaciones)
@@ -85,14 +84,14 @@ namespace SportTrack.AccessDatos
                 entity.ToTable("DelegadosClub", "federacion");
                 entity.HasOne(e => e.Federacion)
                     .WithMany(f => f.DelegadosClub)
-                    .HasForeignKey(e => e.IdFederacion)
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
             modelBuilder.Entity<Entrenador>(entity => {
                 entity.ToTable("Entrenadores", "federacion");
                 entity.HasOne(e => e.Federacion)
                     .WithMany(f => f.Entrenadores)
-                    .HasForeignKey(e => e.IdFederacion)
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
             modelBuilder.Entity<Tutor>(entity => { entity.ToTable("Tutores", "federacion"); });
@@ -100,7 +99,7 @@ namespace SportTrack.AccessDatos
                 entity.ToTable("AtletasFederados", "federacion");
                 entity.HasOne(e => e.Federacion)
                     .WithMany(f => f.AtletasFederados)
-                    .HasForeignKey(e => e.IdFederacion)
+                    .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
             modelBuilder.Entity<AtletaTutor>(entity => { 
@@ -217,6 +216,7 @@ namespace SportTrack.AccessDatos
                     .WithMany(f => f.Clubes)
                     .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.Restrict);
+
             });
 
             // Tabla: PlanSaaS
@@ -308,6 +308,7 @@ namespace SportTrack.AccessDatos
                     .WithMany(f => f.Eventos)
                     .HasForeignKey(e => e.FederacionId)
                     .OnDelete(DeleteBehavior.SetNull);
+
             });
 
             // Tabla: Prueba
