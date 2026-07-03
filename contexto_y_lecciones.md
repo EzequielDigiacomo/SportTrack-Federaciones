@@ -130,6 +130,19 @@ El backend expone dos hubs funcionales:
 * **Redirección desde Notificaciones**: Las alertas recibidas en el Centro de Notificaciones (`NotificationCenter.jsx`) deben soportar diferentes acciones basadas en su contexto. Al hacer clic en un aviso de pago de un club, el administrador debe ser redirigido directamente al módulo de `/super/pagos` para facilitar una acción resolutiva inmediata.
 * **Ciclo de Vida de Conexión y Dependencias en React (useEffect)**: Al sincronizar hubs de SignalR, la función de limpieza (cleanup) del `useEffect` suele desconectar el servicio (`timingSignalRService.disconnect()`). Para prevenir micro-desconexiones y errores de invocación cancelada al actualizar estados de la fase local (por ejemplo, cambiar estado a DNS/DNF/DSQ), la dependencia del `useEffect` debe basarse en propiedades primitivas estables como `selectedFase?.id` y `selectedEvento?.id` en lugar de la referencia del objeto fase completo.
 
+### 🟢 Compatibilidad de Claims y JWT en .NET 8
+* **Error de Autorización**: La serialización de roles y arrays en los tokens JWT presentaba fallos al intentar autorizar roles como `SuperAdmin` bajo .NET 8, provocando problemas en las autorizaciones a controladores.
+* **Lección Aprendida**: Se corrigió el backend para usar nombres cortos y nativos (`JwtRegisteredClaimNames` y `ClaimTypes.Role`) e iterar la asignación de claims en el token JWT. Esto permite la compatibilidad correcta del rol `SuperAdmin` con `[Authorize(Roles = "SuperAdmin")]` nativo.
+
+### 🟢 Arquitectura Multi-Tenant (Tabla Federaciones)
+* **Reorganización Estructural**: Se integró correctamente la entidad `Federaciones` estableciendo a los clubes como entes hijos.
+* **Lección Aprendida**: Actualizar el DbContext (`IdFederacion` nuleable por SetNull) y los DTOs para prevenir que el mapeo de AutoMapper se rompa al crear migraciones iniciales o unificar repositorios.
+
+### 🟢 Traducción Transparente de Endpoints (SIGDEF <-> SportTrack)
+* **Incompatibilidad de Endpoints**: El frontend de SIGDEF llamaba a `/api/Club` (singular) y DTOs con `siglas` y `idClub`. El backend unificado de SportTrack expone `/api/Clubes` (plural) y DTOs con `sigla` y `id`.
+* **Solución HTTP Client**: En lugar de modificar los 20+ archivos del front que consumen la API de clubes, se programó un interceptor centralizado en `api.js` que traduce dinámicamente `/Club` -> `/Clubes` y normaliza las propiedades del DTO devuelto por la API inyectando `idClub` y `siglas`. Esto restauró la compatibilidad inmediata sin riesgo de regresiones.
+* **Asociación de Entidades**: Al realizar operaciones contextuales como SuperAdmin (ej. crear club dentro de federación), se debe pasar explícitamente `federacionId` en el payload, ya que el backend no puede extraer el id de federación desde el token JWT del SuperAdmin global (a diferencia de un administrador local de federación).
+
 ---
 
 ## 📝 6. Bitácora de Desarrollo e Historial de Cambios
@@ -147,6 +160,8 @@ El backend expone dos hubs funcionales:
 | **2026-05-22** | Correcciones sintácticas y de compilación. | ✅ Completado | Reparado tag de cierre JSX roto en `GestionPagosSection.jsx` y atributo `disabled` duplicado en `InscripcionAtletaModal.jsx`. |
 | **2026-05-24** | Módulo de Resultados y Pagos para Clubes con alertas SignalR y persistencia DB | ✅ Completado | Filtrado de eventos, pruebas ordenadas por cronograma, vista Live de resultados y solicitud de pago persistente en base de datos (con migración EF Core a PostgreSQL) y alerta WebSocket en tiempo real al administrador. |
 | **2026-06-19** | Solución a desconexión SignalR, Restablecer Lista de Largada y Validación de Llegada Conectada | ✅ Completado | Se corrigió la dependencia de useEffect para evitar desconexiones al actualizar estados; se añadió el botón "Restablecer Lista" con actualización concurrente y alertas SignalR en tiempo real; y se bloquea la largada si la mesa de llegada está desconectada, mostrando aviso de advertencia visual ámbar en el botón. |
+| **2026-07-01** | Integración del Módulo SaaS, Tabla Federaciones y Fix Autenticación .NET 8 | ✅ Completado | Se solucionaron bugs críticos con claims de arreglos para JWT en `.NET 8`, se incorporó la entidad `Federaciones`, se configuraron los `SaasControllers` y se unificaron componentes en el cliente (Dashboard conectado al backend de producción). |
+| **2026-07-02** | Reducción de Formularios y Corrección de Endpoints de Clubes (SIGDEF) | ✅ Completado | Se limitó el ancho máximo de formularios a 700px-800px. Se solucionó el 404 al crear/editar clubes interceptando peticiones de `/Club` a `/Clubes` en `api.js` y normalizando DTOs con inyección de `federacionId`. |
 
 ---
 

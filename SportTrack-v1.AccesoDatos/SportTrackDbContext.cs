@@ -820,9 +820,15 @@ namespace SportTrack.AccessDatos
 
             // Planes SaaS
             modelBuilder.Entity<PlanSaaS>().HasData(
-                new PlanSaaS { Id = 1, Nombre = "Bronce", Precio = 0, MaxAtletas = 1000, MaxTorneosActivos = 5, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
-                new PlanSaaS { Id = 2, Nombre = "Plata", Precio = 99, MaxAtletas = 4000, MaxTorneosActivos = 20, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
-                new PlanSaaS { Id = 3, Nombre = "Oro", Precio = 250, MaxAtletas = -1, MaxTorneosActivos = -1, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true }
+                new PlanSaaS { Id = 1, Nombre = "SIGDEF (S)", Precio = 50, MaxAtletas = 500, MaxTorneosActivos = 5, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
+                new PlanSaaS { Id = 2, Nombre = "SIGDEF (M)", Precio = 120, MaxAtletas = 2000, MaxTorneosActivos = 20, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
+                new PlanSaaS { Id = 3, Nombre = "SIGDEF (L)", Precio = 250, MaxAtletas = -1, MaxTorneosActivos = -1, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true },
+                new PlanSaaS { Id = 4, Nombre = "SportTrack (S)", Precio = 40, MaxAtletas = 500, MaxTorneosActivos = 5, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
+                new PlanSaaS { Id = 5, Nombre = "SportTrack (M)", Precio = 90, MaxAtletas = 2000, MaxTorneosActivos = 20, ResultadosTiempoReal = false, ExportacionExcel = false, SoportePrioritario = false },
+                new PlanSaaS { Id = 6, Nombre = "SportTrack (L)", Precio = 190, MaxAtletas = -1, MaxTorneosActivos = -1, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true },
+                new PlanSaaS { Id = 7, Nombre = "Pack Dúo (S)", Precio = 75, MaxAtletas = 500, MaxTorneosActivos = 5, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true },
+                new PlanSaaS { Id = 8, Nombre = "Pack Dúo (M)", Precio = 170, MaxAtletas = 2000, MaxTorneosActivos = 20, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true },
+                new PlanSaaS { Id = 9, Nombre = "Pack Dúo (L)", Precio = 350, MaxAtletas = -1, MaxTorneosActivos = -1, ResultadosTiempoReal = true, ExportacionExcel = true, SoportePrioritario = true }
             );
 
             // Usuario inicial administrador

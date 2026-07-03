@@ -178,7 +178,9 @@ namespace SportTrack_v1.Controladores.SaaS
                     Telefono = dto.Telefono,
                     Direccion = dto.Direccion,
                     Activo = true,
-                    PlanSaaSId = 1
+                    PlanSaaSId = 1,
+                    FechaAltaPlan = DateTime.UtcNow.Date,
+                    FechaVencimientoPlan = DateTime.UtcNow.Date.AddMonths(1)
                 };
                 
                 _context.Federaciones.Add(fed);
