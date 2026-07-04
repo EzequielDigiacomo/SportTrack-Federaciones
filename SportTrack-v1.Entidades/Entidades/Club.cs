@@ -5,9 +5,9 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class Club
     {
-        public int Id { get; set; }
+        public int IdClub { get; set; }
         public string Nombre { get; set; } = string.Empty;
-        public string? Sigla { get; set; }
+        public string? Siglas { get; set; }
         public string? Email { get; set; }
         public string? Telefono { get; set; }
         public string? Direccion { get; set; }
@@ -15,7 +15,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public bool Activo { get; set; } = true;
         
         // Relación con la Federación a la que pertenece
-        public int? FederacionId { get; set; }
+        public int? IdFederacion { get; set; }
         public Federacion? Federacion { get; set; }
         
         // SaaS Plan

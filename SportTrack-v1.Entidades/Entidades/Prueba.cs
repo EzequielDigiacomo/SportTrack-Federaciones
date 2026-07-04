@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +8,12 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class Prueba
     {
-        public int Id { get; set; }
+        public int IdPrueba { get; set; }
         public string Nombre { get; set; } = string.Empty;
-        public int BoteId { get; set; }
-        public int CategoriaId { get; set; }
+        public int TipoBote { get; set; }
+        public int CategoriaEdad { get; set; }
         public int DistanciaId { get; set; }
-        public int SexoId { get; set; }
+        public int SexoCompetencia { get; set; }
         public string? Descripcion { get; set; }
 
         // Navigation properties

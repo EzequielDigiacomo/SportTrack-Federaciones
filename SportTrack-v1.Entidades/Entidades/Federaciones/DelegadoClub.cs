@@ -22,7 +22,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public virtual Rol Rol { get; set; } = null!;
 
         [ForeignKey(nameof(Federacion))]
-        public int? FederacionId { get; set; }
+        public int? IdFederacion { get; set; }
         public virtual Federacion Federacion { get; set; } = null!;
 
         [ForeignKey(nameof(Club))]

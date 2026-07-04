@@ -9,9 +9,9 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class EventoPrueba
     {
-        public int Id { get; set; }
-        public int EventoId { get; set; }
-        public int PruebaId { get; set; }
+        public int IdEventoPrueba { get; set; }
+        public int IdEvento { get; set; }
+        public int IdPrueba { get; set; }
         public DateTime FechaHora { get; set; }
         public int MaxParticipantes { get; set; } = 0;
         public string? Pista { get; set; }

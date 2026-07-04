@@ -10,7 +10,7 @@ namespace SportTrack_v1.Entidades.Entidades
     public class Federacion
     {
         [Key]
-        public int Id { get; set; }
+        public int IdFederacion { get; set; }
         
         public string? Sigla { get; set; }
         public bool Activo { get; set; } = true;

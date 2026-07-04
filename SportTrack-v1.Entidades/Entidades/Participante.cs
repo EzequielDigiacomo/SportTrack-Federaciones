@@ -8,16 +8,16 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class Participante
     {
-        public int Id { get; set; }
+        public int ParticipanteId { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Apellido { get; set; } = string.Empty;
         public DateTime FechaNacimiento { get; set; }
         public int SexoId { get; set; }
         public int? CategoriaId { get; set; }
         public string? Pais { get; set; }
-        public int? ClubId { get; set; }
+        public int? IdClub { get; set; }
         public Club? Club { get; set; }
-        public string? Dni { get; set; }
+        public string? Documento { get; set; }
         public string? Email { get; set; }
         public string? Telefono { get; set; }
         public string? Direccion { get; set; }

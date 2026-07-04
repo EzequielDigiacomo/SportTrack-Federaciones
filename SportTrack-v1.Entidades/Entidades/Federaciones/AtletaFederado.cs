@@ -13,9 +13,9 @@ namespace SportTrack_v1.Entidades.Entidades
     public class AtletaFederado
     {
         [Key]
-        public int IdParticipante { get; set; }
+        public int ParticipanteId { get; set; }
 
-        [ForeignKey(nameof(IdParticipante))]
+        [ForeignKey(nameof(ParticipanteId))]
         public virtual Participante Participante { get; set; } = null!;
 
         [ForeignKey("Club")]
@@ -23,8 +23,8 @@ namespace SportTrack_v1.Entidades.Entidades
         [JsonIgnore]
         public virtual Club? Club { get; set; } = null!;
 
-        public int? FederacionId { get; set; }
-        [ForeignKey(nameof(FederacionId))]
+        public int? IdFederacion { get; set; }
+        [ForeignKey(nameof(IdFederacion))]
         public virtual Federacion? Federacion { get; set; }
 
         public EstadoPago EstadoPago { get; set; }

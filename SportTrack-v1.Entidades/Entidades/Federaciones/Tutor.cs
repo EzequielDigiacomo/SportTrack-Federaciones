@@ -12,7 +12,7 @@ namespace SportTrack_v1.Entidades.Entidades
     {
         [Key]
         [ForeignKey(nameof(Participante))]
-        public int IdParticipante { get; set; }
+        public int ParticipanteId { get; set; }
 
         public virtual Participante Participante { get; set; } = null!;
 

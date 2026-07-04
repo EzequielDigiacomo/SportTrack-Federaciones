@@ -9,9 +9,9 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class Inscripcion
     {
-        public int Id { get; set; }
-        public int EventoPruebaId { get; set; }
-        public int? ParticipanteId { get; set; }
+        public int IdInscripcion { get; set; }
+        public int IdEventoPrueba { get; set; }
+        public int? IdParticipante { get; set; }
         public DateTime FechaInscripcion { get; set; } = DateTime.UtcNow;
         public string NumeroCompetidor { get; set; } = string.Empty;
         public bool EsCabezaDeSerie { get; set; } = false;

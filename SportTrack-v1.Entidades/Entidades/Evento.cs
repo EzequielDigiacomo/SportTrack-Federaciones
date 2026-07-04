@@ -9,7 +9,7 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class Evento
     {
-        public int Id { get; set; }
+        public int IdEvento { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public DateTime Fecha { get; set; }
         public DateTime? FechaFin { get; set; }
@@ -19,10 +19,10 @@ namespace SportTrack_v1.Entidades.Entidades
         public DateTime? FechaFinInscripciones { get; set; }
         
         // Propiedad de pertenencia
-        public int? ClubId { get; set; }
+        public int? IdClub { get; set; }
         public Club? Club { get; set; }
 
-        public int? FederacionId { get; set; }
+        public int? IdFederacion { get; set; }
         public Federacion? Federacion { get; set; }
 
         public bool InscripcionesHabilitadas { get; set; } = true;
