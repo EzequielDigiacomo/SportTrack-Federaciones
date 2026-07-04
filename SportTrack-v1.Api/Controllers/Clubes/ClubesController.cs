@@ -13,10 +13,12 @@ namespace SportTrack_v1.Api.Controllers.Clubes
     public class ClubesController : ControllerBase
     {
         private readonly IClubService _clubService;
+        private readonly SportTrack_v1.Controladores.Federaciones.IClubServices _clubServicesSigdef;
 
-        public ClubesController(IClubService clubService)
+        public ClubesController(IClubService clubService, SportTrack_v1.Controladores.Federaciones.IClubServices clubServicesSigdef)
         {
             _clubService = clubService;
+            _clubServicesSigdef = clubServicesSigdef;
         }
 
         [HttpGet]
@@ -82,6 +84,31 @@ namespace SportTrack_v1.Api.Controllers.Clubes
         {
             await _clubService.DeleteClubAsync(id);
             return NoContent();
+        }
+
+        // Sub-rutas requeridas por SIGDEF (vía _clubServicesSigdef)
+        [HttpGet("{id}/Atletas")]
+        public async Task<ActionResult<IEnumerable<SportTrack_v1.Entidades.DTOs.AtletaFederado.AtletaDto>>> GetAtletasByClub(int id)
+        {
+            return await _clubServicesSigdef.GetAtletasByClub(id);
+        }
+
+        [HttpGet("{id}/Entrenadores")]
+        public async Task<ActionResult<IEnumerable<SportTrack_v1.Entidades.DTOs.Entrenador.EntrenadorDto>>> GetEntrenadoresByClub(int id)
+        {
+            return await _clubServicesSigdef.GetEntrenadoresByClub(id);
+        }
+
+        [HttpGet("{id}/Delegados")]
+        public async Task<ActionResult<IEnumerable<SportTrack_v1.Entidades.DTOs.DelegadoClub.DelegadoClubDto>>> GetDelegadosByClub(int id)
+        {
+            return await _clubServicesSigdef.GetDelegadosByClub(id);
+        }
+
+        [HttpGet("{id}/Eventos")]
+        public async Task<ActionResult<IEnumerable<SportTrack_v1.Entidades.DTOs.Evento.EventoDto>>> GetEventosByClub(int id)
+        {
+            return await _clubServicesSigdef.GetEventosByClub(id);
         }
     }
 }

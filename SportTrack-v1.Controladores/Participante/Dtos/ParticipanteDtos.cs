@@ -29,6 +29,7 @@ namespace SportTrack_v1.Controladores.Participante.Dtos
         public int SexoId { get; set; }
         public int? CategoriaId { get; set; }
         public int? ClubId { get; set; }
+        public int? FederacionId { get; set; }
         public string? Pais { get; set; }
         public string? Dni { get; set; }
         public string? Email { get; set; }

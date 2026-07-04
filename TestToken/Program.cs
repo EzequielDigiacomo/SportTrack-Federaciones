@@ -12,17 +12,39 @@ class Program
             conn.Open();
             Console.WriteLine("Conexión exitosa a Render.");
 
-            using (var cmd = new NpgsqlCommand("SELECT \"Id\", \"Nombre\", \"FechaAltaPlan\", \"FechaVencimientoPlan\", \"Cuit\" FROM federacion.\"Federaciones\";", conn))
+            // 1. Todos los planes: competencias ilimitadas
+            using (var cmd = new NpgsqlCommand(@"UPDATE catalogos.""PlanesSaaS"" SET ""MaxTorneosActivos"" = -1;", conn))
+            {
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"MaxTorneosActivos = -1 aplicado a {rows} planes.");
+            }
+
+            // 2. Planes M: activar ResultadosTiempoReal y ExportacionExcel
+            using (var cmd = new NpgsqlCommand(@"
+                UPDATE catalogos.""PlanesSaaS""
+                SET ""ResultadosTiempoReal"" = true, ""ExportacionExcel"" = true
+                WHERE ""Nombre"" LIKE '%(M)';", conn))
+            {
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"ResultadosTiempoReal + Excel = true aplicado a {rows} planes M.");
+            }
+
+            // 3. Todos los planes: ExportacionExcel = true (todos tienen Excel)
+            using (var cmd = new NpgsqlCommand(@"UPDATE catalogos.""PlanesSaaS"" SET ""ExportacionExcel"" = true;", conn))
+            {
+                int rows = cmd.ExecuteNonQuery();
+                Console.WriteLine($"ExportacionExcel = true aplicado a {rows} planes.");
+            }
+
+            // 4. Verificar resultado final
+            Console.WriteLine("\n--- Estado final de los planes ---");
+            using (var cmd = new NpgsqlCommand(@"SELECT ""Id"", ""Nombre"", ""MaxTorneosActivos"", ""ResultadosTiempoReal"", ""ExportacionExcel"", ""SoportePrioritario"" FROM catalogos.""PlanesSaaS"" ORDER BY ""Id"";", conn))
             using (var reader = cmd.ExecuteReader())
             {
+                Console.WriteLine("Id | Nombre | MaxTorneos | TiempoReal | Excel | SoportePrioritario");
                 while (reader.Read())
                 {
-                    var id = reader.GetInt32(0);
-                    var nombre = reader.GetString(1);
-                    var alta = reader.IsDBNull(2) ? "null" : reader.GetDateTime(2).ToString("yyyy-MM-dd");
-                    var vence = reader.IsDBNull(3) ? "null" : reader.GetDateTime(3).ToString("yyyy-MM-dd");
-                    var cuit = reader.IsDBNull(4) ? "null" : reader.GetString(4);
-                    Console.WriteLine($"- Id: {id}, Nombre: {nombre}, Alta: {alta}, Vence: {vence}, Cuit: {cuit}");
+                    Console.WriteLine($"{reader[0]} | {reader[1]} | {reader[2]} | {reader[3]} | {reader[4]} | {reader[5]}");
                 }
             }
         }

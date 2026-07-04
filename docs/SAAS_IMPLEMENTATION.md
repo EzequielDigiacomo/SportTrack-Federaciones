@@ -75,3 +75,35 @@ Ubicación: `src\pages\Super\sections\SaaSManagement.jsx`
 2. **Dashboard de Consumo por Federación**:
    - Construir un endpoint que calcule y devuelva estadísticas reales (ej. recuento actual de atletas creados / atletas permitidos).
    - Vincularlo con la tabla visual en `SaaSManagement.jsx` para que Soporte Técnico o el SuperAdmin visualicen el estado de todas las cuentas y puedan asignarles distintos planes dinámicamente.
+
+---
+
+## Documentación extendida (julio 2026)
+
+El sistema SaaS fue extendido con un sistema completo de control de acceso por plan.
+Ver documentación actualizada:
+
+| Archivo | Contenido |
+|---------|-----------|
+| [`PLANES_SAAS.md`](./PLANES_SAAS.md) | Definición de los 9 planes, features por talla S/M/L, entidad en BD, flags de acceso |
+| [`CONTROL_ACCESO.md`](./CONTROL_ACCESO.md) | Niveles de control, matriz de acceso completa, implementación backend y frontend |
+
+### Cambios aplicados (julio 2026)
+
+**Base de datos (Render)**
+- `MaxTorneosActivos = -1` (ilimitado) en todos los planes
+- `ResultadosTiempoReal = true` en planes M
+- `ExportacionExcel = true` en todos los planes
+
+**Backend — `PlanSaaSDto.cs`**
+- Nuevas propiedades calculadas: `AccesoSigdef`, `AccesoSportTrack`, `AccesoControlesLive`
+- Sin migración de BD requerida (derivadas del campo `Nombre`)
+
+**FrontSigdef**
+- `PlanGuard.jsx` — pantalla de plan no compatible
+- `PrivateRoute` → verifica `accesoSigdef` antes de renderizar la app
+
+**SportTrack-Front**
+- `PlanGuard.jsx` — dos variantes (sistema completo / feature Plan L)
+- `ProtectedRoute` → verifica `accesoSportTrack` + prop `requiereControlesLive`
+- Rutas `/jueces/*` y `/juez-control/*` restringidas a Plan L

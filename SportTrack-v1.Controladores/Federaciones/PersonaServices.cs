@@ -279,7 +279,7 @@ namespace SIGDEF.API.Services
                 }
 
                 var documentoExists = await _context.Participantes
-                    .AnyAsync(p => p.Dni == personaCreateDto.Dni && p.ParticipanteId != id);
+                    .AnyAsync(p => p.Dni == personaCreateDto.Documento && p.Id != id);
                 if (documentoExists)
                 {
                     return new BadRequestResult();
@@ -299,7 +299,7 @@ namespace SIGDEF.API.Services
 
                 Participante.Nombre = personaCreateDto.Nombre;
                 Participante.Apellido = personaCreateDto.Apellido;
-                Participante.Dni = personaCreateDto.Dni;
+                Participante.Dni = personaCreateDto.Documento;
                 Participante.FechaNacimiento = fechaNacimientoUtc;
                 Participante.Email = personaCreateDto.Email ?? string.Empty;
                 Participante.Telefono = personaCreateDto.Telefono ?? string.Empty;
@@ -344,7 +344,7 @@ namespace SIGDEF.API.Services
 
         private async Task<bool> PersonaExistsAsync(int id)
         {
-            return await _context.Participantes.AnyAsync(e => e.ParticipanteId == id);
+            return await _context.Participantes.AnyAsync(e => e.Id == id);
         }
 
         private static int CalcularEdad(DateTime fechaNacimiento)
@@ -361,7 +361,6 @@ namespace SIGDEF.API.Services
             if (Participante.Entrenador != null) return "Entrenador";
             if (Participante.Tutor != null) return "Tutor";
             if (Participante.DelegadoClub != null) return "DelegadoClub";
-            if (Participante.Usuario != null) return "Usuario";
             return "Participante Base";
         }
     }

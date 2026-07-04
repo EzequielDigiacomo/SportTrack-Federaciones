@@ -310,6 +310,10 @@ namespace SIGDEF.API.Services
                 }
 
                 int? finalFedId = _tenantProvider.GetFederacionId();
+                if (!finalFedId.HasValue && atletaCreateDto.IdFederacion.HasValue)
+                {
+                    finalFedId = atletaCreateDto.IdFederacion;
+                }
                 if (!finalFedId.HasValue && atletaCreateDto.IdClub.HasValue)
                 {
                     var club = await _context.Clubes.FindAsync(atletaCreateDto.IdClub.Value);
@@ -412,6 +416,10 @@ namespace SIGDEF.API.Services
                 await _context.SaveChangesAsync();
 
                 int? finalFedId = _tenantProvider.GetFederacionId();
+                if (!finalFedId.HasValue && dto.DatosDeportivos.IdFederacion.HasValue)
+                {
+                    finalFedId = dto.DatosDeportivos.IdFederacion;
+                }
                 if (!finalFedId.HasValue && dto.DatosDeportivos.IdClub.HasValue)
                 {
                     var club = await _context.Clubes.FindAsync(dto.DatosDeportivos.IdClub.Value);

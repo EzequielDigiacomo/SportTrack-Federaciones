@@ -9,6 +9,7 @@ namespace SIGDEF.DTOs
         [Required]
         public int ParticipanteId { get; set; }
         public int? IdClub { get; set; }
+        public int? IdFederacion { get; set; }
 
         [Required]
         public EstadoPago EstadoPago { get; set; }

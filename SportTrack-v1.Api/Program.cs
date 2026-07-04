@@ -119,6 +119,18 @@ builder.Services.AddScoped<IClubService, ClubService>();
 builder.Services.AddScoped<IClubRepository, ClubRepository>();
 // Federaciones
 builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IFederacionServices, SportTrack_v1.Controladores.Federaciones.FederacionServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.ITenantProvider, SportTrack_v1.Controladores.Federaciones.TenantProvider>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IAtletaServices, SIGDEF.API.Services.AtletaServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IAtletaTutorServices, SIGDEF.API.Services.AtletaTutorServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IClubServices, SIGDEF.API.Services.ClubServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IDelegadoClubServices, SIGDEF.API.Services.DelegadoClubServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IEntrenadorServices, SIGDEF.API.Services.EntrenadorServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IInscripcionServices, SIGDEF.API.Services.InscripcionServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IPersonaServices, SIGDEF.API.Services.PersonaServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.ITutorServices, SIGDEF.API.Services.TutorServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IUsuarioServices, SIGDEF.API.Services.UsuarioServices>();
+builder.Services.AddScoped<SportTrack_v1.Controladores.Federaciones.IRolServices, SIGDEF.API.Services.RolServices>();
+
 // Auth
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();

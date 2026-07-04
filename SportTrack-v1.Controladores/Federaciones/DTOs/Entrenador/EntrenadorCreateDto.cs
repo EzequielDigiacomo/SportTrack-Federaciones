@@ -13,6 +13,7 @@ namespace SportTrack_v1.Entidades.DTOs.Entrenador
         public int ParticipanteId { get; set; }
 
         public int? IdClub { get; set; }
+        public int? IdFederacion { get; set; }
 
         //[Required(ErrorMessage = "El campo PerteneceSeleccion es requerido")]
         public bool PerteneceSeleccion { get; set; }

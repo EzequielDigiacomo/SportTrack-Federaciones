@@ -271,6 +271,10 @@ namespace SIGDEF.API.Services
                 }
 
                 int? finalFedId = _tenantProvider.GetFederacionId();
+                if (!finalFedId.HasValue && entrenadorCreateDto.IdFederacion.HasValue)
+                {
+                    finalFedId = entrenadorCreateDto.IdFederacion;
+                }
                 if (!finalFedId.HasValue && entrenadorCreateDto.IdClub.HasValue)
                 {
                     var club = await _context.Clubes.FindAsync(entrenadorCreateDto.IdClub.Value);
