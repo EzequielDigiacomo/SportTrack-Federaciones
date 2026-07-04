@@ -19,5 +19,13 @@ namespace SportTrack_v1.Entidades.DTOs.Federacion
         public string NumeroCuenta { get; set; } = string.Empty;
         public string TitularCuenta { get; set; } = string.Empty;
         public string EmailCobro { get; set; } = string.Empty;
+
+        // SaaS Properties
+        public int? PlanSaaSId { get; set; }
+        public DateTime? FechaAltaPlan { get; set; }
+        public DateTime? FechaVencimientoPlan { get; set; }
+        public string? FrecuenciaPago { get; set; }
+        public bool BloqueadaPorFaltaDePago { get; set; }
+        public bool Activo { get; set; }
     }
 }

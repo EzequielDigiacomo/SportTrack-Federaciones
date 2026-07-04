@@ -1,28 +1,34 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.JsonWebTokens;
+using Npgsql;
 
 class Program
 {
     static void Main()
     {
-        string token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBlcmFkbWluIiwidW5pcXVlX25hbWUiOlsic3VwZXJhZG1pbiIsInN1cGVyYWRtaW4iXSwibmFtZSI6InN1cGVyYWRtaW4iLCJyb2xlIjpbIlN1cGVyQWRtaW4iLCJTdXBlckFkbWluIl0sIkNsdWJJZCI6IjAiLCJuYmYiOjE3ODI5MjU1NzUsImV4cCI6MTc4Mjk0MzU3NSwiaWF0IjoxNzgyOTI1NTc1fQ._V2sxLjrraWD2Ru_8eSHQmD-TSYb0kM289UPM8nPSwFPdztbItPnCrsQDZyIUoj5DP1Z1UPrv3WNUiBEXIpiXQ";
-        
-        var handler2 = new JsonWebTokenHandler();
-        var validationParameters = new TokenValidationParameters 
-        { 
-            ValidateSignatureLast = true, 
-            SignatureValidator = (t,p) => new JsonWebToken(t),
-            RoleClaimType = "role",
-            NameClaimType = "unique_name",
-            ValidateAudience = false,
-            ValidateIssuer = false
-        };
-        var result = handler2.ValidateToken(token, validationParameters);
-        Console.WriteLine("IsValid: " + result.IsValid);
-        Console.WriteLine("Name: " + result.ClaimsIdentity.Name);
-        Console.WriteLine("HasRole: " + result.ClaimsIdentity.HasClaim(result.ClaimsIdentity.RoleClaimType, "SuperAdmin"));
+        string connString = "Host=dpg-d92j1qtaeets73em115g-a.virginia-postgres.render.com;Port=5432;Database=sporttrack_federaciones_db;Username=sporttrack_federaciones_db_user;Password=PhV0bbcKZELBn4dGE5lU66hIhQfUIDd4;SSL Mode=Require;Trust Server Certificate=true";
+        try
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            Console.WriteLine("Conexión exitosa a Render.");
+
+            using (var cmd = new NpgsqlCommand("SELECT \"Id\", \"Nombre\", \"FechaAltaPlan\", \"FechaVencimientoPlan\", \"Cuit\" FROM federacion.\"Federaciones\";", conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var id = reader.GetInt32(0);
+                    var nombre = reader.GetString(1);
+                    var alta = reader.IsDBNull(2) ? "null" : reader.GetDateTime(2).ToString("yyyy-MM-dd");
+                    var vence = reader.IsDBNull(3) ? "null" : reader.GetDateTime(3).ToString("yyyy-MM-dd");
+                    var cuit = reader.IsDBNull(4) ? "null" : reader.GetString(4);
+                    Console.WriteLine($"- Id: {id}, Nombre: {nombre}, Alta: {alta}, Vence: {vence}, Cuit: {cuit}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
     }
 }

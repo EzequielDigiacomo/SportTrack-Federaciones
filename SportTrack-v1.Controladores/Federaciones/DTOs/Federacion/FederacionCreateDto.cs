@@ -7,7 +7,7 @@ namespace SportTrack_v1.Entidades.DTOs.Federacion
         [Required, MaxLength(100)]
         public string Nombre { get; set; } = string.Empty;
 
-        [Required, MaxLength(20)]
+        [MaxLength(20)]
         public string Cuit { get; set; } = string.Empty;
 
         [MaxLength(100)]
@@ -33,5 +33,12 @@ namespace SportTrack_v1.Entidades.DTOs.Federacion
 
         [MaxLength(100)]
         public string EmailCobro { get; set; } = string.Empty;
+
+        // SaaS fields
+        public int? PlanSaaSId { get; set; }
+        public DateTime? FechaAltaPlan { get; set; }
+        public DateTime? FechaVencimientoPlan { get; set; }
+        public string? FrecuenciaPago { get; set; }
+        public bool? BloqueadaPorFaltaDePago { get; set; }
     }
 }

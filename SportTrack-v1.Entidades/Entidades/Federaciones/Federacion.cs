@@ -58,6 +58,7 @@ namespace SportTrack_v1.Entidades.Entidades
 
         public DateTime? FechaAltaPlan { get; set; }
         public DateTime? FechaVencimientoPlan { get; set; }
+        public string? FrecuenciaPago { get; set; } // "Mensual", "Anual"
         public bool BloqueadaPorFaltaDePago { get; set; } = false;
     }
 }

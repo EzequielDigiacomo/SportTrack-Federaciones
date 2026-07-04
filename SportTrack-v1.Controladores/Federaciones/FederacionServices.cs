@@ -36,7 +36,13 @@ namespace SportTrack_v1.Controladores.Federaciones
                         TipoCuenta = f.TipoCuenta,
                         NumeroCuenta = f.NumeroCuenta,
                         TitularCuenta = f.TitularCuenta,
-                        EmailCobro = f.EmailCobro
+                        EmailCobro = f.EmailCobro,
+                        PlanSaaSId = f.PlanSaaSId,
+                        FechaAltaPlan = f.FechaAltaPlan,
+                        FechaVencimientoPlan = f.FechaVencimientoPlan,
+                        FrecuenciaPago = f.FrecuenciaPago,
+                        BloqueadaPorFaltaDePago = f.BloqueadaPorFaltaDePago,
+                        Activo = f.Activo
                     })
                     .ToListAsync();
 
@@ -66,7 +72,13 @@ namespace SportTrack_v1.Controladores.Federaciones
                         TipoCuenta = f.TipoCuenta,
                         NumeroCuenta = f.NumeroCuenta,
                         TitularCuenta = f.TitularCuenta,
-                        EmailCobro = f.EmailCobro
+                        EmailCobro = f.EmailCobro,
+                        PlanSaaSId = f.PlanSaaSId,
+                        FechaAltaPlan = f.FechaAltaPlan,
+                        FechaVencimientoPlan = f.FechaVencimientoPlan,
+                        FrecuenciaPago = f.FrecuenciaPago,
+                        BloqueadaPorFaltaDePago = f.BloqueadaPorFaltaDePago,
+                        Activo = f.Activo
                     })
                     .FirstOrDefaultAsync();
 
@@ -87,8 +99,7 @@ namespace SportTrack_v1.Controladores.Federaciones
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(federacionCreateDto.Nombre) ||
-                    string.IsNullOrWhiteSpace(federacionCreateDto.Cuit))
+                if (string.IsNullOrWhiteSpace(federacionCreateDto.Nombre))
                 {
                     return new BadRequestResult();
                 }
@@ -104,7 +115,12 @@ namespace SportTrack_v1.Controladores.Federaciones
                     TipoCuenta = federacionCreateDto.TipoCuenta ?? string.Empty,
                     NumeroCuenta = federacionCreateDto.NumeroCuenta ?? string.Empty,
                     TitularCuenta = federacionCreateDto.TitularCuenta ?? string.Empty,
-                    EmailCobro = federacionCreateDto.EmailCobro ?? string.Empty
+                    EmailCobro = federacionCreateDto.EmailCobro ?? string.Empty,
+                    PlanSaaSId = federacionCreateDto.PlanSaaSId ?? 1,
+                    FechaAltaPlan = federacionCreateDto.FechaAltaPlan ?? DateTime.UtcNow.Date,
+                    FechaVencimientoPlan = federacionCreateDto.FechaVencimientoPlan ?? DateTime.UtcNow.Date.AddMonths(1),
+                    FrecuenciaPago = federacionCreateDto.FrecuenciaPago ?? "Mensual",
+                    BloqueadaPorFaltaDePago = federacionCreateDto.BloqueadaPorFaltaDePago ?? false
                 };
 
                 _context.Federaciones.Add(federacion);
@@ -122,7 +138,13 @@ namespace SportTrack_v1.Controladores.Federaciones
                     TipoCuenta = federacion.TipoCuenta,
                     NumeroCuenta = federacion.NumeroCuenta,
                     TitularCuenta = federacion.TitularCuenta,
-                    EmailCobro = federacion.EmailCobro
+                    EmailCobro = federacion.EmailCobro,
+                    PlanSaaSId = federacion.PlanSaaSId,
+                    FechaAltaPlan = federacion.FechaAltaPlan,
+                    FechaVencimientoPlan = federacion.FechaVencimientoPlan,
+                    FrecuenciaPago = federacion.FrecuenciaPago,
+                    BloqueadaPorFaltaDePago = federacion.BloqueadaPorFaltaDePago,
+                    Activo = federacion.Activo
                 };
 
                 var result = new ObjectResult(federacionDto)
@@ -145,8 +167,7 @@ namespace SportTrack_v1.Controladores.Federaciones
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(federacionCreateDto.Nombre) ||
-                    string.IsNullOrWhiteSpace(federacionCreateDto.Cuit))
+                if (string.IsNullOrWhiteSpace(federacionCreateDto.Nombre))
                 {
                     return new BadRequestResult();
                 }
@@ -167,6 +188,13 @@ namespace SportTrack_v1.Controladores.Federaciones
                 federacion.NumeroCuenta = federacionCreateDto.NumeroCuenta ?? string.Empty;
                 federacion.TitularCuenta = federacionCreateDto.TitularCuenta ?? string.Empty;
                 federacion.EmailCobro = federacionCreateDto.EmailCobro ?? string.Empty;
+                
+                // SaaS properties
+                if (federacionCreateDto.PlanSaaSId.HasValue) federacion.PlanSaaSId = federacionCreateDto.PlanSaaSId.Value;
+                if (federacionCreateDto.FechaAltaPlan.HasValue) federacion.FechaAltaPlan = federacionCreateDto.FechaAltaPlan.Value;
+                if (federacionCreateDto.FechaVencimientoPlan.HasValue) federacion.FechaVencimientoPlan = federacionCreateDto.FechaVencimientoPlan.Value;
+                if (federacionCreateDto.FrecuenciaPago != null) federacion.FrecuenciaPago = federacionCreateDto.FrecuenciaPago;
+                if (federacionCreateDto.BloqueadaPorFaltaDePago.HasValue) federacion.BloqueadaPorFaltaDePago = federacionCreateDto.BloqueadaPorFaltaDePago.Value;
 
                 await _context.SaveChangesAsync();
                 return new NoContentResult();
