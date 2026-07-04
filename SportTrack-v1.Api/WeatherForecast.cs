@@ -1,4 +1,4 @@
-namespace SportTrack_v1.Api
+﻿namespace SportTrack_v1.Api
 {
     public class WeatherForecast
     {

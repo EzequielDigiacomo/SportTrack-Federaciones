@@ -1,4 +1,4 @@
-// ?? SIGDEF/Entidades/DTOs/TipoEventoOptionDto.cs
+﻿// ?? SIGDEF/Entidades/DTOs/TipoEventoOptionDto.cs
 using System.ComponentModel.DataAnnotations.Schema;
 using SportTrack_v1.Entidades.Enums;
 using SportTrack_v1.Controladores.Helpers;

@@ -1,4 +1,4 @@
-// ?? Services/MercadoPagoService.cs
+Ôªø// ?? Services/MercadoPagoService.cs
 using MercadoPago.Client.Common;
 using MercadoPago.Client.Preference;
 using MercadoPago.Config;
@@ -74,7 +74,7 @@ public class MercadoPagoService
                 Success = true,
                 PaymentId = preference.Id, // ID de la preferencia
                 Status = "created",
-                PaymentUrl = preference.InitPoint, // LINK DE PAGO (AquÌ est· la magia para el QR)
+                PaymentUrl = preference.InitPoint, // LINK DE PAGO (Aqu√≠ est√° la magia para el QR)
                 SandboxPaymentUrl = preference.SandboxInitPoint
             };
         }
@@ -91,7 +91,7 @@ public class MercadoPagoService
     public async Task<PaymentResponse> GetPaymentStatusAsync(string paymentId)
     {
         // Nota: Para verificar estado de PAGO real se usa PaymentClient, 
-        // pero 'paymentId' aquÌ podrÌa ser el ID de la Preferencia o del Pago.
+        // pero 'paymentId' aqu√≠ podr√≠a ser el ID de la Preferencia o del Pago.
         // Por ahora lo dejamos igual para consultar Pagos.
         try
         {

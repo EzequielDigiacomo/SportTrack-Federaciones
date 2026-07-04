@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Entidades;
+﻿using SportTrack_v1.Entidades.Entidades;
 using SIGDEF.DTOs;
 using SportTrack_v1.Entidades.DTOs.AtletaFederado;
 using SportTrack_v1.Entidades.DTOs.DelegadoClub;
@@ -27,7 +27,7 @@ namespace SportTrack_v1.Entidades.DTOs.Participante
         public string Direccion { get; set; } = string.Empty;
         public Sexo Sexo { get; set; } // NUEVO
         public string SexoDisplay { get; set; } = string.Empty; // Para mostrar en UI
-        // Informaci�n relacionada
+        // Información relacionada
         public UsuarioDto? Usuario { get; set; }
         public DelegadoClubDto? DelegadoClub { get; set; }
         public EntrenadorDto? Entrenador { get; set; }

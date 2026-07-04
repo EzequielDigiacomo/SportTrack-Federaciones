@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SportTrack_v1.Entidades.Entidades
@@ -14,7 +14,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public string? Ubicacion { get; set; }
         public bool Activo { get; set; } = true;
         
-        // Relación con la Federación a la que pertenece
+        // RelaciÃ³n con la FederaciÃ³n a la que pertenece
         public int? IdFederacion { get; set; }
         public Federacion? Federacion { get; set; }
         

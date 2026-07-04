@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Entidades.DTOs.Participante;
 using SportTrack_v1.Entidades.DTOs.Usuario;
@@ -344,7 +344,7 @@ namespace SIGDEF.API.Services
 
         private async Task<bool> PersonaExistsAsync(int id)
         {
-            return await _context.Participantes.AnyAsync(e => e.Id == id);
+            return await _context.Participantes.AnyAsync(e => e.ParticipanteId == id);
         }
 
         private static int CalcularEdad(DateTime fechaNacimiento)

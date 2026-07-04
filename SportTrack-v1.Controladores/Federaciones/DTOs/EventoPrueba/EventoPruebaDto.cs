@@ -1,4 +1,4 @@
-namespace SportTrack_v1.Entidades.DTOs.EventoPrueba
+﻿namespace SportTrack_v1.Entidades.DTOs.EventoPrueba
 {
     public class EventoPruebaDto
     {

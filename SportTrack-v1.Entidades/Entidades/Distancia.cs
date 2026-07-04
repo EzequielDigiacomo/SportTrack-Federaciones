@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace SportTrack_v1.Entidades.Entidades
         // Propiedad calculada para los metros
         public int Metros => (int)DistanciaRegata;
 
-        // Propiedad calculada para descripción
+        // Propiedad calculada para descripciÃ³n
         public string Descripcion => DistanciaRegata.GetDisplayName();
 
         // Navigation property

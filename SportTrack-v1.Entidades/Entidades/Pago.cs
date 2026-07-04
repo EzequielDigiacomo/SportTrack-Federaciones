@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace SportTrack_v1.Entidades.Entidades
 {
@@ -18,7 +18,7 @@ namespace SportTrack_v1.Entidades.Entidades
         
         public decimal Monto { get; set; }
         public DateTime FechaPago { get; set; } = DateTime.UtcNow;
-        public string? Referencia { get; set; } // Número de transferencia, recibo, etc.
+        public string? Referencia { get; set; } // NÃºmero de transferencia, recibo, etc.
         public string? RegistradoPor { get; set; } // Nombre de usuario del administrador
         public string? Notas { get; set; }
     }

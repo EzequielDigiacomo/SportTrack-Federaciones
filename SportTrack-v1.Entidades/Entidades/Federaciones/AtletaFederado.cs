@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,7 +31,7 @@ namespace SportTrack_v1.Entidades.Entidades
 
         public bool PerteneceSeleccion { get; set; }
 
-        // 👇 Renombrado: CategoriaSeleccion → Categoria
+        // ðŸ‘‡ Renombrado: CategoriaSeleccion â†’ Categoria
         public CategoriaEdad? Categoria { get; set; }
 
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;

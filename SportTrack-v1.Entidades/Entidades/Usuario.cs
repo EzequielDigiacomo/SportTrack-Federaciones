@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,7 +22,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public bool EstaActivo { get; set; } = true;
         public int IntentosFallidos { get; set; } = 0;
 
-        // Datos personales — para identificación y auditoría de jueces
+        // Datos personales â€” para identificaciÃ³n y auditorÃ­a de jueces
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
         public string? Dni { get; set; }

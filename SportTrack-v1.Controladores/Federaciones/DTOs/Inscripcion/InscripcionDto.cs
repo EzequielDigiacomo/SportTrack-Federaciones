@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace SportTrack_v1.Entidades.DTOs.Inscripcion
         public string? DetallePrueba { get; set; }
         public DateTime FechaInscripcion { get; set; }
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public string? NombreAtleta { get; set; }
         public string? NombreEvento { get; set; }
         public string? NombreClub { get; set; }

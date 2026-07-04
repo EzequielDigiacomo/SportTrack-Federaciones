@@ -302,7 +302,7 @@ namespace SIGDEF.API.Services
                     return new BadRequestResult();
                 }
 
-                // Convertir fecha de apto médico a UTC (si corresponde)
+                // Convertir fecha de apto mÃ©dico a UTC (si corresponde)
                 DateTime? fechaAptoMedicoUtc = null;
                 if (atletaCreateDto.FechaAptoMedico.HasValue)
                 {
@@ -376,7 +376,7 @@ namespace SIGDEF.API.Services
         }
 
         // -------------------------------------------------
-        // POST: Registro Atómico de AtletaFederado (incluye Tutor si es menor)
+        // POST: Registro AtÃ³mico de AtletaFederado (incluye Tutor si es menor)
         // -------------------------------------------------
         public async Task<ActionResult<AtletaDto>> PostAtletaFull(AtletaFullCreateDto dto)
         {
@@ -385,7 +385,7 @@ namespace SIGDEF.API.Services
             {
                 // 1. Manejar Participante del AtletaFederado
                 var personaAtleta = await _context.Participantes
-                    .FirstOrDefaultAsync(p => p.Dni == dto.PersonaAtleta.Dni);
+                    .FirstOrDefaultAsync(p => p.Documento == dto.PersonaAtleta.Documento);
                 
                 if (personaAtleta == null)
                 {
@@ -393,7 +393,7 @@ namespace SIGDEF.API.Services
                     {
                         Nombre = dto.PersonaAtleta.Nombre,
                         Apellido = dto.PersonaAtleta.Apellido,
-                        Documento = dto.PersonaAtleta.Dni,
+                        Documento = dto.PersonaAtleta.Documento,
                         FechaNacimiento = DateTime.SpecifyKind(dto.PersonaAtleta.FechaNacimiento, DateTimeKind.Utc),
                         Email = dto.PersonaAtleta.Email ?? "",
                         Telefono = dto.PersonaAtleta.Telefono ?? "",
@@ -476,7 +476,7 @@ namespace SIGDEF.API.Services
                     else if (dto.Tutor.PersonaTutor != null)
                     {
                         var personaTutor = await _context.Participantes
-                            .FirstOrDefaultAsync(p => p.Dni == dto.Tutor.PersonaTutor.Dni);
+                            .FirstOrDefaultAsync(p => p.Documento == dto.Tutor.PersonaTutor.Documento);
                         
                         if (personaTutor == null)
                         {
@@ -484,7 +484,7 @@ namespace SIGDEF.API.Services
                             {
                                 Nombre = dto.Tutor.PersonaTutor.Nombre,
                                 Apellido = dto.Tutor.PersonaTutor.Apellido,
-                                Documento = dto.Tutor.PersonaTutor.Dni,
+                                Documento = dto.Tutor.PersonaTutor.Documento,
                                 FechaNacimiento = DateTime.SpecifyKind(dto.Tutor.PersonaTutor.FechaNacimiento, DateTimeKind.Utc),
                                 Email = dto.Tutor.PersonaTutor.Email ?? "",
                                 Telefono = dto.Tutor.PersonaTutor.Telefono ?? "",
@@ -507,7 +507,7 @@ namespace SIGDEF.API.Services
                         tutor = new Tutor 
                         { 
                             ParticipanteId = idPersonaTutor, 
-                            TipoTutor = "Registrado vía AtletaFederado" 
+                            TipoTutor = "Registrado vÃ­a AtletaFederado" 
                         };
                         _context.Tutores.Add(tutor);
                         await _context.SaveChangesAsync();
@@ -515,13 +515,13 @@ namespace SIGDEF.API.Services
 
                     // Relación AtletaTutor
                     var relacion = await _context.AtletasTutores
-                        .FirstOrDefaultAsync(at => at.ParticipanteId == AtletaFederado.ParticipanteId && at.IdTutor == idPersonaTutor);
+                        .FirstOrDefaultAsync(at => at.IdAtleta == AtletaFederado.ParticipanteId && at.IdTutor == idPersonaTutor);
                     
                     if (relacion == null)
                     {
                         relacion = new AtletaTutor
                         {
-                            ParticipanteId = AtletaFederado.ParticipanteId,
+                            IdAtleta = AtletaFederado.ParticipanteId,
                             IdTutor = idPersonaTutor,
                             Parentesco = (SportTrack_v1.Entidades.Enums.Parentesco)dto.Tutor.Parentesco
                         };
@@ -536,7 +536,7 @@ namespace SIGDEF.API.Services
 
                 await transaction.CommitAsync();
 
-                // Reutilizar lógica de respuesta de GetAtleta por consistencia
+                // Reutilizar lÃ³gica de respuesta de GetAtleta por consistencia
                 var response = await GetAtleta(AtletaFederado.ParticipanteId);
                 
                 // Mapear AtletaDetailDto a AtletaDto para coincidir con la firma
@@ -560,7 +560,7 @@ namespace SIGDEF.API.Services
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                return new ObjectResult(new { error = "Fallo el registro atómico", detail = ex.Message }) { StatusCode = 500 };
+                return new ObjectResult(new { error = "Fallo el registro atÃ³mico", detail = ex.Message }) { StatusCode = 500 };
             }
         }
 
@@ -592,7 +592,7 @@ namespace SIGDEF.API.Services
                     }
                 }
 
-                // Convertir fecha apto médico a UTC
+                // Convertir fecha apto mÃ©dico a UTC
                 DateTime? fechaAptoMedicoUtc = null;
                 if (atletaCreateDto.FechaAptoMedico.HasValue)
                 {
@@ -672,7 +672,7 @@ namespace SIGDEF.API.Services
                     var Participante = AtletaFederado.Participante;
                     var tieneOtrosRoles = await _context.Usuarios.AnyAsync(u => u.ParticipanteId == id) ||
                                          await _context.Entrenadores.AnyAsync(e => e.ParticipanteId == id) ||
-                                         await _context.DelegadosClub.AnyAsync(d => d.ParticipanteId == id) ||
+                                         await _context.DelegadosClub.AnyAsync(d => d.IdParticipante == id) ||
                                          await _context.Tutores.AnyAsync(t => t.ParticipanteId == id);
 
                     // 5?? Eliminar la Participante SOLO si no tiene otros roles
@@ -680,7 +680,7 @@ namespace SIGDEF.API.Services
                     {
                         // Eliminar pagos asociados a la Participante (si existen)
                         var pagosPersona = await _context.PagosTransacciones
-                            .Where(p => p.ParticipanteId == id)
+                            .Where(p => p.IdParticipante == id)
                             .ToListAsync();
 
                         if (pagosPersona.Any())
@@ -713,7 +713,7 @@ namespace SIGDEF.API.Services
         }
 
         // -------------------------------------------------
-        // Métodos auxiliares
+        // MÃ©todos auxiliares
         // -------------------------------------------------
         private async Task<bool> AtletaExistsAsync(int id)
         {

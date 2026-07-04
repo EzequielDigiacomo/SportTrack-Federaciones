@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack_v1.Controladores.Bote;
 using SportTrack_v1.Entidades.Entidades;
 using SportTrack.AccessDatos;

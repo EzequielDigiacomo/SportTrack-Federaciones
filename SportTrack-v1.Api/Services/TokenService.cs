@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SportTrack_v1.Controladores.Auth;
 using SportTrack_v1.Entidades.Entidades;

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Controladores.PagosSIGDEF.Services;
 using SportTrack_v1.Entidades.Enums;
@@ -28,9 +28,9 @@ namespace SIGDEF.API.Controllers
         {
             try
             {
-                _logger.LogInformation($"🔔 Webhook recibido: Topic={topic}, Id={id}");
+                _logger.LogInformation($"ðŸ”” Webhook recibido: Topic={topic}, Id={id}");
 
-                // Mercado Pago envía notificaciones de varios tipos, solo nos interesa "payment"
+                // Mercado Pago envÃ­a notificaciones de varios tipos, solo nos interesa "payment"
                 if (topic == "payment")
                 {
                     // 1. Consultar el estado real del pago en Mercado Pago
@@ -39,13 +39,13 @@ namespace SIGDEF.API.Controllers
                     if (paymentResponse.Success)
                     {
                         // 2. Obtener el detalle completo del pago para leer 'ExternalReference'
-                        // Nota: GetPaymentStatusAsync devuelve un DTO genérico.
+                        // Nota: GetPaymentStatusAsync devuelve un DTO genÃ©rico.
                         // Para obtener el ExternalReference necesito el objeto original o pasarlo en el DTO.
-                        // Simplificación: Vamos a suponer que el cliente MP devuelve el external reference
-                        // O ALTERNATIVA: Consultar directamente aquí con el SDK si es necesario.
+                        // SimplificaciÃ³n: Vamos a suponer que el cliente MP devuelve el external reference
+                        // O ALTERNATIVA: Consultar directamente aquÃ­ con el SDK si es necesario.
                         
-                        // RECOMENDACIÓN: Modificar PaymentResponse para incluir ExternalReference o Metadata.
-                        // Pero para no romper todo ahora, voy a usar el SDK directo aquí para obtener el dato clave.
+                        // RECOMENDACIÃ“N: Modificar PaymentResponse para incluir ExternalReference o Metadata.
+                        // Pero para no romper todo ahora, voy a usar el SDK directo aquÃ­ para obtener el dato clave.
                         
                         var client = new MercadoPago.Client.Payment.PaymentClient();
                         var payment = await client.GetAsync(long.Parse(id));
@@ -81,21 +81,21 @@ namespace SIGDEF.API.Controllers
                                         if (cambioEstado)
                                         {
                                             await _context.SaveChangesAsync();
-                                            _logger.LogInformation($"✅ BD Actualizada: Pago {idPagoDb} pasó a estado {pagoDb.Estado}");
+                                            _logger.LogInformation($"âœ… BD Actualizada: Pago {idPagoDb} pasÃ³ a estado {pagoDb.Estado}");
                                         }
                                         else
                                         {
-                                            _logger.LogInformation($"ℹ️ Pago {idPagoDb} sin cambios de estado ({payment.Status}).");
+                                            _logger.LogInformation($"â„¹ï¸ Pago {idPagoDb} sin cambios de estado ({payment.Status}).");
                                         }
                                     }
                                     else
                                     {
-                                        _logger.LogInformation($"ℹ️ El pago {idPagoDb} ya estaba APROBADO. Se ignora actualización repetida.");
+                                        _logger.LogInformation($"â„¹ï¸ El pago {idPagoDb} ya estaba APROBADO. Se ignora actualizaciÃ³n repetida.");
                                     }
                                 }
                                 else
                                 {
-                                    _logger.LogWarning($"⚠️ No se encontró transacción con ID {idPagoDb}");
+                                    _logger.LogWarning($"âš ï¸ No se encontrÃ³ transacciÃ³n con ID {idPagoDb}");
                                 }
                             }
                         }
@@ -106,7 +106,7 @@ namespace SIGDEF.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"❌ Error procesando webhook: {ex.Message}");
+                _logger.LogError($"âŒ Error procesando webhook: {ex.Message}");
                 return StatusCode(500);
             }
         }

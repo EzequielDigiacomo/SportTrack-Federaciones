@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SportTrack_v1.Entidades.Entidades
 {
@@ -17,7 +17,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public bool ExportacionExcel { get; set; }
         public bool SoportePrioritario { get; set; }
 
-        // Navegación
+        // NavegaciÃ³n
         public ICollection<Club> Clubes { get; set; } = new List<Club>();
         public ICollection<Federacion> Federaciones { get; set; } = new List<Federacion>();
     }

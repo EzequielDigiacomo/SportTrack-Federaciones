@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Fase.Dtos;
 using SportTrack_v1.Controladores.Resultado;
@@ -73,15 +73,15 @@ namespace SportTrack_v1.Api.Controllers
             }
             var guardados = await _resultadoRepository.UpdateManyAsync(aActualizar);
 
-            // Notificar cambios vía SignalR
+            // Notificar cambios vÃ­a SignalR
             if (guardados.Any())
             {
-                // Notificamos para cada resultado, asociándolo a su EventoPruebaId
+                // Notificamos para cada resultado, asociÃ¡ndolo a su EventoPruebaId
                 // Nota: Asumimos que todos pertenecen a la misma prueba para simplificar, 
                 // o iteramos si fueran de distintas.
                 foreach (var r in guardados)
                 {
-                    // Necesitamos el EventoPruebaId. Usualmente está en Fase -> Etapa -> EventoPruebaId
+                    // Necesitamos el EventoPruebaId. Usualmente estÃ¡ en Fase -> Etapa -> EventoPruebaId
                     if (r.Fase?.Etapa != null)
                     {
                         await _notificador.NotificarCambioResultado(r.Fase.Etapa.EventoPruebaId, _mapper.Map<ResultadoFaseDto>(r));

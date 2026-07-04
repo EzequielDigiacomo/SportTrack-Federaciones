@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+Ôªøusing Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Entidades.Entidades;
@@ -94,11 +94,11 @@ namespace SIGDEF.Controllers
                 return NotFound(new { message = $"Evento con ID {idEvento} no encontrado" });
             }
 
-            // Verificar si el IdPrueba existe en el cat·logo
+            // Verificar si el IdPrueba existe en el cat√°logo
             var pruebaCatalog = await _context.Pruebas.FindAsync(eventoPruebaDto.IdPrueba);
             if (pruebaCatalog == null)
             {
-                 return BadRequest(new { message = $"La prueba con ID {eventoPruebaDto.IdPrueba} no existe en el cat·logo." });
+                 return BadRequest(new { message = $"La prueba con ID {eventoPruebaDto.IdPrueba} no existe en el cat√°logo." });
             }
 
             // Verificar que no exista ya esa prueba en el evento
@@ -124,7 +124,7 @@ namespace SIGDEF.Controllers
             _context.EventoPruebas.Add(eventoPrueba);
             await _context.SaveChangesAsync();
 
-            // Recargar para incluir navegaciÛn
+            // Recargar para incluir navegaci√≥n
             await _context.Entry(eventoPrueba).Reference(ep => ep.Prueba).LoadAsync();
 
             var resultDto = new EventoPruebaDto
@@ -172,12 +172,12 @@ namespace SIGDEF.Controllers
                 });
             }
 
-            // Verificar cat·logo si cambiÛ el ID
+            // Verificar cat√°logo si cambi√≥ el ID
             if (eventoPruebaDto.IdPrueba != eventoPrueba.IdPrueba) {
                  var pruebaCatalog = await _context.Pruebas.FindAsync(eventoPruebaDto.IdPrueba);
                  if (pruebaCatalog == null)
                  {
-                      return BadRequest(new { message = $"La prueba con ID {eventoPruebaDto.IdPrueba} no existe en el cat·logo." });
+                      return BadRequest(new { message = $"La prueba con ID {eventoPruebaDto.IdPrueba} no existe en el cat√°logo." });
                  }
                  eventoPrueba.IdPrueba = eventoPruebaDto.IdPrueba;
             }
@@ -207,7 +207,7 @@ namespace SIGDEF.Controllers
         [HttpDelete("{idPrueba}")]
         public async Task<IActionResult> DeleteEventoPrueba(int idEvento, int idPrueba)
         {
-            // Nota: aquÌ idPrueba es IdEventoPrueba (PK de la intermedia), no el IdPrueba del cat·logo
+            // Nota: aqu√≠ idPrueba es IdEventoPrueba (PK de la intermedia), no el IdPrueba del cat√°logo
             var eventoPrueba = await _context.EventoPruebas
                 .FirstOrDefaultAsync(ep => ep.IdEvento == idEvento && ep.IdEventoPrueba == idPrueba);
 

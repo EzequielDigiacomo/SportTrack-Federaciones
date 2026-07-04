@@ -1,4 +1,4 @@
-// ?? SIGDEF/Helpers/TipoEventoExtensions.cs
+Ôªø// ?? SIGDEF/Helpers/TipoEventoExtensions.cs
 using SportTrack_v1.Entidades.Enums;
 
 namespace SIGDEF.Helpers
@@ -63,8 +63,8 @@ namespace SIGDEF.Helpers
             {
                 TipoEvento.CarreraOficial => "Competencia oficial con tiempos certificados y ranking",
                 TipoEvento.Campeonato => "Competencia con premios y posiciones oficiales",
-                TipoEvento.Recreativo => "Evento recreativo sin car·cter competitivo formal",
-                TipoEvento.Entrenamiento => "SesiÛn de entrenamiento grupal guiada",
+                TipoEvento.Recreativo => "Evento recreativo sin car√°cter competitivo formal",
+                TipoEvento.Entrenamiento => "Sesi√≥n de entrenamiento grupal guiada",
                 TipoEvento.Clasificatorio => "Evento para clasificar a competencias mayores",
                 _ => "Evento deportivo"
             };
@@ -77,7 +77,7 @@ namespace SIGDEF.Helpers
                 TipoEvento.CarreraOficial => true,
                 TipoEvento.Campeonato => true,
                 TipoEvento.Clasificatorio => true,
-                _ => false // Recreativo y Entrenamiento pueden no requerir inscripciÛn formal
+                _ => false // Recreativo y Entrenamiento pueden no requerir inscripci√≥n formal
             };
         }
 

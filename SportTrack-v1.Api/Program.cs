@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SportTrack.AccessDatos;
@@ -23,21 +23,21 @@ using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de la base de datos
+// ConfiguraciÃ³n de la base de datos
 builder.Services.AddDbContext<SportTrackDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // SignalR para tiempo real
 builder.Services.AddSignalR();
 
-// Configuración de CORS
+// ConfiguraciÃ³n de CORS
 var originsConfig = builder.Configuration["AllowedOrigins"];
 var configOrigins = !string.IsNullOrEmpty(originsConfig) 
     ? originsConfig.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim()).ToArray() 
     : Array.Empty<string>();
 var allowedOrigins = configOrigins.Concat(new[] { "http://localhost:3000", "http://localhost:5173", "https://sporttrack-fec.vercel.app" }).Distinct().ToArray();
 
-Console.WriteLine($"Configurando CORS para orígenes: {string.Join(", ", allowedOrigins)}");
+Console.WriteLine($"Configurando CORS para orÃ­genes: {string.Join(", ", allowedOrigins)}");
 
 builder.Services.AddCors(options =>
 {
@@ -45,13 +45,13 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader()
               .AllowAnyMethod()
-              .SetIsOriginAllowed(origin => true) // Permitir cualquier origen para facilitar pruebas en móviles (CORS + Credentials)
+              .SetIsOriginAllowed(origin => true) // Permitir cualquier origen para facilitar pruebas en mÃ³viles (CORS + Credentials)
               .AllowCredentials();
     });
 });
 
 
-// Autenticación JWT
+// AutenticaciÃ³n JWT
 var tokenKey = builder.Configuration["TokenKey"] ?? "SportTrackSuperSecretKey2026!ForEducationalPurposeOnly_LongEnoughToBeSecure";
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -88,7 +88,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Inyección de Dependencias
+// InyecciÃ³n de Dependencias
 // Botes
 builder.Services.AddScoped<IBoteService, BoteService>();
 builder.Services.AddScoped<IBoteRepository, BoteRepository>();
@@ -157,7 +157,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SportTrack API", Version = "v1" });
 
-    // Configurar el botón 'Authorize' para JWT
+    // Configurar el botÃ³n 'Authorize' para JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header usando el esquema Bearer. Ejemplo: 'Bearer 12345abcdef'",
@@ -188,13 +188,13 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configuración para leer IP real a través del proxy de Render
+// ConfiguraciÃ³n para leer IP real a travÃ©s del proxy de Render
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
-// Ejecutar migraciones automáticamente al iniciar (con salvaguardas para Render)
+// Ejecutar migraciones automÃ¡ticamente al iniciar (con salvaguardas para Render)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -202,14 +202,14 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<SportTrackDbContext>();
         
-        // Salvaguarda para Render: si Categoria ID 11 ya existe en la BD pero la migración no se ha registrado,
-        // la eliminamos temporalmente para evitar que la migración falle por clave duplicada.
+        // Salvaguarda para Render: si Categoria ID 11 ya existe en la BD pero la migraciÃ³n no se ha registrado,
+        // la eliminamos temporalmente para evitar que la migraciÃ³n falle por clave duplicada.
         try
         {
             var appliedMigrations = context.Database.GetAppliedMigrations();
             if (!appliedMigrations.Contains("20260508003834_AddHabilitacionesToEvento"))
             {
-                Console.WriteLine("Safeguard: La migración 'AddHabilitacionesToEvento' no está registrada. Eliminando Categoria ID 11 conflictiva...");
+                Console.WriteLine("Safeguard: La migraciÃ³n 'AddHabilitacionesToEvento' no estÃ¡ registrada. Eliminando Categoria ID 11 conflictiva...");
                 context.Database.ExecuteSqlRaw(@"
                     DELETE FROM catalogos.""Categorias"" WHERE ""Id"" = 11;
                 ");
@@ -217,14 +217,14 @@ using (var scope = app.Services.CreateScope())
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Safeguard Warning: No se pudo limpiar la Categoria 11 (puede que esté en uso): {ex.Message}");
+            Console.WriteLine($"Safeguard Warning: No se pudo limpiar la Categoria 11 (puede que estÃ© en uso): {ex.Message}");
         }
 
         if (context.Database.GetPendingMigrations().Any())
         {
             Console.WriteLine("Aplicando migraciones pendientes...");
             context.Database.Migrate();
-            Console.WriteLine("Migraciones aplicadas con éxito.");
+            Console.WriteLine("Migraciones aplicadas con Ã©xito.");
         }
 
         // Safeguard: Asegurar que la columna UserAgent existe en la DB.
@@ -268,7 +268,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Pipeline de la aplicación
+// Pipeline de la aplicaciÃ³n
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -277,7 +277,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// CORS debe ir ANTES de autenticación y ANTES de HttpsRedirection
+// CORS debe ir ANTES de autenticaciÃ³n y ANTES de HttpsRedirection
 app.UseCors("CorsPolicy");
 
 // Comentado en desarrollo para evitar conflictos con el frontend en HTTP
@@ -309,7 +309,7 @@ app.MapGet("/api/fix-db", async (SportTrack.AccessDatos.SportTrackDbContext db) 
             ALTER TABLE catalogos.""Usuarios"" ADD COLUMN IF NOT EXISTS ""Dni"" text;
             ALTER TABLE catalogos.""Usuarios"" ADD COLUMN IF NOT EXISTS ""Telefono"" text;
         ");
-        return Results.Ok(new { Message = "Base de datos arreglada. Las columnas de Usuario (Nombre, Apellido, etc.), UserAgent y UsarGapVariable fueron verificadas/creadas con éxito." });
+        return Results.Ok(new { Message = "Base de datos arreglada. Las columnas de Usuario (Nombre, Apellido, etc.), UserAgent y UsarGapVariable fueron verificadas/creadas con Ã©xito." });
     } catch (Exception ex) {
         return Results.Problem($"Error al arreglar la base de datos: {ex.Message}");
     }

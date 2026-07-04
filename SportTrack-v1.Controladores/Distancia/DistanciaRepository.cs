@@ -1,4 +1,4 @@
-// Repositories/DistanciaRepository.cs
+﻿// Repositories/DistanciaRepository.cs
 using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Controladores.Distancia;

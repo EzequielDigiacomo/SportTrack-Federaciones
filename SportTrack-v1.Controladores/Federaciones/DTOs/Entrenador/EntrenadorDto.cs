@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +18,7 @@ namespace SportTrack_v1.Entidades.DTOs.Entrenador
         public decimal MontoBeca { get; set; }
         public bool PresentoAptoMedico { get; set; }
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public string? NombrePersona { get; set; }
         public string? NombreClub { get; set; }
         public string? SiglasClub { get; set; }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +17,7 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
         public string Token { get; set; } = string.Empty;
         public DateTime TokenExpira { get; set; }
 
-        // Informaci�n de Participante (opcional)
+        // Información de Participante (opcional)
         public string? NombreCompleto { get; set; }
         public string? Email { get; set; }
         public string? Rol { get; set; } = string.Empty;

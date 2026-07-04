@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Auth;
@@ -48,14 +48,14 @@ namespace SportTrack_v1.Api.Controllers.Auth
                 Secure = Request.IsHttps,
                 SameSite = Request.IsHttps ? SameSiteMode.None : SameSiteMode.Lax
             });
-            return Ok(new { message = "Sesión cerrada correctamente" });
+            return Ok(new { message = "SesiÃ³n cerrada correctamente" });
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
             await _authService.RegisterAsync(registerDto);
-            return Ok(new { message = "Usuario registrado con éxito" });
+            return Ok(new { message = "Usuario registrado con Ã©xito" });
         }
 
         [HttpGet("usuarios")]
@@ -72,7 +72,7 @@ namespace SportTrack_v1.Api.Controllers.Auth
         public async Task<ActionResult> UpdatePassword(int id, [FromBody] string newPassword)
         {
             await _authService.UpdatePasswordAsync(id, newPassword);
-            return Ok(new { message = "Contraseña actualizada con éxito" });
+            return Ok(new { message = "ContraseÃ±a actualizada con Ã©xito" });
         }
 
         [HttpPut("usuarios/{id}/perfil")]
@@ -80,7 +80,7 @@ namespace SportTrack_v1.Api.Controllers.Auth
         public async Task<ActionResult> UpdatePerfil(int id, [FromBody] UpdatePerfilDto dto)
         {
             await _authService.UpdatePerfilAsync(id, dto);
-            return Ok(new { message = "Perfil actualizado con éxito" });
+            return Ok(new { message = "Perfil actualizado con Ã©xito" });
         }
 
         [HttpPatch("usuarios/{id}/toggle-activo")]

@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.DTOs.Club;
+﻿using SportTrack_v1.Entidades.DTOs.Club;
 using SportTrack_v1.Entidades.DTOs.Participante;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
         public string NombreClub { get; set; } = string.Empty;
         public string Emailclub { get; set; } = string.Empty;
 
-        // Aseg�rate de tener esta clase PersonaDto
+        // Asegúrate de tener esta clase PersonaDto
         public PersonaDto? Participante { get; set; }
 
         public ClubDetailDto? Club { get; set; }

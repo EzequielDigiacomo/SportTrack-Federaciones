@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Pago;
 using SportTrack_v1.Controladores.Pago.Dtos;
@@ -74,7 +74,7 @@ namespace SportTrack_v1.Api.Controllers.Pagos
         public async Task<IActionResult> ToggleInscripcionPago(int id, [FromBody] bool pagado)
         {
             var result = await _pagoService.ToggleInscripcionPagoStatusAsync(id, pagado);
-            if (!result) return BadRequest("No se pudo actualizar el estado de pago de la inscripción");
+            if (!result) return BadRequest("No se pudo actualizar el estado de pago de la inscripciÃ³n");
             return NoContent();
         }
     }

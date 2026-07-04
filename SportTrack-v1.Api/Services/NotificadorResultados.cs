@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using SportTrack_v1.Api.Hubs;
 using System.Threading.Tasks;
 
@@ -21,11 +21,11 @@ namespace SportTrack_v1.Api.Services
 
         public async Task NotificarCambioResultado(int eventoPruebaId, object resultado)
         {
-            // Enviamos el mensaje al grupo específico del evento/prueba
+            // Enviamos el mensaje al grupo especÃ­fico del evento/prueba
             await _hubContext.Clients.Group(eventoPruebaId.ToString())
                 .SendAsync("RecibirResultado", resultado);
             
-            // También podemos enviar a un canal general si fuera necesario
+            // TambiÃ©n podemos enviar a un canal general si fuera necesario
             await _hubContext.Clients.All.SendAsync("GlobalUpdate", resultado);
         }
 

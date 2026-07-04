@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace SportTrack_v1.Entidades.DTOs.PagoTransaccion
         public int IdClub { get; set; }
         public string IdMercadoPago { get; set; } = string.Empty;
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public string? NombrePersona { get; set; }
         public string? NombreClub { get; set; }
         public string? EstadoDescripcion { get; set; }

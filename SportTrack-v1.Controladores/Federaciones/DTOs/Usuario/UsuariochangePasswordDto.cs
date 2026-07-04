@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,17 +9,17 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
 {
     public class UsuarioChangePasswordDto
     {
-        [Required(ErrorMessage = "La contrase�a actual es requerida")]
+        [Required(ErrorMessage = "La contraseña actual es requerida")]
         [DataType(DataType.Password)]
         public string CurrentPassword { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La nueva contrase�a es requerida")]
-        [MinLength(6, ErrorMessage = "La nueva contrase�a debe tener al menos 6 caracteres")]
+        [Required(ErrorMessage = "La nueva contraseña es requerida")]
+        [MinLength(6, ErrorMessage = "La nueva contraseña debe tener al menos 6 caracteres")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La confirmaci�n de contrase�a es requerida")]
-        [Compare("NewPassword", ErrorMessage = "Las contrase�as no coinciden")]
+        [Required(ErrorMessage = "La confirmación de contraseña es requerida")]
+        [Compare("NewPassword", ErrorMessage = "Las contraseñas no coinciden")]
         [DataType(DataType.Password)]
         public string ConfirmNewPassword { get; set; } = string.Empty;
     }

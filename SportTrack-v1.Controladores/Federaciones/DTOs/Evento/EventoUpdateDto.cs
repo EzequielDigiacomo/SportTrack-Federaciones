@@ -1,4 +1,4 @@
-// EventoActualizarDTO.cs (similar pero con Id)
+﻿// EventoActualizarDTO.cs (similar pero con Id)
 using SportTrack_v1.Entidades.Enums;
 using System.ComponentModel.DataAnnotations;
 

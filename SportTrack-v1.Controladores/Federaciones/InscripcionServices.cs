@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Entidades.Entidades;
 using SportTrack_v1.Entidades.DTOs.Inscripcion;
@@ -381,7 +381,7 @@ namespace SIGDEF.API.Services
             var ahora = DateTime.UtcNow;
 
             if (fechaInicio > ahora)
-                return "Pr�ximo";
+                return "Próximo";
             else if (fechaInicio <= ahora && fechaFin >= ahora)
                 return "Activo";
             else

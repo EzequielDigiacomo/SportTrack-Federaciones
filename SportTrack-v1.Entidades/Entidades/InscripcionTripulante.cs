@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public int ParticipanteId { get; set; }
         
         /// <summary>
-        /// Representa la posición del atleta en el bote (ej: 1 para proa, 2, 3, 4 para popa en un K4)
+        /// Representa la posiciÃ³n del atleta en el bote (ej: 1 para proa, 2, 3, 4 para popa en un K4)
         /// </summary>
         public int? PosicionEnBote { get; set; }
 

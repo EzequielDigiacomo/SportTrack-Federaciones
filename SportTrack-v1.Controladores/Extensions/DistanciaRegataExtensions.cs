@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ namespace SportTrack_v1.Controladores.Extensions
     public static class DistanciaRegataExtensions
     {
         /// <summary>
-        /// Devuelve el c骴igo corto para mostrar (200m, 5K, 10K, etc.)
+        /// Devuelve el c贸digo corto para mostrar (200m, 5K, 10K, etc.)
         /// </summary>
         public static string ToDisplayString(this DistanciaRegata distancia)
         {
@@ -45,14 +45,14 @@ namespace SportTrack_v1.Controladores.Extensions
                 DistanciaRegata.QuatroCientosMetros => "Cuatrocientos Metros (400m)",
                 DistanciaRegata.QuinientosMetros => "Quinientos Metros (500m)",
                 DistanciaRegata.MilMetros => "Mil Metros (1000m)",
-                DistanciaRegata.DosKilometros => "Dos Kil髆etros (2K)",
-                DistanciaRegata.TresKilometros => "Tres Kil髆etros (3K)",
-                DistanciaRegata.CincoKilometros => "Cinco Kil髆etros (5K)",
-                DistanciaRegata.DiezKilometros => "Diez Kil髆etros (10K)",
-                DistanciaRegata.QuinceKilometros => "Quince Kil髆etros (15K)",
-                DistanciaRegata.VeintiDosKilometros => "Veintid髎 Kil髆etros (22K)",
-                DistanciaRegata.VeintiCincoKilometros => "Veinticinco Kil髆etros (25K)",
-                DistanciaRegata.TreintaDosKilometros => "Treinta y Dos Kil髆etros (32K)",
+                DistanciaRegata.DosKilometros => "Dos Kil贸metros (2K)",
+                DistanciaRegata.TresKilometros => "Tres Kil贸metros (3K)",
+                DistanciaRegata.CincoKilometros => "Cinco Kil贸metros (5K)",
+                DistanciaRegata.DiezKilometros => "Diez Kil贸metros (10K)",
+                DistanciaRegata.QuinceKilometros => "Quince Kil贸metros (15K)",
+                DistanciaRegata.VeintiDosKilometros => "Veintid贸s Kil贸metros (22K)",
+                DistanciaRegata.VeintiCincoKilometros => "Veinticinco Kil贸metros (25K)",
+                DistanciaRegata.TreintaDosKilometros => "Treinta y Dos Kil贸metros (32K)",
                 _ => distancia.ToString()
             };
         }
@@ -82,7 +82,7 @@ namespace SportTrack_v1.Controladores.Extensions
         }
 
         /// <summary>
-        /// Devuelve la distancia en kil髆etros
+        /// Devuelve la distancia en kil贸metros
         /// </summary>
         public static decimal GetKilometros(this DistanciaRegata distancia)
         {
@@ -106,7 +106,7 @@ namespace SportTrack_v1.Controladores.Extensions
         }
 
         /// <summary>
-        /// Devuelve la unidad de medida principal (metros o kil髆etros)
+        /// Devuelve la unidad de medida principal (metros o kil贸metros)
         /// </summary>
         public static string GetUnidad(this DistanciaRegata distancia)
         {
@@ -118,7 +118,7 @@ namespace SportTrack_v1.Controladores.Extensions
                 DistanciaRegata.QuinientosMetros or
                 DistanciaRegata.MilMetros => "metros",
 
-                _ => "kil髆etros"
+                _ => "kil贸metros"
             };
         }
 
@@ -139,7 +139,7 @@ namespace SportTrack_v1.Controladores.Extensions
         }
 
         /// <summary>
-        /// Devuelve el tipo de carrera seg鷑 la distancia
+        /// Devuelve el tipo de carrera seg煤n la distancia
         /// </summary>
         public static string GetTipoCarrera(this DistanciaRegata distancia)
         {
@@ -150,14 +150,14 @@ namespace SportTrack_v1.Controladores.Extensions
                 <= 1000 => "Sprint",
                 <= 5000 => "Medio Fonto",
                 <= 10000 => "Maraton Corto",
-                <= 21000 => "Media Marat髇",
-                <= 32000 => "Marat髇",
+                <= 21000 => "Media Marat贸n",
+                <= 32000 => "Marat贸n",
                 > 42200 => "Ultra Distancia"
             };
         }
 
         /// <summary>
-        /// Devuelve todas las distancias de un tipo espec韋ico
+        /// Devuelve todas las distancias de un tipo espec铆fico
         /// </summary>
         public static List<DistanciaRegata> GetPorTipo(string tipo)
         {

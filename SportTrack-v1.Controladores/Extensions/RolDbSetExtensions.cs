@@ -1,4 +1,4 @@
-// Extensions/RolDbSetExtensions.cs
+﻿// Extensions/RolDbSetExtensions.cs
 using Microsoft.EntityFrameworkCore;
 using SportTrack_v1.Entidades.Entidades;
 using SportTrack_v1.Entidades.Enums;
@@ -29,7 +29,7 @@ namespace SportTrack_v1.Controladores.Extensions
             if (roles == null)
                 throw new ArgumentNullException(nameof(roles));
             if (string.IsNullOrWhiteSpace(tipo))
-                throw new ArgumentException("El tipo no puede estar vac�o", nameof(tipo));
+                throw new ArgumentException("El tipo no puede estar vacío", nameof(tipo));
 
             return await roles
                 .FirstOrDefaultAsync(r => r.Tipo == tipo);

@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using SportTrack_v1.Controladores.Inscripcion.Dtos;
 using SportTrack_v1.Controladores.Inscripcion;
 using SportTrack_v1.Entidades.Entidades;
@@ -33,7 +33,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
         {
             var inscripcion = await _inscripcionRepository.GetByIdAsync(id);
             if (inscripcion == null)
-                throw new NotFoundException($"Inscripción con ID {id} no encontrada");
+                throw new NotFoundException($"InscripciÃ³n con ID {id} no encontrada");
 
             return _mapper.Map<InscripcionDto>(inscripcion);
         }
@@ -48,7 +48,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
             
             // Auditoria
             await _auditService.RegistrarAccionAsync("CREATE_INSCRIPTION", 
-                $"Nueva inscripción: {result.Participante?.Nombre} {result.Participante?.Apellido} (ID: {result.Id})", null, "Inscripciones");
+                $"Nueva inscripciÃ³n: {result.Participante?.Nombre} {result.Participante?.Apellido} (ID: {result.Id})", null, "Inscripciones");
 
             return _mapper.Map<InscripcionDto>(result);
         }
@@ -57,7 +57,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
         {
             var existingInscripcion = await _inscripcionRepository.GetByIdAsync(id);
             if (existingInscripcion == null)
-                throw new NotFoundException($"Inscripción con ID {id} no encontrada");
+                throw new NotFoundException($"InscripciÃ³n con ID {id} no encontrada");
 
             // Patch manual: solo sobrescribir los campos que vienen con valor
             if (inscripcionDto.EventoPruebaId.HasValue)
@@ -70,7 +70,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
             
             // Auditoria
             await _auditService.RegistrarAccionAsync("UPDATE_INSCRIPTION", 
-                $"Inscripción actualizada (ID: {id}, Carril: {updatedInscripcion.NumeroCompetidor})", null, "Inscripciones");
+                $"InscripciÃ³n actualizada (ID: {id}, Carril: {updatedInscripcion.NumeroCompetidor})", null, "Inscripciones");
 
             return _mapper.Map<InscripcionDto>(updatedInscripcion);
         }
@@ -78,14 +78,14 @@ namespace SportTrack_v1.Controladores.Inscripcion
         public async Task<bool> DeleteInscripcionAsync(int id)
         {
             if (!await _inscripcionRepository.ExistsAsync(id))
-                throw new NotFoundException($"Inscripción con ID {id} no encontrada");
+                throw new NotFoundException($"InscripciÃ³n con ID {id} no encontrada");
 
             var res = await _inscripcionRepository.DeleteAsync(id);
             
             // Auditoria
             if (res) {
                 await _auditService.RegistrarAccionAsync("DELETE_INSCRIPTION", 
-                    $"Inscripción eliminada (ID: {id})", null, "Inscripciones");
+                    $"InscripciÃ³n eliminada (ID: {id})", null, "Inscripciones");
             }
 
             return res;
@@ -110,7 +110,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
         public async Task<bool> ToggleEsCabezaDeSerieAsync(int id)
         {
             var inscripcion = await _inscripcionRepository.GetByIdAsync(id);
-            if (inscripcion == null) throw new NotFoundException($"Inscripción {id} no encontrada");
+            if (inscripcion == null) throw new NotFoundException($"InscripciÃ³n {id} no encontrada");
 
             // Si se intenta activar (pasar de false a true)
             if (!inscripcion.EsCabezaDeSerie)
@@ -123,7 +123,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
 
                 if (actualSeeds >= maxSeedsAllowed)
                 {
-                    throw new BadRequestException($"Límite de cabezas de serie alcanzado. Máximo permitido: {maxSeedsAllowed} para {totalInscritos} atletas.");
+                    throw new BadRequestException($"LÃ­mite de cabezas de serie alcanzado. MÃ¡ximo permitido: {maxSeedsAllowed} para {totalInscritos} atletas.");
                 }
             }
 
@@ -132,7 +132,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
             
             // Auditoria
             await _auditService.RegistrarAccionAsync("TOGGLE_SEED", 
-                $"Cabeza de serie {(inscripcion.EsCabezaDeSerie ? "activado" : "desactivado")} para Inscripción {id}", null, "Inscripciones");
+                $"Cabeza de serie {(inscripcion.EsCabezaDeSerie ? "activado" : "desactivado")} para InscripciÃ³n {id}", null, "Inscripciones");
 
             return true;
         }

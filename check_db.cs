@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Npgsql;
 
 class Program
@@ -10,7 +10,7 @@ class Program
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-            Console.WriteLine("Conexión exitosa.");
+            Console.WriteLine("ConexiÃ³n exitosa.");
 
             using var cmd = new NpgsqlCommand("SELECT \"Username\", \"Rol\", \"Activo\" FROM seguridad.\"Usuarios\";", conn);
             using var reader = cmd.ExecuteReader();

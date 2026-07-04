@@ -1,4 +1,4 @@
-using SIGDEF.DTOs;
+﻿using SIGDEF.DTOs;
 using SportTrack_v1.Entidades.DTOs.Participante;
 using SportTrack_v1.Entidades.Enums;
 using System.ComponentModel.DataAnnotations;

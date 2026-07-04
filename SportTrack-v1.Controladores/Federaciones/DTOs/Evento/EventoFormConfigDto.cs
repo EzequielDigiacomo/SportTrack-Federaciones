@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         // ?? DISTANCIAS DISPONIBLES
         public List<DistanciaOptionDto> DistanciasDisponibles { get; set; } = new();
 
-        // ?? CATEGORÕAS DISPONIBLES
+        // ?? CATEGOR√çAS DISPONIBLES
         public List<CategoriaOptionDto> CategoriasDisponibles { get; set; } = new();
 
         // ?? TIPOS DE EVENTO
@@ -20,12 +20,12 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         // ?? TIPOS DE BOTE
         public List<TipoBoteOptionDto> TiposBote { get; set; } = new();
 
-        // MÈtodo para obtener categorÌas sugeridas por distancia
+        // M√©todo para obtener categor√≠as sugeridas por distancia
         public List<CategoriaOptionDto> GetCategoriasSugeridasParaDistancia(int distanciaId)
         {
-            // LÛgica para sugerir categorÌas seg˙n la distancia
-            // Ejemplo: para distancias cortas, todas las categorÌas
-            // Para maratÛn, solo Senior y Master
+            // L√≥gica para sugerir categor√≠as seg√∫n la distancia
+            // Ejemplo: para distancias cortas, todas las categor√≠as
+            // Para marat√≥n, solo Senior y Master
             return CategoriasDisponibles
                 .Where(c => c.IdCategoria >= 4) // Junior en adelante para distancias largas
                 .ToList();

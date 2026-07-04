@@ -1,4 +1,4 @@
-using SportTrack_v1.Controladores.Categoria.Dtos;
+﻿using SportTrack_v1.Controladores.Categoria.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

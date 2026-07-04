@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,7 @@ namespace SportTrack_v1.Entidades.DTOs.DelegadoClub
         public int? IdFederacion { get; set; }
         public int? IdClub { get; set; }
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public string? NombrePersona { get; set; }
         public string? TipoRol { get; set; }
         public string? NombreFederacion { get; set; }

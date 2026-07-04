@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Entidades.Entidades;
 using System;
@@ -28,7 +28,7 @@ namespace SportTrack_v1.Controladores.Evento
                 {
                     int federationId = clubActual.FederacionId ?? clubActual.Id;
 
-                    // Si el rol es uno de administración de competencias, ve toda la federación
+                    // Si el rol es uno de administraciÃ³n de competencias, ve toda la federaciÃ³n
                     var rolesAdministrativos = new[] { "Admin", "Largador", "Cronometrista", "JuezControl", "Control" };
                     if (rolesAdministrativos.Any(r => r.Equals(rol?.Trim(), StringComparison.OrdinalIgnoreCase)))
                     {

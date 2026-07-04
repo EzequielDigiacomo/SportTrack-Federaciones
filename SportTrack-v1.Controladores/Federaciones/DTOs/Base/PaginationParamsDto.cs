@@ -1,4 +1,4 @@
-namespace SportTrack_v1.Entidades.DTOs.Base;
+﻿namespace SportTrack_v1.Entidades.DTOs.Base;
 
 public class PaginationParamsDto
 {

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Participante;
 using SportTrack_v1.Controladores.Participante.Dtos;

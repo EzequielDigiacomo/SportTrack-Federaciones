@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace SportTrack_v1.Entidades.DTOs.Rol
         public int IdRol { get; set; }
         public string Tipo { get; set; } = string.Empty;
         public RolTipo? TipoEnum { get; set; } // ?? Agregar esta propiedad
-        // Estad�sticas para mostrar en listas
+        // Estadísticas para mostrar en listas
         public int CantidadRepresentantes { get; set; }
     }
 }

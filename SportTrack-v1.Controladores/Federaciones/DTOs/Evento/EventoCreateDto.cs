@@ -1,4 +1,4 @@
-// EventoCrearDTO.cs
+Ôªø// EventoCrearDTO.cs
 using SportTrack_v1.Entidades.DTOs.Evento;
 using SportTrack_v1.Entidades.Enums;
 using System;
@@ -8,17 +8,17 @@ namespace SIGDEF.DTOs
 {
     public class EventoCreateDTO
     {
-        // ?? INFORMACI”N B¡SICA
+        // ?? INFORMACI√ìN B√ÅSICA
         [Required(ErrorMessage = "El nombre es requerido")]
         [MaxLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
         public string Nombre { get; set; } = string.Empty;
 
-        [MaxLength(500, ErrorMessage = "La descripciÛn no puede exceder 500 caracteres")]
+        [MaxLength(500, ErrorMessage = "La descripci√≥n no puede exceder 500 caracteres")]
         public string? Descripcion { get; set; }
 
         // ?? TIPO DE EVENTO
         [Required(ErrorMessage = "El tipo de evento es requerido")]
-        [EnumDataType(typeof(TipoEvento), ErrorMessage = "Tipo de evento no v·lido")]
+        [EnumDataType(typeof(TipoEvento), ErrorMessage = "Tipo de evento no v√°lido")]
         public TipoEvento TipoEvento { get; set; } = TipoEvento.CarreraOficial;
 
         // ?? FECHAS
@@ -28,12 +28,12 @@ namespace SIGDEF.DTOs
         [Required(ErrorMessage = "La fecha de fin es requerida")]
         public DateTime FechaFin { get; set; }
 
-        // ?? FECHAS DE INSCRIPCI”N
+        // ?? FECHAS DE INSCRIPCI√ìN
         public DateTime? FechaInicioInscripciones { get; set; }
         public DateTime? FechaFinInscripciones { get; set; }
 
-        // ?? UBICACI”N
-        [MaxLength(200, ErrorMessage = "La ubicaciÛn no puede exceder 200 caracteres")]
+        // ?? UBICACI√ìN
+        [MaxLength(200, ErrorMessage = "La ubicaci√≥n no puede exceder 200 caracteres")]
         public string? Ubicacion { get; set; }
 
         [MaxLength(100, ErrorMessage = "La ciudad no puede exceder 100 caracteres")]
@@ -47,7 +47,7 @@ namespace SIGDEF.DTOs
         [MinLength(1, ErrorMessage = "Debe especificar al menos una distancia")]
         public List<DistanciaDTO> Distancias { get; set; } = new List<DistanciaDTO>();
 
-        // ?? CONFIGURACI”N
+        // ?? CONFIGURACI√ìN
         [Range(0, 100000, ErrorMessage = "El precio debe estar entre 0 y 100,000")]
         public decimal PrecioBase { get; set; } = 0;
 

@@ -1,4 +1,4 @@
-// Helpers/RolValidationHelper.cs
+Ôªø// Helpers/RolValidationHelper.cs
 using SportTrack_v1.Entidades.Enums;
 
 namespace SportTrack_v1.Controladores.Helpers
@@ -8,7 +8,7 @@ namespace SportTrack_v1.Controladores.Helpers
         private static readonly HashSet<int> _validRolIds = new() { 1, 2, 3, 4, 5, 6, 7 };
 
         /// <summary>
-        /// Valida si un ID de rol es v·lido
+        /// Valida si un ID de rol es v√°lido
         /// </summary>
         public static bool IsValidRolId(int rolId)
         {
@@ -24,7 +24,7 @@ namespace SportTrack_v1.Controladores.Helpers
         }
 
         /// <summary>
-        /// Valida si un enum RolTipo es v·lido
+        /// Valida si un enum RolTipo es v√°lido
         /// </summary>
         public static bool IsValidRolTipo(RolTipo tipo)
         {
@@ -32,7 +32,7 @@ namespace SportTrack_v1.Controladores.Helpers
         }
 
         /// <summary>
-        /// Obtiene todos los valores v·lidos del enum
+        /// Obtiene todos los valores v√°lidos del enum
         /// </summary>
         public static List<KeyValuePair<int, string>> GetValidRoles()
         {

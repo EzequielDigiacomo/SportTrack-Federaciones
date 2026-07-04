@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -35,7 +35,7 @@ namespace SIGDEF.DTOs
         public DateTime? FechaAptoMedico { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        // ?? NUEVAS PROPIEDADES PARA INFORMACI�N RELACIONADA
+        // ?? NUEVAS PROPIEDADES PARA INFORMACIÓN RELACIONADA
         public string? NombrePersona { get; set; }
         public string? NombreClub { get; set; }
     }

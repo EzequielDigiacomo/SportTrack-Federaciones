@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using SportTrack_v1.Entidades.DTOs.Club;
 using SportTrack_v1.Entidades.DTOs.Participante;
@@ -24,7 +24,7 @@ namespace SportTrack_v1.Entidades.DTOs.AtletaFederado
         public bool PresentoAptoMedico { get; set; }
         public DateTime? FechaAptoMedico { get; set; }
          public DateTime FechaCreacion { get; set; }
-        // Informaci�n relacionada
+        // Información relacionada
         public PersonaDto? Participante { get; set; }
         public ClubDto? Club { get; set; }
         public List<InscripcionDto>? Inscripciones { get; set; }

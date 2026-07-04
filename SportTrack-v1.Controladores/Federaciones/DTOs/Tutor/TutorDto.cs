@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace SportTrack_v1.Entidades.DTOs.Tutor
         public int ParticipanteId { get; set; }
         public string TipoTutor { get; set; } = string.Empty;
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public string? NombrePersona { get; set; }
         public string? Documento { get; set; }
         public string? Telefono { get; set; }

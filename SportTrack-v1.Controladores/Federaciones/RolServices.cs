@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Controladores.Extensions;
 using SportTrack_v1.Entidades.Entidades;
@@ -62,7 +62,7 @@ namespace SIGDEF.API.Services
                         TipoEnum = r.TipoEnum,
                         Representantes = r.DelegadosClub.Select(d => new DelegadoClubDto
                         {
-                            ParticipanteId = d.ParticipanteId,
+                            ParticipanteId = d.IdParticipante,
                             IdRol = d.IdRol,
                             IdFederacion = d.IdFederacion,
                             NombrePersona = d.Participante.Nombre + " " + d.Participante.Apellido,
@@ -171,7 +171,7 @@ namespace SIGDEF.API.Services
                     RolTipo.Administrador,
                     RolTipo.DelegadoClub,
                     RolTipo.Entrenador,
-                    RolTipo.AtletaFederado,
+                    RolTipo.Atleta,
                 };
 
                 var roles = await _context.Roles.GetByTiposAsync(rolesPredefinidos.ToArray());
@@ -378,13 +378,13 @@ namespace SIGDEF.API.Services
             return tipo switch
             {
                 RolTipo.Administrador => "Acceso total al sistema",
-                RolTipo.PresidenteFederacion => "M�xima autoridad de una federaci�n",
+                RolTipo.PresidenteFederacion => "MÃ¡xima autoridad de una federaciÃ³n",
                 RolTipo.DelegadoClub => "Representante oficial de un club",
                 RolTipo.Entrenador => "Entrenador de club",
-                RolTipo.EntrenadorSeleccion => "Entrenador de selecci�n nacional",
-                RolTipo.AtletaFederado => "Deportista registrado",
+                RolTipo.EntrenadorSeleccion => "Entrenador de selecciÃ³n nacional",
+                RolTipo.Atleta => "Deportista registrado",
                 RolTipo.Secretario => "Personal administrativo",
-                _ => "Sin descripci�n"
+                _ => "Sin descripciÃ³n"
             };
         }
     }

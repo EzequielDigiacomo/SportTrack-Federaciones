@@ -1,4 +1,4 @@
-    using Microsoft.Extensions.Logging;
+Ôªø    using Microsoft.Extensions.Logging;
     using SportTrack_v1.Controladores.PagosSIGDEF.Models.Dtos;
  
 
@@ -37,7 +37,7 @@
             };
         }
 
-        // MÈtodo para validar si un gateway est· disponible
+        // M√©todo para validar si un gateway est√° disponible
         public bool IsGatewayAvailable(string gateway)
         {
             var availableGateways = new[] { "mercadopago", "mp" };

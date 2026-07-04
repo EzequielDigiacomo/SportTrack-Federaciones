@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ï»¿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportTrack_v1.Controladores.PagosSIGDEF.Models.Dtos;
 using SportTrack.AccessDatos;
@@ -40,7 +40,7 @@ namespace SIGDEF.API.Controllers
                 var clubExists = await _context.Clubes.AnyAsync(c => c.IdClub == pagoDto.IdClub);
                 if (!clubExists) return BadRequest("El club especificado no existe");
 
-                // 2. Crear primero el registro en BD (Pendiente) para tener un ID único
+                // 2. Crear primero el registro en BD (Pendiente) para tener un ID Ãºnico
                 var pagoTransaccion = new PagoTransaccion
                 {
                     Concepto = pagoDto.Concepto,
@@ -49,7 +49,7 @@ namespace SIGDEF.API.Controllers
                     FechaCreacion = DateTime.UtcNow,
                     ParticipanteId = pagoDto.ParticipanteId,
                     IdClub = pagoDto.IdClub,
-                    IdMercadoPago = "PENDING" // Se actualizará al generar el link
+                    IdMercadoPago = "PENDING" // Se actualizarÃ¡ al generar el link
                 };
 
                 _context.PagosTransacciones.Add(pagoTransaccion);
@@ -67,7 +67,7 @@ namespace SIGDEF.API.Controllers
                     {
                         { "IdClub", pagoDto.IdClub.ToString() },
                         { "ParticipanteId", pagoDto.ParticipanteId.ToString() },
-                        { "ReferenceId", pagoTransaccion.IdPago.ToString() } // VINCULACIÓN CLAVE
+                        { "ReferenceId", pagoTransaccion.IdPago.ToString() } // VINCULACIÃ“N CLAVE
                     }
                 };
 
@@ -82,7 +82,7 @@ namespace SIGDEF.API.Controllers
                 }
                 else
                 {
-                    // Si falla MP, podríamos borrar el registro o marcarlo como error
+                    // Si falla MP, podrÃ­amos borrar el registro o marcarlo como error
                     _context.PagosTransacciones.Remove(pagoTransaccion);
                     await _context.SaveChangesAsync();
                     return StatusCode(500, $"Error al generar preferencia en MP: {result.ErrorMessage}");
@@ -407,12 +407,12 @@ namespace SIGDEF.API.Controllers
                 pagoTransaccion.IdClub = pagoTransaccionCreateDto.IdClub;
                 pagoTransaccion.IdMercadoPago = pagoTransaccionCreateDto.IdMercadoPago ?? string.Empty;
 
-                // ?? Si el estado cambia a Aprobado y no tiene fecha de aprobación, establecerla
+                // ?? Si el estado cambia a Aprobado y no tiene fecha de aprobaciÃ³n, establecerla
                 if (pagoTransaccionCreateDto.Estado == EstadoPagoTransaccion.Aprobado && !pagoTransaccion.FechaAprobacion.HasValue)
                 {
                     pagoTransaccion.FechaAprobacion = DateTime.UtcNow;
                 }
-                // ?? Si el estado cambia de Aprobado a otro estado, limpiar la fecha de aprobación
+                // ?? Si el estado cambia de Aprobado a otro estado, limpiar la fecha de aprobaciÃ³n
                 else if (pagoTransaccionCreateDto.Estado != EstadoPagoTransaccion.Aprobado && pagoTransaccion.FechaAprobacion.HasValue)
                 {
                     pagoTransaccion.FechaAprobacion = null;
@@ -453,7 +453,7 @@ namespace SIGDEF.API.Controllers
 
                 pagoTransaccion.Estado = nuevoEstado;
 
-                // ?? Actualizar fecha de aprobación si corresponde
+                // ?? Actualizar fecha de aprobaciÃ³n si corresponde
                 if (nuevoEstado == EstadoPagoTransaccion.Aprobado && !pagoTransaccion.FechaAprobacion.HasValue)
                 {
                     pagoTransaccion.FechaAprobacion = DateTime.UtcNow;

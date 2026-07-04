@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportTrack_v1.Entidades.Entidades
@@ -8,7 +8,7 @@ namespace SportTrack_v1.Entidades.Entidades
         [Key]
         public int Id { get; set; }
         public int? PersonaId { get; set; }
-        // Aqu� conectamos con la entidad BASE "Participante"
+        // Aquí conectamos con la entidad BASE "Participante"
         [ForeignKey("PersonaId")]
         public virtual Participante Participante { get; set; } = null!;
         public int? TipoDocumento { get; set; } // Enum (DNI, Pasaporte, etc)

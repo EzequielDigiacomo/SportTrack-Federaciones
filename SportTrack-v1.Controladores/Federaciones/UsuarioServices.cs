@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Entidades.Entidades;
 using SportTrack_v1.Entidades.DTOs.Usuario;
@@ -361,8 +361,8 @@ namespace SIGDEF.API.Services
                     return new NotFoundResult();
                 }
 
-                // Generar clave aleatoria (8 caracteres alfanuméricos)
-                const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Evitamos O, I, 0, 1 por confusión
+                // Generar clave aleatoria (8 caracteres alfanumÃ©ricos)
+                const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Evitamos O, I, 0, 1 por confusiÃ³n
                 var random = new Random();
                 var newPassword = new string(Enumerable.Repeat(chars, 8)
                     .Select(s => s[random.Next(s.Length)]).ToArray());

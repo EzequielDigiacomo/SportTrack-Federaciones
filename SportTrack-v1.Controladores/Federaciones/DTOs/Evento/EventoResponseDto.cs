@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +22,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public DateTime? FechaInicioInscripciones { get; set; }
         public DateTime? FechaFinInscripciones { get; set; }
 
-        // ?? UBICACI”N
+        // ?? UBICACI√ìN
         public string? Ubicacion { get; set; }
         public string? Ciudad { get; set; }
         public string? Provincia { get; set; }
@@ -37,7 +37,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public decimal DistanciaMetros => Pruebas.FirstOrDefault()?.Metros ?? 0;
         public string DistanciasDisplay => string.Join(", ", Pruebas.Select(d => d.DistanciaCodigo));
 
-        // ?? CONFIGURACI”N
+        // ?? CONFIGURACI√ìN
         public decimal PrecioBase { get; set; }
         public int CupoMaximo { get; set; }
         public bool TieneCronometraje { get; set; }
@@ -48,7 +48,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public DateTime FechaCreacion { get; set; }
         public string? Observaciones { get; set; }
 
-        // ?? ESTADÕSTICAS
+        // ?? ESTAD√çSTICAS
         public int TotalInscritos { get; set; }
         public int CuposDisponibles { get; set; }
         public bool InscripcionesAbiertas { get; set; }
@@ -63,7 +63,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public string PrecioDisplay { get; set; } = string.Empty;
         public string CupoDisplay { get; set; } = string.Empty;
 
-        // ?? M…TODO PRINCIPAL
+        // ?? M√âTODO PRINCIPAL
         public static EventoResponseDto FromEntity(Entidades.Evento evento)
         {
             if (evento == null)
@@ -71,7 +71,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
 
             var dto = new EventoResponseDto
             {
-                // ?? INFORMACI”N B¡SICA
+                // ?? INFORMACI√ìN B√ÅSICA
                 IdEvento = evento.IdEvento,
                 Nombre = evento.Nombre,
                 Descripcion = evento.Descripcion,
@@ -88,15 +88,15 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
                 FechaInicioInscripciones = evento.FechaInicioInscripciones,
                 FechaFinInscripciones = evento.FechaFinInscripciones,
 
-                // ?? UBICACI”N
+                // ?? UBICACI√ìN
                 Ubicacion = evento.Ubicacion,
                 Ciudad = evento.Ciudad,
                 Provincia = evento.Provincia,
 
-                // ?? PRUEBAS (M⁄LTIPLES)
+                // ?? PRUEBAS (M√öLTIPLES)
                 Pruebas = evento.Pruebas?.Select(ed => EventoPruebaResponseDto.FromEntity(ed)).ToList() ?? new List<EventoPruebaResponseDto>(),
 
-                // ?? CONFIGURACI”N
+                // ?? CONFIGURACI√ìN
                 PrecioBase = evento.PrecioBase,
                 CupoMaximo = evento.CupoMaximo,
                 TieneCronometraje = evento.TieneCronometraje,
@@ -107,7 +107,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
                 FechaCreacion = evento.FechaCreacion,
                 Observaciones = evento.Observaciones,
 
-                // ?? ESTADÕSTICAS
+                // ?? ESTAD√çSTICAS
                 TotalInscritos = evento.Inscripciones?.Count ?? 0,
                 CuposDisponibles = evento.CupoMaximo - (evento.Inscripciones?.Count ?? 0),
                 DiasRestantes = (evento.FechaInicio - DateTime.UtcNow).Days
@@ -122,10 +122,10 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
 
             dto.PeriodoInscripcionesDisplay = dto.FechaInicioInscripciones.HasValue && dto.FechaFinInscripciones.HasValue
                 ? $"{dto.FechaInicioInscripciones:dd/MM/yyyy} - {dto.FechaFinInscripciones:dd/MM/yyyy}"
-                : "Sin perÌodo definido";
+                : "Sin per√≠odo definido";
 
             dto.EstadoDisplay = dto.EstaActivo
-                ? (dto.InscripcionesAbiertas ? "?? Inscripciones Abiertas" : "?? PrÛximamente")
+                ? (dto.InscripcionesAbiertas ? "?? Inscripciones Abiertas" : "?? Pr√≥ximamente")
                 : "?? Finalizado";
 
             dto.UbicacionCompleta = string.Join(", ",
@@ -141,7 +141,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
             return dto;
         }
 
-        // MÈtodos auxiliares para TipoEvento
+        // M√©todos auxiliares para TipoEvento
         private static string GetTipoEventoDisplay(Enums.TipoEvento tipo)
         {
             return tipo switch

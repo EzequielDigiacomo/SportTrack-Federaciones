@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using SportTrack_v1.Controladores.Fase.Dtos;
 using SportTrack_v1.Controladores.Inscripcion;
 using SportTrack_v1.Controladores.Evento;
@@ -65,7 +65,7 @@ namespace SportTrack_v1.Controladores.Fase
 
         public async Task<IEnumerable<FaseDto>> GenerarFasesAutoAsync(int eventoPruebaId)
         {
-            // Verificación de seguridad: No permitir re-sortear si ya hay resultados oficiales
+            // VerificaciÃ³n de seguridad: No permitir re-sortear si ya hay resultados oficiales
             var fasesExistentes = await _faseRepository.GetByEventoPruebaIdAsync(eventoPruebaId);
             if (fasesExistentes.Any(f => f.Resultados.Any(r => r.TiempoOficial.HasValue)))
             {
@@ -84,7 +84,7 @@ namespace SportTrack_v1.Controladores.Fase
             
             var ep = await _eventoRepository.GetEventoPruebaByIdAsync(eventoPruebaId);
             
-            // Asignar Plan de Progresión Automáticamente
+            // Asignar Plan de ProgresiÃ³n AutomÃ¡ticamente
             if (ep != null)
             {
                 ep.PlanProgresionAsignado = DeterminarPlanProgresion(inscriptosCount);
@@ -180,7 +180,7 @@ namespace SportTrack_v1.Controladores.Fase
             
             // Auditoria
             await _auditService.RegistrarAccionAsync("GENERATE_HEATS_AUTO", 
-                $"Sorteo automático generado para la Prueba ID {eventoPruebaId}. Se crearon {numSeries} series.", null, "Competencia");
+                $"Sorteo automÃ¡tico generado para la Prueba ID {eventoPruebaId}. Se crearon {numSeries} series.", null, "Competencia");
 
             return await GetFasesPorEventoPruebaAsync(eventoPruebaId);
         }
@@ -251,7 +251,7 @@ namespace SportTrack_v1.Controladores.Fase
  
         private string DeterminarPlanProgresion(int count)
         {
-            // La elección entre la variante 1 y 2 es aleatoria (ej: A1 o A2)
+            // La elecciÃ³n entre la variante 1 y 2 es aleatoria (ej: A1 o A2)
             string variant = new Random().Next(1, 3).ToString(); 
 
             if (count >= 10 && count <= 18) return $"Plan A{variant}";
@@ -262,7 +262,7 @@ namespace SportTrack_v1.Controladores.Fase
             if (count >= 55 && count <= 63) return $"Plan F{variant}";
             if (count >= 64 && count <= 72) return $"Plan G{variant}";
             
-            return null; // Directo a final u otra excepción
+            return null; // Directo a final u otra excepciÃ³n
         }
 
         private Entidades.Entidades.Fase CrearFaseConResultados(int etapaId, string nombreFase, int numeroFase, List<Entidades.Entidades.Inscripcion> inscripcionesBase, DateTime? fechaHora = null)
@@ -328,7 +328,7 @@ namespace SportTrack_v1.Controladores.Fase
 
         public async Task<IEnumerable<FaseDto>> PromoverFasesAsync(int eventoPruebaId)
         {
-            // 1. Obtener todas las fases con sus resultados e inscripciones (usando el repo de fases que es más completo)
+            // 1. Obtener todas las fases con sus resultados e inscripciones (usando el repo de fases que es mÃ¡s completo)
             var todasLasFases = (await _faseRepository.GetByEventoPruebaIdAsync(eventoPruebaId)).ToList();
             if (!todasLasFases.Any()) return new List<FaseDto>();
 
@@ -338,7 +338,7 @@ namespace SportTrack_v1.Controladores.Fase
                                       .OrderBy(e => e.Orden)
                                       .ToList();
 
-            // 2. Encontrar la etapa más alta que tenga resultados (tiempo o posición)
+            // 2. Encontrar la etapa mÃ¡s alta que tenga resultados (tiempo o posiciÃ³n)
             var etapaCandidata = etapas.OrderByDescending(e => e.Orden)
                                        .Where(e => e.Tipo != SportTrack_v1.Entidades.Enums.TipoEtapaEnum.Final)
                                        .FirstOrDefault(e => {
@@ -355,12 +355,12 @@ namespace SportTrack_v1.Controladores.Fase
 
             if (etapaCandidata == null)
             {
-                throw new InvalidOperationException("No se encontró ninguna etapa con fases para promover.");
+                throw new InvalidOperationException("No se encontrÃ³ ninguna etapa con fases para promover.");
             }
 
             var etapaActual = etapaCandidata;
 
-            // 3. Verificar si está completa usando la lista plana de fases
+            // 3. Verificar si estÃ¡ completa usando la lista plana de fases
             var fasesDeLaEtapa = todasLasFases.Where(f => f.EtapaId == etapaActual.Id).ToList();
             var fasesIncompletas = fasesDeLaEtapa
                 .Where(f => !f.Resultados.Any() || !f.Resultados.Any(r => r.TiempoOficial.HasValue || r.Posicion.HasValue))
@@ -370,7 +370,7 @@ namespace SportTrack_v1.Controladores.Fase
             if (fasesIncompletas.Any())
             {
                 string listaFases = string.Join(", ", fasesIncompletas);
-                throw new InvalidOperationException($"No se puede promover la etapa '{etapaActual.Nombre}' porque faltan resultados en: {listaFases}. Asegúrate de cargar y GUARDAR los tiempos de todas las series.");
+                throw new InvalidOperationException($"No se puede promover la etapa '{etapaActual.Nombre}' porque faltan resultados en: {listaFases}. AsegÃºrate de cargar y GUARDAR los tiempos de todas las series.");
             }
 
             // 2. Borrar etapas de orden superior (futuras) SOLO SI no tienen resultados ya cargados.
@@ -381,7 +381,7 @@ namespace SportTrack_v1.Controladores.Fase
 
             foreach(var e in etapasAEliminar) await _etapaRepository.DeleteAsync(e.Id); 
             
-            // Re-obtener fases y etapas para tener la lista fresca después del borrado
+            // Re-obtener fases y etapas para tener la lista fresca despuÃ©s del borrado
             todasLasFases = (await _faseRepository.GetByEventoPruebaIdAsync(eventoPruebaId)).ToList();
             etapas = todasLasFases.GroupBy(f => f.EtapaId).Select(g => g.First().Etapa).OrderBy(e => e.Orden).ToList();
             etapaActual = etapas.First(e => e.Id == etapaActual.Id);
@@ -394,7 +394,7 @@ namespace SportTrack_v1.Controladores.Fase
 
             if (!resultadosEtapa.Any()) return await GetFasesPorEventoPruebaAsync(eventoPruebaId);
 
-            // Determinar horario de inicio de la siguiente etapa (40m después de la última fase de la etapa actual)
+            // Determinar horario de inicio de la siguiente etapa (40m despuÃ©s de la Ãºltima fase de la etapa actual)
             var lastFaseTime = fasesDeLaEtapa.Max(f => f.FechaHoraProgramada) ?? DateTime.UtcNow;
             DateTime nextTime = lastFaseTime.AddMinutes(40);
 
@@ -498,7 +498,7 @@ namespace SportTrack_v1.Controladores.Fase
                     }
                 }
 
-                // 2. Clasificación desde las Semifinales actuales
+                // 2. ClasificaciÃ³n desde las Semifinales actuales
                 if (numHeats == 1) // Caso 2 Heats -> 1 Semi
                 {
                     // 1-3 to Final A
@@ -603,7 +603,7 @@ namespace SportTrack_v1.Controladores.Fase
 
             // Auditoria
             await _auditService.RegistrarAccionAsync("PROMOTE_STAGE", 
-                $"Promoción de etapa ejecutada para la Prueba ID {eventoPruebaId}. Etapa actual: {etapaActual.Nombre}", null, "Competencia");
+                $"PromociÃ³n de etapa ejecutada para la Prueba ID {eventoPruebaId}. Etapa actual: {etapaActual.Nombre}", null, "Competencia");
 
             return await GetFasesPorEventoPruebaAsync(eventoPruebaId);
         }
@@ -625,7 +625,7 @@ namespace SportTrack_v1.Controladores.Fase
             // Notificar por SignalR
             await _hubContext.Clients.Group($"race_{id}").SendAsync("RaceStarted", id, fase.FechaHoraInicioReal);
             
-            // Notificación Global (para usuarios fuera de la regata específica, como el Cronometrista en su Dashboard)
+            // NotificaciÃ³n Global (para usuarios fuera de la regata especÃ­fica, como el Cronometrista en su Dashboard)
             await _hubContext.Clients.All.SendAsync("globalRaceStarted", id, fase.FechaHoraInicioReal);
 
             return _mapper.Map<FaseDto>(fase);
@@ -642,7 +642,7 @@ namespace SportTrack_v1.Controladores.Fase
             // Al finalizar oficialmente, marcamos todos los resultados como Oficiales
             if (fase.Resultados != null && fase.Resultados.Any())
             {
-                // Ordenamos por tiempo para asignar posiciones automáticamente
+                // Ordenamos por tiempo para asignar posiciones automÃ¡ticamente
                 var conTiempo = fase.Resultados
                                     .Where(r => r.TiempoOficial != null)
                                     .OrderBy(r => r.TiempoOficial)
@@ -685,7 +685,7 @@ namespace SportTrack_v1.Controladores.Fase
             fase.FechaHoraFinReal = null;
             fase.Estado = "Programada";
 
-            // 2. Limpiar resultados de cada carril pero conservar la inscripción y el carril
+            // 2. Limpiar resultados de cada carril pero conservar la inscripciÃ³n y el carril
             if (fase.Resultados != null)
             {
                 foreach (var res in fase.Resultados)
@@ -702,7 +702,7 @@ namespace SportTrack_v1.Controladores.Fase
             await _auditService.RegistrarAccionAsync("RESET_RACE", 
                 $"Carrera reiniciada: {fase.NombreFase} (ID: {id}). Se limpiaron los tiempos.", null, "Competencia");
 
-            // 3. Notificar a los clientes SignalR que la carrera se reinició
+            // 3. Notificar a los clientes SignalR que la carrera se reiniciÃ³
             await _hubContext.Clients.Group($"race_{id}").SendAsync("RaceReset", id);
 
             return _mapper.Map<FaseDto>(fase);
@@ -713,10 +713,10 @@ namespace SportTrack_v1.Controladores.Fase
             var fase = await _faseRepository.GetByIdAsync(id);
             if (fase == null) throw new KeyNotFoundException("Fase no encontrada");
 
-            fase.Estado = "Pendiente de Validación";
+            fase.Estado = "Pendiente de ValidaciÃ³n";
             fase.FechaHoraFinReal = DateTime.UtcNow;
 
-            // Al enviar a revisión, marcamos los resultados como Preliminares
+            // Al enviar a revisiÃ³n, marcamos los resultados como Preliminares
             if (fase.Resultados != null)
             {
                 foreach (var res in fase.Resultados)
@@ -732,11 +732,11 @@ namespace SportTrack_v1.Controladores.Fase
             
             // Auditoria
             await _auditService.RegistrarAccionAsync("REVIEW_RACE", 
-                $"Carrera enviada a revisión: {fase.NombreFase} (ID: {id})", null, "Competencia");
+                $"Carrera enviada a revisiÃ³n: {fase.NombreFase} (ID: {id})", null, "Competencia");
 
             Console.WriteLine($"[SignalR-Debug] Emitting GlobalRaceInReview for Fase {fase.Id}: {fase.NombreFase}");
 
-            // Notificar que está en revisión (Local a la carrera y Global para el Juez)
+            // Notificar que estÃ¡ en revisiÃ³n (Local a la carrera y Global para el Juez)
             await _hubContext.Clients.Group($"race_{id}").SendAsync("RaceInReview", id);
             await _hubContext.Clients.All.SendAsync("globalRaceInReview", new { id = fase.Id, nombre = fase.NombreFase });
 
@@ -756,8 +756,8 @@ namespace SportTrack_v1.Controladores.Fase
                 var fase = await _faseRepository.GetByIdAsync(item.Id);
                 if (fase != null)
                 {
-                    // Si el Kind es Utc, lo dejamos como está. 
-                    // Si es Unspecified (viene del string sin Z), lo tratamos como UTC para no romper la lógica de la BD,
+                    // Si el Kind es Utc, lo dejamos como estÃ¡. 
+                    // Si es Unspecified (viene del string sin Z), lo tratamos como UTC para no romper la lÃ³gica de la BD,
                     // pero lo ideal es que el frontend mande el ISO con Z (como acabamos de corregir).
                     fase.FechaHoraProgramada = item.FechaHoraProgramada.Kind == DateTimeKind.Utc 
                         ? item.FechaHoraProgramada 
@@ -771,7 +771,7 @@ namespace SportTrack_v1.Controladores.Fase
         {
             try
             {
-                // Intentar búsqueda estándar
+                // Intentar bÃºsqueda estÃ¡ndar
                 var tz = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
                 var unspecified = DateTime.SpecifyKind(localDateTime, DateTimeKind.Unspecified);
                 return TimeZoneInfo.ConvertTimeToUtc(unspecified, tz);
@@ -783,7 +783,7 @@ namespace SportTrack_v1.Controladores.Fase
                 {
                     return DateTime.SpecifyKind(localDateTime.AddHours(3), DateTimeKind.Utc);
                 }
-                // Si todo falla, asumimos que ya es UTC para evitar desvíos indeterminados
+                // Si todo falla, asumimos que ya es UTC para evitar desvÃ­os indeterminados
                 return DateTime.SpecifyKind(localDateTime, DateTimeKind.Utc);
             }
         }
@@ -791,7 +791,7 @@ namespace SportTrack_v1.Controladores.Fase
         public async Task<IEnumerable<FaseDto>> GenerarFasesManualAsync(int eventoPruebaId, List<ManualPlacementDto> placements)
         {
             if (placements == null || !placements.Any())
-                throw new ArgumentException("Debe proporcionar al menos una ubicación para generar las fases.");
+                throw new ArgumentException("Debe proporcionar al menos una ubicaciÃ³n para generar las fases.");
 
             // Validar que no haya carriles duplicados dentro de la misma serie
             var agrupadoPorSerieCheck = placements.GroupBy(p => p.Serie);
@@ -803,7 +803,7 @@ namespace SportTrack_v1.Controladores.Fase
                                             .ToList();
                 if (carrilesRepetidos.Any())
                 {
-                    throw new ArgumentException($"El carril {carrilesRepetidos.First()} está repetido en la Serie {grupo.Key}.");
+                    throw new ArgumentException($"El carril {carrilesRepetidos.First()} estÃ¡ repetido en la Serie {grupo.Key}.");
                 }
             }
 
@@ -833,7 +833,7 @@ namespace SportTrack_v1.Controladores.Fase
                 }
             }
 
-            // Asignar Plan de Progresión Automáticamente
+            // Asignar Plan de ProgresiÃ³n AutomÃ¡ticamente
             if (ep != null)
             {
                 int inscriptosCount = placements.Count;
@@ -841,7 +841,7 @@ namespace SportTrack_v1.Controladores.Fase
                 await _eventoRepository.UpdateEventoPruebaAsync(ep);
             }
 
-            // Determinar cuántas series hay
+            // Determinar cuÃ¡ntas series hay
             var numSeries = placements.Max(p => p.Serie);
 
             // Crear Etapa de Eliminatorias (o Finales si es solo 1 serie)
@@ -883,7 +883,7 @@ namespace SportTrack_v1.Controladores.Fase
                 nextTime = nextTime.AddMinutes(10);
             }
 
-            // Si hay más de una serie, pre-generamos las siguientes etapas vacías (SF/Finales) como en el modo auto
+            // Si hay mÃ¡s de una serie, pre-generamos las siguientes etapas vacÃ­as (SF/Finales) como en el modo auto
             if (numSeries > 1)
             {
                 var inscriptosCount = placements.Count;

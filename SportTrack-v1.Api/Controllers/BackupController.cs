@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -43,13 +43,13 @@ namespace SportTrack_v1.Api.Controllers
                 var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                 
                 // Si es Windows, asumimos que puede estar en las rutas habituales de PostgreSQL o en el PATH
-                // En Linux (Render), al haber instalado postgresql-client, pg_dump estará en el PATH
+                // En Linux (Render), al haber instalado postgresql-client, pg_dump estarÃ¡ en el PATH
                 var pgDumpCommand = isWindows ? "pg_dump" : "pg_dump";
                 
                 if (isWindows)
                 {
                     // Intentar buscar en C:\Program Files\PostgreSQL si no se encuentra en el PATH
-                    var defaultPgPath = @"C:\Program Files\PostgreSQL\16\bin\pg_dump.exe"; // Versión común, puede ser 15, 16, 17...
+                    var defaultPgPath = @"C:\Program Files\PostgreSQL\16\bin\pg_dump.exe"; // VersiÃ³n comÃºn, puede ser 15, 16, 17...
                     if (!System.IO.File.Exists(defaultPgPath))
                     {
                         defaultPgPath = @"C:\Program Files\PostgreSQL\15\bin\pg_dump.exe";
@@ -79,7 +79,7 @@ namespace SportTrack_v1.Api.Controllers
                     CreateNoWindow = true
                 };
 
-                // Pasar la contraseña por variable de entorno es la forma segura en PostgreSQL
+                // Pasar la contraseÃ±a por variable de entorno es la forma segura en PostgreSQL
                 processStartInfo.EnvironmentVariables["PGPASSWORD"] = password;
 
                 var process = new Process { StartInfo = processStartInfo };

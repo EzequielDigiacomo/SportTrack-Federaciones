@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Entidades;
+Ôªøusing SportTrack_v1.Entidades.Entidades;
 using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
@@ -26,14 +26,14 @@ namespace SportTrack_v1.Entidades.DTOs.Participante
         [Required(ErrorMessage = "La fecha de nacimiento es requerida")]
         public DateTime FechaNacimiento { get; set; }
 
-        [EmailAddress(ErrorMessage = "El formato del email no es v·lido")]
+        [EmailAddress(ErrorMessage = "El formato del email no es v√°lido")]
         [MaxLength(100, ErrorMessage = "El email no puede exceder 100 caracteres")]
         public string? Email { get; set; } = string.Empty;
 
-        [MaxLength(20, ErrorMessage = "El telÈfono no puede exceder 20 caracteres")]
+        [MaxLength(20, ErrorMessage = "El tel√©fono no puede exceder 20 caracteres")]
         public string? Telefono { get; set; } = string.Empty;
 
-        [MaxLength(200, ErrorMessage = "La direcciÛn no puede exceder 200 caracteres")]
+        [MaxLength(200, ErrorMessage = "La direcci√≥n no puede exceder 200 caracteres")]
         public string Direccion { get; set; } = string.Empty;
 
         public Sexo Sexo { get; set; } // NUEVO

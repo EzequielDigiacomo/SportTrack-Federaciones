@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
@@ -23,7 +23,7 @@ namespace SportTrack_v1.Api.Controllers
         [HttpGet("logs")]
         public async Task<IActionResult> GetLogs([FromQuery] string modulo = null, [FromQuery] int limit = 100)
         {
-            // Solo permitir a usuarios específicos o con el rol SuperAdmin
+            // Solo permitir a usuarios especÃ­ficos o con el rol SuperAdmin
             var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
             var userName = User.Identity?.Name;
 
@@ -48,7 +48,7 @@ namespace SportTrack_v1.Api.Controllers
         }
 
         [HttpPost("frontend-error")]
-        [AllowAnonymous] // Permitir reportes incluso si no hay sesión (ej: falla el login)
+        [AllowAnonymous] // Permitir reportes incluso si no hay sesiÃ³n (ej: falla el login)
         public async Task<IActionResult> PostFrontendError([FromBody] FrontendErrorDto errorDto)
         {
             var detail = new
@@ -57,7 +57,7 @@ namespace SportTrack_v1.Api.Controllers
                 Url = errorDto.Url,
                 Stack = errorDto.Stack,
                 Browser = errorDto.BrowserInfo,
-                User = User.Identity?.Name ?? "Anónimo"
+                User = User.Identity?.Name ?? "AnÃ³nimo"
             };
 
             await _context.Auditoria.AddAsync(new SportTrack_v1.Entidades.Entidades.Auditoria
@@ -65,7 +65,7 @@ namespace SportTrack_v1.Api.Controllers
                 Accion = "FRONTEND_CRASH",
                 Modulo = "ReactApp",
                 Detalle = System.Text.Json.JsonSerializer.Serialize(detail),
-                Usuario = User.Identity?.Name ?? "Anónimo",
+                Usuario = User.Identity?.Name ?? "AnÃ³nimo",
                 Fecha = DateTime.UtcNow,
                 IP = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0"
             });
@@ -88,7 +88,7 @@ namespace SportTrack_v1.Api.Controllers
             var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
             if (userRole != "SuperAdmin") return Forbid();
 
-            // Solo borramos los de tipo ERROR para no perder auditoría legal
+            // Solo borramos los de tipo ERROR para no perder auditorÃ­a legal
             var logsToRemove = _context.Auditoria.Where(a => a.Accion == "ERROR_FATAL");
             _context.Auditoria.RemoveRange(logsToRemove);
             await _context.SaveChangesAsync();

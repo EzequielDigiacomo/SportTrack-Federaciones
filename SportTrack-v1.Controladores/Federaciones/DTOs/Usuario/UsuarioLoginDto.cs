@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,8 +13,8 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
         [MaxLength(50, ErrorMessage = "El nombre de usuario no puede exceder 50 caracteres")]
         public string Username { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La contraseña es requerida")]
-        [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+        [Required(ErrorMessage = "La contraseÃ±a es requerida")]
+        [MinLength(6, ErrorMessage = "La contraseÃ±a debe tener al menos 6 caracteres")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
     }

@@ -1,4 +1,4 @@
-namespace SportTrack_v1.Controladores.Auth.Dtos
+﻿namespace SportTrack_v1.Controladores.Auth.Dtos
 {
     public class LoginDto
     {

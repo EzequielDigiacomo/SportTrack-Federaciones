@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Entidades.DTOs.Entrenador;
 using SportTrack_v1.Entidades.DTOs.Participante;
 using System.Collections.Generic;

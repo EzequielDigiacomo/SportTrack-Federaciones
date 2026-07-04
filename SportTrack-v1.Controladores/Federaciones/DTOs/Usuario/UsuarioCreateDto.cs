@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,14 +22,14 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
         [MaxLength(50, ErrorMessage = "El nombre de usuario no puede exceder 50 caracteres")]
         public string Username { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La contrase�a es requerida")]
-        [MinLength(6, ErrorMessage = "La contrase�a debe tener al menos 6 caracteres")]
-        [MaxLength(100, ErrorMessage = "La contrase�a no puede exceder 100 caracteres")]
+        [Required(ErrorMessage = "La contraseña es requerida")]
+        [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+        [MaxLength(100, ErrorMessage = "La contraseña no puede exceder 100 caracteres")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La confirmaci�n de contrase�a es requerida")]
-        [Compare("Password", ErrorMessage = "Las contrase�as no coinciden")]
+        [Required(ErrorMessage = "La confirmación de contraseña es requerida")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = string.Empty;
 
@@ -37,7 +37,7 @@ namespace SportTrack_v1.Entidades.DTOs.Usuario
 
         [Required(ErrorMessage = "El rol es requerido")]
         [RegularExpression("^(Admin|Club|AtletaFederado|Entrenador|Usuario)$",
-         ErrorMessage = "Rol inv�lido. Valores permitidos: Admin, Club, AtletaFederado, Entrenador, Usuario")]
+         ErrorMessage = "Rol inválido. Valores permitidos: Admin, Club, AtletaFederado, Entrenador, Usuario")]
         public string Rol { get; set; } = RolTipo.DelegadoClub.ToString();
     }
 }

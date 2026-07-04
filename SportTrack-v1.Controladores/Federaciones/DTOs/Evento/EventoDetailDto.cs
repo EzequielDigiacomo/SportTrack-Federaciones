@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public string Email { get; set; } = string.Empty;
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
-        // Informaci�n relacionada existente
+        // Información relacionada existente
         public List<InscripcionDto>? Inscripciones { get; set; }
         // NUEVO: Agrega esta lista para el Cronograma
         public List<EventoPrueba.EventoPruebaDto> Pruebas { get; set; } = new List<EventoPruebaDto>();

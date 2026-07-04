@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.DTOs.DelegadoClub;
+﻿using SportTrack_v1.Entidades.DTOs.DelegadoClub;
 using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace SportTrack_v1.Entidades.DTOs.Rol
         public string Tipo { get; set; } = string.Empty;
         public RolTipo? TipoEnum { get; set; } // ?? Agregar esta propiedad
 
-        // Informaci�n relacionada
+        // Información relacionada
         public List<DelegadoClubDto>? Representantes { get; set; }
     }
 }

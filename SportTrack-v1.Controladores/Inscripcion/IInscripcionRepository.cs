@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Entidades;
+﻿using SportTrack_v1.Entidades.Entidades;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace SportTrack_v1.Controladores.Inscripcion
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         
-        // Método solicitado para contabilizar inscripciones
+        // MÃ©todo solicitado para contabilizar inscripciones
         Task<int> CountByEventoPruebaIdAsync(int eventoPruebaId);
         
         Task<IEnumerable<Entidades.Entidades.Inscripcion>> GetByEventoPruebaIdAsync(int eventoPruebaId);

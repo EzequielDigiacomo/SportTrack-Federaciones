@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SportTrack_v1.Entidades.DTOs.Evento
 {
-    // 🔹 DTO PARA PRUEBAS DEL EVENTO (RESPUESTA)
+    // ðŸ”¹ DTO PARA PRUEBAS DEL EVENTO (RESPUESTA)
     public class EventoPruebaResponseDto
     {
         public int IdEventoPrueba { get; set; }

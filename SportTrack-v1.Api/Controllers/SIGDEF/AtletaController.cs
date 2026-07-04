@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SIGDEF.DTOs;
 using SportTrack_v1.Entidades.DTOs.AtletaFederado;
 using SportTrack_v1.Entidades.DTOs.Base;

@@ -1,4 +1,4 @@
-using AutoMapper;
+锘縰sing AutoMapper;
 using SportTrack_v1.Controladores.Categoria.Dtos;
 using SportTrack_v1.Controladores.Exceptions;
 using SportTrack_v1.Entidades.Enums;
@@ -26,14 +26,14 @@ namespace SportTrack_v1.Controladores.Categoria
     {
         var categoria = await _categoriaRepository.GetByIdAsync(id);
         if (categoria == null)
-            throw new NotFoundException($"Categor韆 con ID {id} no encontrada");
+            throw new NotFoundException($"Categor铆a con ID {id} no encontrada");
 
         return _mapper.Map<CategoriaDto>(categoria);
     }
 
     public async Task<CategoriaDto> CreateCategoriaAsync(CategoriaCreateDto categoriaDto)
     {
-        // Validar que no haya superposici髇 de edades si es necesario
+        // Validar que no haya superposici贸n de edades si es necesario
         await ValidateCategoriaEdades(categoriaDto.EdadMin, categoriaDto.EdadMax);
 
         var categoria = _mapper.Map<Entidades.Entidades.Categoria>(categoriaDto);
@@ -45,9 +45,9 @@ namespace SportTrack_v1.Controladores.Categoria
     {
         var existingCategoria = await _categoriaRepository.GetByIdAsync(id);
         if (existingCategoria == null)
-            throw new NotFoundException($"Categor韆 con ID {id} no encontrada");
+            throw new NotFoundException($"Categor铆a con ID {id} no encontrada");
 
-        // Validar que no haya superposici髇 de edades si es necesario
+        // Validar que no haya superposici贸n de edades si es necesario
         await ValidateCategoriaEdades(categoriaDto.EdadMin, categoriaDto.EdadMax, id);
 
         _mapper.Map(categoriaDto, existingCategoria);
@@ -58,7 +58,7 @@ namespace SportTrack_v1.Controladores.Categoria
     public async Task<bool> DeleteCategoriaAsync(int id)
     {
         if (!await _categoriaRepository.ExistsAsync(id))
-            throw new NotFoundException($"Categor韆 con ID {id} no encontrada");
+            throw new NotFoundException($"Categor铆a con ID {id} no encontrada");
 
         return await _categoriaRepository.DeleteAsync(id);
     }
@@ -84,8 +84,8 @@ namespace SportTrack_v1.Controladores.Categoria
 
     private async Task ValidateCategoriaEdades(int? edadMin, int? edadMax, int? excludeId = null)
     {
-        // Implementar l骻ica de validaci髇 de superposici髇 de rangos de edad
-        // seg鷑 las necesidades del negocio
+        // Implementar l贸gica de validaci贸n de superposici贸n de rangos de edad
+        // seg煤n las necesidades del negocio
     }
     }
 }

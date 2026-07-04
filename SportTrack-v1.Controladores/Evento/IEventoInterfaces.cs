@@ -1,4 +1,4 @@
-using SportTrack_v1.Controladores.Evento.Dtos;
+﻿using SportTrack_v1.Controladores.Evento.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

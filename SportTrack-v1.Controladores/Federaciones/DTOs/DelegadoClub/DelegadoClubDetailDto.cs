@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.DTOs.Club;
+﻿using SportTrack_v1.Entidades.DTOs.Club;
 using SportTrack_v1.Entidades.DTOs.Federacion;
 using SportTrack_v1.Entidades.DTOs.Participante;
 using SportTrack_v1.Entidades.DTOs.Rol;

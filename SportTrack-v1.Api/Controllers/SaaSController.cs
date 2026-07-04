@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.SaaS;
 using System.Threading.Tasks;
@@ -60,7 +60,7 @@ namespace SportTrack_v1.Api.Controllers
         public async Task<IActionResult> ToggleActivo(int id)
         {
             await _saasService.ToggleClubActivoAsync(id);
-            return Ok(new { message = "Estado de federación actualizado correctamente" });
+            return Ok(new { message = "Estado de federaciÃ³n actualizado correctamente" });
         }
 
         [HttpPost("create-federacion")]
@@ -68,7 +68,7 @@ namespace SportTrack_v1.Api.Controllers
         public async Task<IActionResult> CreateFederacion([FromBody] SportTrack_v1.Controladores.SaaS.Dtos.SaaSCreateFederacionDto dto)
         {
             var id = await _saasService.CreateFederacionWithAdminAsync(dto);
-            return Ok(new { id, message = "Federación y administrador creados correctamente" });
+            return Ok(new { id, message = "FederaciÃ³n y administrador creados correctamente" });
         }
 
         [HttpGet("global-metrics")]

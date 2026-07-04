@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public bool PermitirCompletarK4 { get; set; } = false;
         public bool LimitacionBotesAB { get; set; } = false;
         
-        // Configuración de Cronograma Inteligente
+        // ConfiguraciÃ³n de Cronograma Inteligente
         public TimeSpan HoraInicioEvento { get; set; } = new TimeSpan(8, 0, 0); // 08:00 default
         public int CarrilesDisponibles { get; set; } = 9;
         public PerfilTiempoEnum PerfilTiempo { get; set; } = PerfilTiempoEnum.Estandar;
@@ -46,7 +46,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public bool UsarGapVariable { get; set; } = false;
         public string TimeZoneId { get; set; } = "America/Argentina/Buenos_Aires"; // Default IANA timezone
         
-        // Habilitaciones de Configuración
+        // Habilitaciones de ConfiguraciÃ³n
         public string? CategoriasHabilitadas { get; set; } // IDs separadas por coma
         public string? BotesHabilitados { get; set; } // IDs separadas por coma
         public string? DistanciasHabilitadas { get; set; } // IDs separadas por coma

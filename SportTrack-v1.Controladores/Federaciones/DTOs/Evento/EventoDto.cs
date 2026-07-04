@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.DTOs.EventoPrueba;
+﻿using SportTrack_v1.Entidades.DTOs.EventoPrueba;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace SportTrack_v1.Entidades.DTOs.Evento
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
 
-        // Estad�sticas para mostrar en listas
+        // Estadísticas para mostrar en listas
         public int CantidadInscripciones { get; set; }
         public int TotalAtletas { get; set; }      // ? NUEVO
         public int TotalClubes { get; set; }       // ? NUEVO

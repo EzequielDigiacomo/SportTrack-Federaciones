@@ -1,4 +1,4 @@
-namespace SportTrack_v1.Entidades.Enums
+﻿namespace SportTrack_v1.Entidades.Enums
 {
     public enum TipoEtapaEnum
     {

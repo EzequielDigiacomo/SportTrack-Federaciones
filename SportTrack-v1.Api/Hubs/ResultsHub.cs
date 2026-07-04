@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace SportTrack_v1.Api.Hubs
@@ -17,7 +17,7 @@ namespace SportTrack_v1.Api.Hubs
 
         public async Task RequestStartRace(int faseId)
         {
-            // Transmite a todos los unidos a esta fase que la carrera inició
+            // Transmite a todos los unidos a esta fase que la carrera iniciÃ³
             await Clients.Group(faseId.ToString()).SendAsync("RaceStarted", faseId, System.DateTime.UtcNow);
         }
 

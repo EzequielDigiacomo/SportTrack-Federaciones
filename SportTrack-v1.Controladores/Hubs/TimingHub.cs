@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System;
 using SportTrack_v1.Controladores.Fase;
@@ -162,10 +162,10 @@ namespace SportTrack_v1.Controladores.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        // Acciones críticas vía WebSocket para mínima latencia
+        // Acciones crÃ­ticas vÃ­a WebSocket para mÃ­nima latencia
         public async Task RequestStartRace(int faseId, DateTime startTime)
         {
-            // Ejecutamos la lógica de inicio en el servicio (DB update, etc)
+            // Ejecutamos la lÃ³gica de inicio en el servicio (DB update, etc)
             // Pasamos la hora de inicio capturada por el largador
             var fase = await _faseService.IniciarFaseAsync(faseId, startTime);
         }
@@ -176,7 +176,7 @@ namespace SportTrack_v1.Controladores.Hubs
             // El servicio emite "RaceReset"
         }
 
-        // Notificaciones y Sincronización
+        // Notificaciones y SincronizaciÃ³n
         public DateTime GetServerTime()
         {
             return DateTime.UtcNow;

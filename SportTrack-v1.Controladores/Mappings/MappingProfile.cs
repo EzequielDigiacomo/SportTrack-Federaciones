@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using SportTrack_v1.Controladores.Bote.Dtos;
 using SportTrack_v1.Controladores.Categoria.Dtos;
 using SportTrack_v1.Controladores.Distancia.Dtos;
@@ -50,9 +50,9 @@ namespace SportTrack_v1.Controladores.Mappings
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
                 .ForMember(dest => dest.ParticipanteNombreCompleto, opt => opt.MapFrom(src => src.Participante != null ? $"{src.Participante.Nombre} {src.Participante.Apellido}" : null))
                 .ForMember(dest => dest.ClubNombre, opt => opt.MapFrom(src => src.Participante != null && src.Participante.Club != null ? src.Participante.Club.Nombre : null))
-                .ForMember(dest => dest.ClubSigla, opt => opt.MapFrom(src => src.Participante != null && src.Participante.Club != null ? src.Participante.Club.Sigla : null))
-                .ForMember(dest => dest.ClubId, opt => opt.MapFrom(src => src.Participante != null ? src.Participante.ClubId : null))
-                .ForMember(dest => dest.ParticipanteClubId, opt => opt.MapFrom(src => src.Participante != null ? src.Participante.ClubId : null))
+                .ForMember(dest => dest.ClubSigla, opt => opt.MapFrom(src => src.Participante != null && src.Participante.Club != null ? src.Participante.Club.Siglas : null))
+                .ForMember(dest => dest.ClubId, opt => opt.MapFrom(src => src.Participante != null ? src.Participante.IdClub : null))
+                .ForMember(dest => dest.ParticipanteClubId, opt => opt.MapFrom(src => src.Participante != null ? src.Participante.IdClub : null))
                 .ForMember(dest => dest.EventoNombre, opt => opt.MapFrom(src => src.EventoPrueba != null && src.EventoPrueba.Evento != null ? src.EventoPrueba.Evento.Nombre : null))
                 .ForMember(dest => dest.PruebaNombre, opt => opt.MapFrom(src => 
                     src.EventoPrueba != null && src.EventoPrueba.Prueba != null
@@ -66,7 +66,7 @@ namespace SportTrack_v1.Controladores.Mappings
             // Mapeos de Evento
             CreateMap<Entidades.Entidades.Evento, EventoDto>()
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
-                .ForMember(dest => dest.ClubNombre, opt => opt.MapFrom(src => src.Club != null ? src.Club.Nombre : "Federación"))
+                .ForMember(dest => dest.ClubNombre, opt => opt.MapFrom(src => src.Club != null ? src.Club.Nombre : "FederaciÃ³n"))
                 .ForMember(dest => dest.HoraInicioEvento, opt => opt.MapFrom(src => src.HoraInicioEvento.ToString(@"hh\:mm")))
                 .ForMember(dest => dest.HoraInicioReceso, opt => opt.MapFrom(src => src.HoraInicioReceso.ToString(@"hh\:mm")))
                 .ForMember(dest => dest.HoraFinReceso, opt => opt.MapFrom(src => src.HoraFinReceso.ToString(@"hh\:mm")))
@@ -94,10 +94,10 @@ namespace SportTrack_v1.Controladores.Mappings
                 .ForMember(dest => dest.Prueba, opt => opt.MapFrom(src => src.Etapa != null ? src.Etapa.EventoPrueba : null));
             CreateMap<Entidades.Entidades.Resultado, SportTrack_v1.Controladores.Fase.Dtos.ResultadoFaseDto>()
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
-                .ForMember(dest => dest.ParticipanteId, opt => opt.MapFrom(src => src.Inscripcion != null ? src.Inscripcion.ParticipanteId : null))
+                .ForMember(dest => dest.ParticipanteId, opt => opt.MapFrom(src => src.Inscripcion != null ? src.Inscripcion.IdParticipante : null))
                 .ForMember(dest => dest.ParticipanteNombre, opt => opt.MapFrom(src => src.Inscripcion != null && src.Inscripcion.Participante != null ? $"{src.Inscripcion.Participante.Nombre} {src.Inscripcion.Participante.Apellido}" : string.Empty))
                 .ForMember(dest => dest.ClubNombre, opt => opt.MapFrom(src => src.Inscripcion != null && src.Inscripcion.Participante != null && src.Inscripcion.Participante.Club != null ? src.Inscripcion.Participante.Club.Nombre : string.Empty))
-                .ForMember(dest => dest.ClubSigla, opt => opt.MapFrom(src => src.Inscripcion != null && src.Inscripcion.Participante != null && src.Inscripcion.Participante.Club != null ? src.Inscripcion.Participante.Club.Sigla : string.Empty))
+                .ForMember(dest => dest.ClubSigla, opt => opt.MapFrom(src => src.Inscripcion != null && src.Inscripcion.Participante != null && src.Inscripcion.Participante.Club != null ? src.Inscripcion.Participante.Club.Siglas : string.Empty))
                 .ForMember(dest => dest.NumeroCompetidor, opt => opt.MapFrom(src => src.Inscripcion != null ? src.Inscripcion.NumeroCompetidor : string.Empty))
                 .ForMember(dest => dest.Tripulantes, opt => opt.MapFrom(src => src.Inscripcion != null ? src.Inscripcion.Tripulantes : null));
 

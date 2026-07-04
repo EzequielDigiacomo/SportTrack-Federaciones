@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +31,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public Categoria? Categoria { get; set; }
         public ICollection<Inscripcion> Inscripciones { get; set; } = new List<Inscripcion>();
 
-        // Relaciones de Federación (SIGDEF)
+        // Relaciones de FederaciÃ³n (SIGDEF)
         public virtual DelegadoClub? DelegadoClub { get; set; }
         public virtual Entrenador? Entrenador { get; set; }
         public virtual Tutor? Tutor { get; set; }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,7 @@ namespace SportTrack_v1.Entidades.DTOs.Club
         public int? IdFederacion { get; set; }
         public SportTrack_v1.Entidades.Enums.EstadoPago EstadoMatricula { get; set; }
         public bool TieneDelegado { get; set; }
-        // Estadísticas para mostrar en listas
+        // EstadÃ­sticas para mostrar en listas
         public int CantidadAtletas { get; set; }
         public int CantidadEntrenadores { get; set; }
         public int CantidadRepresentantes { get; set; }

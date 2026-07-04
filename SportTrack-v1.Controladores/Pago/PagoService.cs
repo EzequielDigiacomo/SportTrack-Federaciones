@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Controladores.Audit;
 using SportTrack_v1.Controladores.Exceptions;
@@ -47,9 +47,9 @@ namespace SportTrack_v1.Controladores.Pago
 
             if (role == "Admin" && fedId.HasValue)
             {
-                // 1. Pagos de clubes hijos de la federación (FederacionId == fedId)
-                // 2. Pagos de atletas cuyos clubes pertenecen a la federación
-                // 3. Inscripciones en eventos organizados por la federación (Evento.FederacionId == fedId)
+                // 1. Pagos de clubes hijos de la federaciÃ³n (FederacionId == fedId)
+                // 2. Pagos de atletas cuyos clubes pertenecen a la federaciÃ³n
+                // 3. Inscripciones en eventos organizados por la federaciÃ³n (Evento.FederacionId == fedId)
                 query = query.Where(p =>
                     (p.Club != null && p.Club.FederacionId == fedId.Value) ||
                     (p.Participante != null && p.Participante.Club != null && p.Participante.Club.FederacionId == fedId.Value) ||
@@ -114,44 +114,44 @@ namespace SportTrack_v1.Controladores.Pago
 
             if (dto.TipoPago == "ClubAfiliacion")
             {
-                if (!dto.ClubId.HasValue) throw new BadRequestException("ClubId es requerido para afiliación de club");
+                if (!dto.ClubId.HasValue) throw new BadRequestException("ClubId es requerido para afiliaciÃ³n de club");
                 var club = await _context.Clubes.FindAsync(dto.ClubId.Value);
                 if (club == null) throw new NotFoundException($"Club con ID {dto.ClubId.Value} no encontrado");
                 
                 club.PagoAfiliacionAlDia = true;
                 club.SolicitudPagoPendiente = false;
                 pago.ClubId = club.Id;
-                detalleAuditoria = $"Pago de afiliación anual de Club '{club.Nombre}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
+                detalleAuditoria = $"Pago de afiliaciÃ³n anual de Club '{club.Nombre}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
             }
             else if (dto.TipoPago == "AtletaAfiliacion")
             {
-                if (!dto.ParticipanteId.HasValue) throw new BadRequestException("ParticipanteId es requerido para afiliación de atleta");
+                if (!dto.ParticipanteId.HasValue) throw new BadRequestException("ParticipanteId es requerido para afiliaciÃ³n de atleta");
                 var atleta = await _context.Participantes.FindAsync(dto.ParticipanteId.Value);
                 if (atleta == null) throw new NotFoundException($"Atleta con ID {dto.ParticipanteId.Value} no encontrado");
 
                 atleta.PagoAfiliacionAlDia = true;
                 pago.ParticipanteId = atleta.Id;
-                detalleAuditoria = $"Pago de afiliación de Atleta '{atleta.Nombre} {atleta.Apellido}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
+                detalleAuditoria = $"Pago de afiliaciÃ³n de Atleta '{atleta.Nombre} {atleta.Apellido}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
             }
             else if (dto.TipoPago == "InscripcionEvento")
             {
-                if (!dto.InscripcionId.HasValue) throw new BadRequestException("InscripcionId es requerido para pago de inscripción");
+                if (!dto.InscripcionId.HasValue) throw new BadRequestException("InscripcionId es requerido para pago de inscripciÃ³n");
                 var inscripcion = await _context.Inscripciones
                     .Include(i => i.Participante)
                     .Include(i => i.EventoPrueba)
                         .ThenInclude(ep => ep.Evento)
                     .FirstOrDefaultAsync(i => i.Id == dto.InscripcionId.Value);
-                if (inscripcion == null) throw new NotFoundException($"Inscripción con ID {dto.InscripcionId.Value} no encontrada");
+                if (inscripcion == null) throw new NotFoundException($"InscripciÃ³n con ID {dto.InscripcionId.Value} no encontrada");
 
                 inscripcion.Pagado = true;
                 pago.InscripcionId = inscripcion.Id;
                 string atletaName = inscripcion.Participante != null ? $"{inscripcion.Participante.Nombre} {inscripcion.Participante.Apellido}" : "Atleta";
                 string eventoName = inscripcion.EventoPrueba?.Evento?.Nombre ?? "Evento";
-                detalleAuditoria = $"Pago de inscripción de {atletaName} a regata en '{eventoName}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
+                detalleAuditoria = $"Pago de inscripciÃ³n de {atletaName} a regata en '{eventoName}' registrado por ${dto.Monto} (Ref: {dto.Referencia}).";
             }
             else
             {
-                throw new BadRequestException($"Tipo de pago '{dto.TipoPago}' inválido");
+                throw new BadRequestException($"Tipo de pago '{dto.TipoPago}' invÃ¡lido");
             }
 
             _context.Pagos.Add(pago);
@@ -201,8 +201,8 @@ namespace SportTrack_v1.Controladores.Pago
 
             if (result)
             {
-                string estadoStr = alDia ? "Al Día" : "Deudor";
-                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_CLUB", $"Se cambió el estado de afiliación del Club '{club.Nombre}' a '{estadoStr}'", null, "Pagos");
+                string estadoStr = alDia ? "Al DÃ­a" : "Deudor";
+                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_CLUB", $"Se cambiÃ³ el estado de afiliaciÃ³n del Club '{club.Nombre}' a '{estadoStr}'", null, "Pagos");
             }
 
             return result;
@@ -229,8 +229,8 @@ namespace SportTrack_v1.Controladores.Pago
 
             if (result)
             {
-                string estadoStr = alDia ? "Al Día" : "Deudor";
-                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_ATLETA", $"Se cambió el estado de afiliación del Atleta '{atleta.Nombre} {atleta.Apellido}' a '{estadoStr}'", null, "Pagos");
+                string estadoStr = alDia ? "Al DÃ­a" : "Deudor";
+                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_ATLETA", $"Se cambiÃ³ el estado de afiliaciÃ³n del Atleta '{atleta.Nombre} {atleta.Apellido}' a '{estadoStr}'", null, "Pagos");
             }
 
             return result;
@@ -243,7 +243,7 @@ namespace SportTrack_v1.Controladores.Pago
                 .Include(i => i.EventoPrueba)
                     .ThenInclude(ep => ep.Evento)
                 .FirstOrDefaultAsync(i => i.Id == inscripcionId);
-            if (inscripcion == null) throw new NotFoundException($"Inscripción con ID {inscripcionId} no encontrada");
+            if (inscripcion == null) throw new NotFoundException($"InscripciÃ³n con ID {inscripcionId} no encontrada");
 
             inscripcion.Pagado = pagado;
             _context.Inscripciones.Update(inscripcion);
@@ -254,7 +254,7 @@ namespace SportTrack_v1.Controladores.Pago
                 string estadoStr = pagado ? "Pagado" : "Pendiente";
                 string atletaName = inscripcion.Participante != null ? $"{inscripcion.Participante.Nombre} {inscripcion.Participante.Apellido}" : "Atleta";
                 string eventoName = inscripcion.EventoPrueba?.Evento?.Nombre ?? "Evento";
-                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_INSCRIPCION", $"Se cambió el estado de pago de inscripción de '{atletaName}' para '{eventoName}' a '{estadoStr}'", null, "Pagos");
+                await _auditService.RegistrarAccionAsync("TOGGLE_PAGO_INSCRIPCION", $"Se cambiÃ³ el estado de pago de inscripciÃ³n de '{atletaName}' para '{eventoName}' a '{estadoStr}'", null, "Pagos");
             }
 
             return result;

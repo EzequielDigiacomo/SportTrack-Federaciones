@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SportTrack_v1.Controladores.SaaS.Dtos
 {
     public class SaaSCreateFederacionDto
     {
-        // Datos de la Federación
+        // Datos de la FederaciÃ³n
         [Required]
         public string Nombre { get; set; } = string.Empty;
         public string? Sigla { get; set; }

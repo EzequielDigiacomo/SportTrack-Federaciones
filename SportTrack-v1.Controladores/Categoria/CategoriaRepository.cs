@@ -1,4 +1,4 @@
-// Repositories/CategoriaRepository.cs
+﻿// Repositories/CategoriaRepository.cs
 using Microsoft.EntityFrameworkCore;
 using SportTrack.AccessDatos;
 using SportTrack_v1.Controladores.Categoria;
@@ -87,13 +87,13 @@ public class CategoriaRepository : ICategoriaRepository
             query = query.Where(c => c.Id != excludeId.Value);
         }
 
-        // Lógica para detectar superposición de rangos
+        // LÃ³gica para detectar superposiciÃ³n de rangos
         return await query.AnyAsync(c =>
-            // Caso 1: Nueva categoría dentro de una existente
+            // Caso 1: Nueva categorÃ­a dentro de una existente
             ((!edadMin.HasValue || !c.EdadMin.HasValue || edadMin >= c.EdadMin) &&
              (!edadMax.HasValue || !c.EdadMax.HasValue || edadMax <= c.EdadMax)) ||
 
-            // Caso 2: Nueva categoría que contiene una existente
+            // Caso 2: Nueva categorÃ­a que contiene una existente
             ((!c.EdadMin.HasValue || !edadMin.HasValue || c.EdadMin >= edadMin) &&
              (!c.EdadMax.HasValue || !edadMax.HasValue || c.EdadMax <= edadMax)) ||
 

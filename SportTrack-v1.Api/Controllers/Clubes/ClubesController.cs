@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Club;
 using SportTrack_v1.Controladores.Club.Dtos;
@@ -26,7 +26,7 @@ namespace SportTrack_v1.Api.Controllers.Clubes
         {
             var result = await _clubService.GetAllClubesAsync();
 
-            // Filtrar según el rol del usuario logueado
+            // Filtrar segÃºn el rol del usuario logueado
             var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
             var clubIdClaim = User.FindFirst("ClubId")?.Value;
 
@@ -34,8 +34,8 @@ namespace SportTrack_v1.Api.Controllers.Clubes
             if (role == "SuperAdmin")
                 return Ok(result);
 
-            // Si es Admin, solo ve los clubes de su federación (FederacionId == su FederacionId)
-            // Ojo, en el nuevo modelo el rol Admin (federación) tiene su propio FederacionId en el claim
+            // Si es Admin, solo ve los clubes de su federaciÃ³n (FederacionId == su FederacionId)
+            // Ojo, en el nuevo modelo el rol Admin (federaciÃ³n) tiene su propio FederacionId en el claim
             var fedIdClaim = User.FindFirst("FederacionId")?.Value;
             if (role == "Admin" && int.TryParse(fedIdClaim, out int fedId))
             {
@@ -86,7 +86,7 @@ namespace SportTrack_v1.Api.Controllers.Clubes
             return NoContent();
         }
 
-        // Sub-rutas requeridas por SIGDEF (vía _clubServicesSigdef)
+        // Sub-rutas requeridas por SIGDEF (vÃ­a _clubServicesSigdef)
         [HttpGet("{id}/Atletas")]
         public async Task<ActionResult<IEnumerable<SportTrack_v1.Entidades.DTOs.AtletaFederado.AtletaDto>>> GetAtletasByClub(int id)
         {

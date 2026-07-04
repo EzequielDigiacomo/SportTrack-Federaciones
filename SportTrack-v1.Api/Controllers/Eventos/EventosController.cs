@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Controladores.Evento;
 using SportTrack_v1.Controladores.Evento.Dtos;
@@ -39,7 +39,7 @@ namespace SportTrack_v1.Api.Controllers.Eventos
             
             string role = string.Empty;
 
-            int? targetId = clubId; // Variable unificada que puede ser club o federación
+            int? targetId = clubId; // Variable unificada que puede ser club o federaciÃ³n
             bool isFederacion = false;
 
             if (!string.IsNullOrEmpty(username))
@@ -79,7 +79,7 @@ namespace SportTrack_v1.Api.Controllers.Eventos
                 }
             }
 
-            // Nota: Se podría actualizar el IEventoService para aceptar separadamente clubId y federacionId.
+            // Nota: Se podrÃ­a actualizar el IEventoService para aceptar separadamente clubId y federacionId.
             // Por retrocompatibilidad pasamos targetId como "clubId" (para que no se rompan las interfaces).
             var result = await _eventoService.GetAllEventosAsync(targetId, role);
             return Ok(result);
@@ -118,7 +118,7 @@ namespace SportTrack_v1.Api.Controllers.Eventos
         {
             string? role = null;
 
-            // Si el usuario está logueado
+            // Si el usuario estÃ¡ logueado
             if (User.Identity?.IsAuthenticated == true)
             {
                 var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 

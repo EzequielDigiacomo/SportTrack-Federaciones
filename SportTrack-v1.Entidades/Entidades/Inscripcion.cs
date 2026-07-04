@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace SportTrack_v1.Entidades.Entidades
         public Participante? Participante { get; set; }
         public ICollection<InscripcionTripulante> Tripulantes { get; set; } = new List<InscripcionTripulante>();
         
-        // Relación con el historial deportivo (todas sus bajadas en heats/finales)
+        // RelaciÃ³n con el historial deportivo (todas sus bajadas en heats/finales)
         public ICollection<Resultado> Resultados { get; set; } = new List<Resultado>();
     }
 }

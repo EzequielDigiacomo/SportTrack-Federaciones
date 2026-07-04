@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportTrack_v1.Entidades.DTOs.AtletaTutor;
 using SportTrack_v1.Controladores.Federaciones;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace SIGDEF.API.Controllers
             return await _atletaTutorServices.PostAtletaTutor(atletaTutorCreateDto);
         }
 
-        // DELETE: api/AtletaTutor/5 (por ID de relación)
+        // DELETE: api/AtletaTutor/5 (por ID de relaciÃ³n)
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAtletaTutor(int id)
         {

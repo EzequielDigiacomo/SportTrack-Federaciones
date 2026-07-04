@@ -1,4 +1,4 @@
-using SIGDEF.DTOs;
+﻿using SIGDEF.DTOs;
 using SportTrack_v1.Entidades.DTOs.AtletaFederado;
 using SportTrack_v1.Entidades.DTOs.Evento;
 using System;

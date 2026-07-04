@@ -1,4 +1,4 @@
-using SportTrack_v1.Controladores.Extensions;
+﻿using SportTrack_v1.Controladores.Extensions;
 using SportTrack_v1.Controladores.Helpers;
 using SportTrack_v1.Entidades.Enums;
 

@@ -1,4 +1,4 @@
-// ?? SIGDEF/Helpers/CategoriaEdadExtensions.cs
+Ôªø// ?? SIGDEF/Helpers/CategoriaEdadExtensions.cs
 using SportTrack_v1.Entidades.Enums;
 
 namespace SIGDEF.Helpers
@@ -48,7 +48,7 @@ namespace SIGDEF.Helpers
                 CategoriaEdad.Sub21 => (18, 20),
                 CategoriaEdad.Sub23 => (21, 22),
                 CategoriaEdad.Senior => (23, 39),
-                CategoriaEdad.MasterA => (40, null), // Sin lÌmite superior
+                CategoriaEdad.MasterA => (40, null), // Sin l√≠mite superior
                 _ => (null, null)
             };
         }
@@ -76,9 +76,9 @@ namespace SIGDEF.Helpers
             var (min, max) = categoria.GetRangoEdad();
 
             if (min.HasValue && max.HasValue)
-                return $"{categoria.ToDisplayString()} ({min}-{max} aÒos)";
+                return $"{categoria.ToDisplayString()} ({min}-{max} a√±os)";
             else if (min.HasValue)
-                return $"{categoria.ToDisplayString()} ({min}+ aÒos)";
+                return $"{categoria.ToDisplayString()} ({min}+ a√±os)";
             else
                 return categoria.ToDisplayString();
         }
@@ -95,7 +95,7 @@ namespace SIGDEF.Helpers
                 >= 13 => CategoriaEdad.Cadete,
                 >= 10 => CategoriaEdad.Infantil,
                 >= 6 => CategoriaEdad.Preinfantil,
-                _ => throw new ArgumentException($"Edad {edad} no v·lida para categorÌas")
+                _ => throw new ArgumentException($"Edad {edad} no v√°lida para categor√≠as")
             };
         }
     }

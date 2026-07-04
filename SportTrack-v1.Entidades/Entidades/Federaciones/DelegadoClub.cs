@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Enums;
+﻿using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +11,7 @@ namespace SportTrack_v1.Entidades.Entidades
 {
     public class DelegadoClub
     {
-        [Key] // ?? ¡Obligatorio!
+        [Key] // ?? Â¡Obligatorio!
         [ForeignKey(nameof(Participante))]
         public int? IdParticipante { get; set; }
 

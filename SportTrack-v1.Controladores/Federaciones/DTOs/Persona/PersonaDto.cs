@@ -1,4 +1,4 @@
-using SportTrack_v1.Entidades.Entidades;
+﻿using SportTrack_v1.Entidades.Entidades;
 using SportTrack_v1.Entidades.Enums;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace SportTrack_v1.Entidades.DTOs.Participante
         public Sexo Sexo { get; set; } // NUEVO
         public string SexoDisplay { get; set; } = string.Empty; // Para mostrar en UI
 
-        // Informaci�n adicional para mostrar
+        // Información adicional para mostrar
         public int? Edad { get; set; }
         public string? NombreCompleto { get; set; }
         public string? TipoPersona { get; set; } // AtletaFederado, Entrenador, Tutor, etc.

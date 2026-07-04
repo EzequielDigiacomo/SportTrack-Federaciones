@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SportTrack_v1.Controladores.SaaS.Dtos
@@ -27,7 +27,7 @@ namespace SportTrack_v1.Controladores.SaaS.Dtos
         public bool PlanAlDia { get; set; }
         public bool Activo { get; set; }
         
-        // Nuevos campos de suscripción
+        // Nuevos campos de suscripciÃ³n
         public string FrecuenciaPago { get; set; }
         public DateTime? FechaAltaPlan { get; set; }
         public DateTime? FechaVencimientoPlan { get; set; }

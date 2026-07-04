@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,8 +18,8 @@ namespace SportTrack_v1.Entidades.DTOs.Entrenador
         //[Required(ErrorMessage = "El campo PerteneceSeleccion es requerido")]
         public bool PerteneceSeleccion { get; set; }
 
-        //[Required(ErrorMessage = "La categoría de selección es requerida")]
-        //[MaxLength(50, ErrorMessage = "La categoría de selección no puede exceder 50 caracteres")]
+        //[Required(ErrorMessage = "La categorÃ­a de selecciÃ³n es requerida")]
+        //[MaxLength(50, ErrorMessage = "La categorÃ­a de selecciÃ³n no puede exceder 50 caracteres")]
         public string? CategoriaSeleccion { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El campo BecadoEnard es requerido")]

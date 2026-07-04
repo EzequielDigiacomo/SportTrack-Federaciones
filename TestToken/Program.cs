@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Npgsql;
 
 class Program
@@ -10,7 +10,7 @@ class Program
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-            Console.WriteLine("Conexión exitosa a Render.");
+            Console.WriteLine("ConexiÃ³n exitosa a Render.");
 
             // 1. Todos los planes: competencias ilimitadas
             using (var cmd = new NpgsqlCommand(@"UPDATE catalogos.""PlanesSaaS"" SET ""MaxTorneosActivos"" = -1;", conn))
